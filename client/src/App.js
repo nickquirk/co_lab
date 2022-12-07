@@ -20,11 +20,8 @@ const App = () => {
   const [ currentInstrument, setCurrentInstrument ] = useState([1])
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
-  // instrument, note, duration
-  const seqData = [
-    [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [30], 2 / 16]]], [[], []], [[], [[currentInstrument, [31], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [26], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [30], 2 / 16]]], [[], []], [[], [[currentInstrument, [31], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [28], 2 / 16]]], [[], []], [[], [[currentInstrument, [33], 2 / 16]]], [[], []]
-  ]
-
+  const [ blankSequence, setBlankSequence ] = useState([])
+  const [ selected, setSelected ] = useState('')
   
   // ! Execution
   useEffect(() => {
@@ -39,14 +36,15 @@ const App = () => {
     const grid = []
     const sequence = []
     for (let i = 0; i < cols; i++){
-      const currentRow = []
+      const currentCol = []
       sequence.push([[], []])
       for (let i = 0; i < rows; i++){
-        currentRow.push(i)
+        currentCol.push(i)
       }
-      grid.push(currentRow)
+      grid.push(currentCol)
     }
     setSequence(sequence)
+    setBlankSequence(sequence)
     return grid
   }
 
@@ -74,14 +72,13 @@ const App = () => {
     const row = parseInt(e.target.id)
     const state = e.target.checked
     const instrument = parseInt(currentInstrument)
-    console.log('generateSequenceData: Current intrument -> ', currentInstrument)
     console.log('note = ', row + 54)
+    setSelected(true)
     if (state){
       sequence[col][1] = [[ instrument, [-row + 50], 2 / 16]]
     } else {
       sequence[col] = [[], []]
     }
-    //console.log(sequence)
   }
 
   const playLoop = (e) => {
@@ -91,7 +88,15 @@ const App = () => {
     midisounds.startPlayLoop(sequence, 120, 1 / 16)
   }
 
-  const handleChange = (e) => {
+  const stopLoop = (e) => {
+    // const settings = new midisounds.showPropertiesDialog({})
+    // settings.showPropertiesDialog
+    midisounds.stopPlayLoop()
+  }
+
+
+
+  const changeInstrument = (e) => {
     // stop current loop
     midisounds.stopPlayLoop()
     setCurrentInstrument(e.target.value)
@@ -100,18 +105,23 @@ const App = () => {
     
   }
 
-  const stopLoop = (e) => {
-    // const settings = new midisounds.showPropertiesDialog({})
-    // settings.showPropertiesDialog
+  const clearSequence = (e) => {
+    console.log('clear')
     midisounds.stopPlayLoop()
+    const seq = sequence.map(col => {
+      return [[], []]
+    })
+    setSequence(seq)
+    setSelected('')
   }
+
 
   // ! JSX
   return (
     <div className="page-wrapper">
       <h1>co_lab Prototype</h1>
       <select
-        onChange={handleChange}
+        onChange={changeInstrument}
         name="instruments"
         id="instrument-select"
         className="dropdown"
@@ -125,6 +135,7 @@ const App = () => {
       </select>
       <button onClick={playLoop}>Play</button>
       <button onClick={stopLoop}>Stop</button>
+      <button onClick={clearSequence}>Clear</button>
       <Container className='grid-container'>
         {grid.map((row, rowId) => {
           return (
@@ -133,7 +144,7 @@ const App = () => {
               {grid[rowId].map((col, colId) => {
                 return (
                   <div key={colId}>
-                    <input type="radio" name={rowId} id={colId} onChange={generateSequenceData}></input>
+                    <input type="radio" name={rowId} id={colId} onChange={generateSequenceData} checked={selected}></input>
                   </div>
                 )
               })}

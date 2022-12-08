@@ -14,38 +14,40 @@ const App = () => {
 
   const midisounds = new MIDISounds({})
 
+  // ! Vars
+  const MIDI_TRANSPOSE = 54
+
   // ! State
   const [ instruments, setInstruments ] = useState([])
   const [ currentInstrument, setCurrentInstrument ] = useState([1])
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
-  const [ selected, setSelected ] = useState(false)
-  const [ isPlaying, setIsPlaying ] = useState(false)
+  const [ clearToggle, setClearToggle ] = useState(false)
+  const [ sequenceLoaded, setSequenceLoaded ] = useState(false)
   
   // ! Execution
   useEffect(() => {
     setInstruments(getInstrumentNames())
     setGrid(createGrid(16, 7))
     midisounds.cacheInstrument(currentInstrument)
-    console.log(midisounds)
     midisounds.targetOpenModal
   }, [])
 
   // Takes row and column amount and returns an array in format:
   // grid = row(n)[cols(n)]
   const createGrid = (cols, rows) => {
-    const grid = []
-    const sequence = []
+    const makeGrid = []
+    const makeSequence = []
     for (let i = 0; i < cols; i++){
       const currentCol = []
-      sequence.push([[], []])
+      makeSequence.push([[], []])
       for (let i = 0; i < rows; i++){
-        currentCol.push(i)
+        currentCol.push(false)
       }
-      grid.push(currentCol)
+      makeGrid.push(currentCol)
     }
-    setSequence(sequence)
-    return grid
+    setSequence(makeSequence)
+    return makeGrid
   }
 
   const getInstrumentNames = () => {
@@ -64,25 +66,28 @@ const App = () => {
     })
   }, [currentInstrument])
 
-  const generateSequenceData = (e) => {
-    console.log('col ->', e.target.name)
-    console.log('row ->', e.target.id)
-    console.log('state ->', e.target.checked)
-    const col = parseInt(e.target.name)
-    const row = parseInt(e.target.id)
-    const state = e.target.checked
+  const generateSequenceData = (rowId, colId, isChecked) => {
+    // console.log('col ->', colId)
+    // console.log('row ->', rowId)
+    //console.log('state ->', isChecked)
     const instrument = parseInt(currentInstrument)
-    console.log('note = ', row + 54)
-    //setSelected(true)
-    this.setState({
-      selectedOption: e.target.value,
-    })
-    if (state){
-      sequence[col][1] = [[ instrument, [-row + 50], 2 / 16]]
+    //console.log('note = ', -row + MIDI_TRANSPOSE)
+    const note = -rowId + MIDI_TRANSPOSE
+    const newSequence = [...sequence]
+    if (!isChecked){
+      newSequence[colId][1] = [[ instrument, [note], 2 / 16]]
     } else {
-      sequence[col] = [[], []]
+      newSequence[colId] = [[], []]
     }
+    setSequence(newSequence)
+    const updatedGrid = [...grid]
+    updatedGrid[colId] = updatedGrid[colId].map((row, index) =>  index === rowId)
+    setGrid(updatedGrid)
+    midisounds.playChordNow(currentInstrument, [note], 0.2)
+    console.log('is Checked ', isChecked)
   }
+
+
 
   const playLoop = (e) => {
     // instrument, note, duration
@@ -110,13 +115,33 @@ const App = () => {
   }
 
   const clearSequence = (e) => {
-    console.log('clear')
     //midisounds.stopPlayLoop()
     const seq = sequence.map(col => {
       return [[], []]
     })
+    let clearGrid = [...grid]
+    clearGrid = clearGrid.map(col => {
+      return col.map(row => {
+        return false
+      })
+    })
     setSequence(seq)
-    setSelected(false)
+    setGrid(clearGrid)
+    //setClearToggle(!clearToggle)
+  }
+
+  const saveSequence = (e) => {
+    console.log('sequenced saved')
+    localStorage.setItem('saved-grid', JSON.stringify(grid))
+    localStorage.setItem('saved-sequence', JSON.stringify(sequence))
+  }
+
+  const loadSequence = (e) => {
+    console.log('load')
+    const gridToLoad = JSON.parse(localStorage.getItem('saved-grid'))
+    const sequenceToLoad = JSON.parse(localStorage.getItem('saved-sequence'))
+    setGrid(gridToLoad)
+    setSequence(sequenceToLoad)
   }
 
 
@@ -140,15 +165,25 @@ const App = () => {
       <button onClick={playLoop}>Play</button>
       <button onClick={stopLoop}>Stop</button>
       <button onClick={clearSequence}>Clear</button>
+      <button onClick={saveSequence}>Save</button>
+      <button onClick={loadSequence}>Load</button>
       <Container className='grid-container'>
-        {grid.map((row, rowId) => {
+        {grid.map((col, colId) => {
           return (
-            <div key={rowId}>
-              <p>{rowId}</p>
-              {grid[rowId].map((col, colId) => {
+            <div key={colId}>
+              {grid[colId].map((row, rowId) => {
                 return (
-                  <div key={colId}>
-                    <input type="radio" name={rowId} id={colId} onChange={generateSequenceData} checked={this.state.selectedOption === rowId}></input>
+                  <div key={rowId}>
+                    <Cell
+                      rowId = {rowId}
+                      colId = {colId}
+                      generateSequenceData = {generateSequenceData}
+                      clearToggle = {clearToggle}
+                      sequence = {sequence}
+                      sequenceLoaded = {sequenceLoaded}
+                      midiTranspose = {MIDI_TRANSPOSE}
+                      isChecked = {row}
+                    />
                   </div>
                 )
               })}
@@ -162,3 +197,32 @@ const App = () => {
 }
 
 export default App
+
+
+const Cell = ({ rowId, colId, generateSequenceData, clearToggle, sequence, sequenceLoaded, midiTranspose, isChecked  }) => {
+  // ! States
+  //const [ isChecked, setIsChecked ] = useState(false)
+  // ! Executions
+  // useEffect(() => {
+  //   if (isChecked)
+  //     setIsChecked(false)
+  // }, [clearToggle])
+
+  // useEffect(() => {
+  //   console.log('Cell useEffect', sequence)
+  //   sequence.forEach((col, colIdSeq) => {
+  //     if (col[1][0]){
+  //       const note = col[1][0][1][0]
+  //       const rowIdSeq = (note * -1) + midiTranspose
+  //       if (colId === colIdSeq && rowId === rowIdSeq)
+  //         setIsChecked(true)
+  //     }
+  //   })
+  // }, [sequenceLoaded])
+
+  return <div onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? 'green' : 'red' }} ></div>
+}
+
+
+
+//<input type="radio" name={colId} onChange={() => generateSequenceData(rowId, colId, isChecked, setIsChecked)}/>

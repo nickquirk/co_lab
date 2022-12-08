@@ -8,7 +8,6 @@ import Row from 'react-bootstrap/Row'
 
 // Components 
 import MIDISounds from 'midi-sounds-react'
-import { createPath } from 'react-router-dom'
 
 
 const App = () => {
@@ -20,14 +19,16 @@ const App = () => {
   const [ currentInstrument, setCurrentInstrument ] = useState([1])
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
-  const [ blankSequence, setBlankSequence ] = useState([])
-  const [ selected, setSelected ] = useState('')
+  const [ selected, setSelected ] = useState(false)
+  const [ isPlaying, setIsPlaying ] = useState(false)
   
   // ! Execution
   useEffect(() => {
     setInstruments(getInstrumentNames())
     setGrid(createGrid(16, 7))
     midisounds.cacheInstrument(currentInstrument)
+    console.log(midisounds)
+    midisounds.targetOpenModal
   }, [])
 
   // Takes row and column amount and returns an array in format:
@@ -44,7 +45,6 @@ const App = () => {
       grid.push(currentCol)
     }
     setSequence(sequence)
-    setBlankSequence(sequence)
     return grid
   }
 
@@ -73,7 +73,10 @@ const App = () => {
     const state = e.target.checked
     const instrument = parseInt(currentInstrument)
     console.log('note = ', row + 54)
-    setSelected(true)
+    //setSelected(true)
+    this.setState({
+      selectedOption: e.target.value,
+    })
     if (state){
       sequence[col][1] = [[ instrument, [-row + 50], 2 / 16]]
     } else {
@@ -86,12 +89,14 @@ const App = () => {
     //midisounds.playChordNow(currentInstrument, [50], 0.2)
     // instruments, BPM, Time Signature
     midisounds.startPlayLoop(sequence, 120, 1 / 16)
+    console.log('loopStarted -> ', midisounds.loopStarted)
   }
 
   const stopLoop = (e) => {
     // const settings = new midisounds.showPropertiesDialog({})
     // settings.showPropertiesDialog
     midisounds.stopPlayLoop()
+    console.log('loopStarted -> ', midisounds.loopStarted)
   }
 
 
@@ -102,17 +107,16 @@ const App = () => {
     setCurrentInstrument(e.target.value)
     console.log(midisounds.player.loader.instrumentInfo(currentInstrument).title)
     midisounds.cacheInstrument(e.target.value)
-    
   }
 
   const clearSequence = (e) => {
     console.log('clear')
-    midisounds.stopPlayLoop()
+    //midisounds.stopPlayLoop()
     const seq = sequence.map(col => {
       return [[], []]
     })
     setSequence(seq)
-    setSelected('')
+    setSelected(false)
   }
 
 
@@ -144,7 +148,7 @@ const App = () => {
               {grid[rowId].map((col, colId) => {
                 return (
                   <div key={colId}>
-                    <input type="radio" name={rowId} id={colId} onChange={generateSequenceData} checked={selected}></input>
+                    <input type="radio" name={rowId} id={colId} onChange={generateSequenceData} checked={this.state.selectedOption === rowId}></input>
                   </div>
                 )
               })}

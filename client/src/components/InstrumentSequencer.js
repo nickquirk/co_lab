@@ -38,7 +38,7 @@ const InstrumentSequencer = () => {
       const currentCol = []
       makeSequence.push([[], []])
       for (let i = 0; i < rows; i++){
-        currentCol.push(false)
+        currentCol.push({ isChecked: false  })
       }
       makeGrid.push(currentCol)
     }
@@ -52,6 +52,7 @@ const InstrumentSequencer = () => {
     for (let i = 0; i < instKeysLen; i++) {
       instNames.push(midisounds.player.loader.instrumentInfo(i).title)
     }
+    console.log('instrument ->', midisounds.player.loader.instrumentInfo(100))
     return instNames
   }
   // Update current instrument across all steps 
@@ -65,18 +66,28 @@ const InstrumentSequencer = () => {
 
   // Generate new sequence data each time a cell is clicked
   const generateSequenceData = (rowId, colId, isChecked) => {
+    console.log('isChecked', isChecked)
+    isChecked = !isChecked
     const instrument = parseInt(currentInstrument)
     const note = -rowId + MIDI_TRANSPOSE
     const newSequence = [...sequence]
-    if (!isChecked){
+    if (isChecked){
       newSequence[colId][1] = [[ instrument, [note], 2 / 16]]
     } else {
       newSequence[colId] = [[], []]
     }
     setSequence(newSequence)
     const updatedGrid = [...grid]
-    updatedGrid[colId] = updatedGrid[colId].map((row, index) =>  index === rowId)
+    console.log('updated grid ', updatedGrid)
+    updatedGrid[colId] = updatedGrid[colId].map((row, index) => {
+      if (index === rowId) {
+        return { ...row, isChecked: isChecked }
+      } else {
+        return { ...row, isChecked: false }
+      }
+    })
     setGrid(updatedGrid)
+    console.log('updated grid ', updatedGrid)
     midisounds.playChordNow(currentInstrument, [note], 0.2)
     console.log('is Checked ', isChecked)
   }
@@ -165,14 +176,14 @@ const InstrumentSequencer = () => {
         {grid.map((col, colId) => {
           return (
             <div key={colId}>
-              {grid[colId].map((cellValue, rowId) => {
+              {grid[colId].map((cell, rowId) => {
                 return (
                   <div key={rowId}>
                     <Cell
                       rowId = {rowId}
                       colId = {colId}
                       generateSequenceData = {generateSequenceData}
-                      isChecked = {cellValue}
+                      isChecked = {cell.isChecked}
                     />
                   </div>
                 )

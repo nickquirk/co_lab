@@ -33,18 +33,25 @@ const DrumSequencer = () => {
   // grid = row(n)[cols(n)]
   const createGrid = (cols, rows) => {
     const makeGrid = []
-    const makeSequence = []
     for (let i = 0; i < rows; i++){
       const currentRow = []
-      makeSequence.push([[], []])
       for (let i = 0; i < cols; i++){
         currentRow.push(false)
       }
       makeGrid.push(currentRow)
     }
-    setSequence(makeSequence)
+    setSequence(makeSequence(cols))
     console.log(makeGrid)
     return makeGrid
+  }
+
+  // Creates a blank sequence with amount of steps  = columns in grid
+  const makeSequence = (cols) => {
+    const blankSequence = []
+    for (let i = 0; i < cols; i++){
+      blankSequence.push([[], []])
+    }
+    return blankSequence
   }
 
   const getDrumNames = () => {
@@ -66,20 +73,31 @@ const DrumSequencer = () => {
 
   // Generate new sequence data each time a cell is clicked
   const generateSequenceData = (rowId, colId, isChecked) => {
+    // console.log('row ->', rowId)
+    // console.log('col ->', colId)
+    // console.log('checked ->', isChecked)
     const drum = parseInt(currentDrum)
     const newSequence = [...sequence]
     if (!isChecked){
+      // this needs to push new drum data
       newSequence[colId][0] = [drum], []
     } else {
       newSequence[colId] = [[], []]
     }
     setSequence(newSequence)
-    const updatedGrid = [...grid]
-    updatedGrid[colId] = updatedGrid[colId].map((row, index) =>  index === rowId)
+    let updatedGrid = [...grid]
+    updatedGrid = updatedGrid.map((row, index) =>{
+      const updatedCell = [rowId, colId]
+      console.log('row[rowId], row[colId] -> ', [row[rowId], row[colId]]) 
+      console.log('updated Cell -> ', updatedCell) 
+      if (rowId === row[rowId] && colId === row[colId]){
+        console.log('cell changed', row, index)
+        return !row
+      }
+      return row 
+    })
     setGrid(updatedGrid)
     midisounds.playDrumsNow(currentDrum, [])
-    console.log('is Checked ', isChecked)
-    console.log('sequence ->', sequence)
   }
 
   // Play sequence 
@@ -153,6 +171,11 @@ const DrumSequencer = () => {
         {grid.map((row, rowId) => {
           return (
             <div key={rowId} className="drum-row-container">
+              <DrumSelect
+                rowId = {rowId}
+                drums = {drums}
+                changeDrum = {changeDrum}
+              />
               {grid[rowId].map((cellValue, colId) => {
                 return (
                   <div key={colId}>
@@ -165,11 +188,6 @@ const DrumSequencer = () => {
                   </div>
                 )
               })}
-              <DrumSelect
-                rowId = {rowId}
-                drums = {drums}
-                changeDrum = {changeDrum}
-              />
             </div>
           )
         })

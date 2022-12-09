@@ -152,13 +152,24 @@ const DrumSequencer = () => {
       <Container className='drum-grid-container'>
         {grid.map((row, rowId) => {
           return (
-            <div key={rowId}>
-              {grid[rowId].map((col, colId) => {
+            <div key={rowId} className="drum-row-container">
+              {grid[rowId].map((cellValue, colId) => {
                 return (
-                  <p key={colId}>{colId}</p>
+                  <div key={colId}>
+                    <Cell
+                      rowId={rowId}
+                      colId={colId}
+                      generateSequenceData={generateSequenceData}
+                      isChecked={cellValue}
+                    />
+                  </div>
                 )
               })}
-              <p key={rowId}>{rowId}</p>
+              <DrumSelect
+                rowId = {rowId}
+                drums = {drums}
+                changeDrum = {changeDrum}
+              />
             </div>
           )
         })
@@ -177,9 +188,9 @@ const Cell = ({ rowId, colId, generateSequenceData, isChecked  }) => {
 }
 
 // ? Drum Select component 
-const DrumSelect = ({ key, drums, changeDrum }) => {
+const DrumSelect = ({ rowId, drums, changeDrum }) => {
   return (
-    <div key={key}>
+    <div key={rowId}>
       <select
         onChange={changeDrum}
         name="drums"

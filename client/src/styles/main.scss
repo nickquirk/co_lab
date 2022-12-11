@@ -1,9 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400&display=swap');
 
-:root {
   $primary: rgb(125, 125, 125);
   $secondary: #ffd724;
-}
+
   
 
 * {
@@ -19,7 +18,7 @@
     cursor: pointer;
   }
 }
-
+// Sequencer Components 
 .instrument-grid-container{
   display: flex;
 }
@@ -33,3 +32,12 @@
   display: flex;
   flex-direction: row;
 }
+
+// Track Component
+.track-wrapper{
+  height: 50px;
+  background-color: $secondary;
+  margin: 5px;
+}
+
+

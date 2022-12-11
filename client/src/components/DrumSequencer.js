@@ -5,27 +5,32 @@ import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
-
 // Components 
 import MIDISounds from 'midi-sounds-react'
 
 const DrumSequencer = () => {
 
+  // Instead of passing values to the play functions, we 
+  //should create and then just change the state of the midi sounds object 
   const midisounds = new MIDISounds({})
+  
+  // ! Variables
+  const ROWS = 1
+  const COLS = 16
 
-  // ! Vars
-  const MIDI_TRANSPOSE = 54
-
+ 
   // ! State
   const [ drums, setDrums ] = useState([])
-  const [ currentDrum, setCurrentDrum ] = useState([1])
+  const [ currentDrum, setCurrentDrum ] = useState(1)
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
+
   
   // ! Execution
   useEffect(() => {
+    console.log('midisounds state ->', midisounds.state)
     setDrums(getDrumNames())
-    setGrid(createGrid(16, 4))
+    setGrid(createGrid(COLS, ROWS))
     midisounds.cacheDrum(currentDrum)
   }, [])
 
@@ -36,12 +41,11 @@ const DrumSequencer = () => {
     for (let i = 0; i < rows; i++){
       const currentRow = []
       for (let i = 0; i < cols; i++){
-        currentRow.push(false)
+        currentRow.push({ isChecked: false  })
       }
       makeGrid.push(currentRow)
     }
     setSequence(makeSequence(cols))
-    console.log(makeGrid)
     return makeGrid
   }
 
@@ -54,6 +58,7 @@ const DrumSequencer = () => {
     return blankSequence
   }
 
+  // Load drum names from 
   const getDrumNames = () => {
     const drumNames = []
     const drumKeysLen = midisounds.player.loader.drumKeys().length
@@ -62,42 +67,41 @@ const DrumSequencer = () => {
     }
     return drumNames
   }
-  // Update current drum across all steps 
+  // Update current drum across all steps in the sequence
+  // sequence[colId] = [[drum],[]]
   useEffect(() =>{
     sequence.forEach( col => {
-      if (col[1][0]) {
-        col[1][0][0] = currentDrum
+      if (col[0][0]) {
+        col[0][0] = currentDrum
       }
     })
   }, [currentDrum])
 
   // Generate new sequence data each time a cell is clicked
   const generateSequenceData = (rowId, colId, isChecked) => {
-    // console.log('row ->', rowId)
-    // console.log('col ->', colId)
-    // console.log('checked ->', isChecked)
-    const drum = parseInt(currentDrum)
+    isChecked = !isChecked
+    const drum = currentDrum
     const newSequence = [...sequence]
-    if (!isChecked){
+    if (isChecked){
       // this needs to push new drum data
       newSequence[colId][0] = [drum], []
     } else {
       newSequence[colId] = [[], []]
     }
     setSequence(newSequence)
-    let updatedGrid = [...grid]
-    updatedGrid = updatedGrid.map((row, index) =>{
-      const updatedCell = [rowId, colId]
-      console.log('row[rowId], row[colId] -> ', [row[rowId], row[colId]]) 
-      console.log('updated Cell -> ', updatedCell) 
-      if (rowId === row[rowId] && colId === row[colId]){
-        console.log('cell changed', row, index)
-        return !row
-      }
-      return row 
-    })
+    // create a shallow copy of grid 
+    const updatedGrid = [...grid]
+    // create variable for cell thats been clicked on
+    const selectedCell = updatedGrid[0][colId]
+    // update cell value in row, keeping all other values in row
+    selectedCell.isChecked = isChecked  
+    // play drum sound if cell is toggled on but not off
+    if (isChecked){
+      console.log('current drum ->', currentDrum)
+      midisounds.playDrumsNow([drum])
+    }
+    // Update the grid to be the new grid
     setGrid(updatedGrid)
-    midisounds.playDrumsNow(currentDrum, [])
   }
 
   // Play sequence 
@@ -117,9 +121,9 @@ const DrumSequencer = () => {
   const changeDrum = (e) => {
     // stop current loop
     midisounds.stopPlayLoop()
-    setCurrentDrum(e.target.value)
-    console.log(midisounds.player.loader.drumInfo(currentDrum).title)
+    setCurrentDrum(parseInt(e.target.value))
     midisounds.cacheDrum(e.target.value)
+    midisounds.state.drums = currentDrum
   }
 
   // Clear sequence 
@@ -130,7 +134,7 @@ const DrumSequencer = () => {
     let clearGrid = [...grid]
     clearGrid = clearGrid.map(col => {
       return col.map(row => {
-        return false
+        return { isChecked: false }
       })
     })
     setSequence(seq)
@@ -160,14 +164,13 @@ const DrumSequencer = () => {
 
   // ! JSX
   return (
-    <div className="page-wrapper">
-      <h2>Drum Sequencer</h2>
+    <Container className="component-wrapper">
       <button onClick={playLoop}>Play</button>
       <button onClick={stopLoop}>Stop</button>
       <button onClick={clearSequence}>Clear</button>
       <button onClick={saveSequence}>Save</button>
       <button onClick={loadSequence}>Load</button>
-      <Container className='drum-grid-container'>
+      <Container className='drum-grid-container  mt-3'>
         {grid.map((row, rowId) => {
           return (
             <div key={rowId} className="drum-row-container">
@@ -176,14 +179,14 @@ const DrumSequencer = () => {
                 drums = {drums}
                 changeDrum = {changeDrum}
               />
-              {grid[rowId].map((cellValue, colId) => {
+              {grid[rowId].map((cell, colId) => {
                 return (
                   <div key={colId}>
                     <Cell
                       rowId={rowId}
                       colId={colId}
                       generateSequenceData={generateSequenceData}
-                      isChecked={cellValue}
+                      isChecked={cell.isChecked}
                     />
                   </div>
                 )
@@ -193,19 +196,21 @@ const DrumSequencer = () => {
         })
         }
       </Container>
-    </div>
+    </Container>
   )
 }
 
 export default DrumSequencer
 
 // ? Cell component
-// Creates Cell component which is a clickable, state aware div forms the basis of the grid
+// Creates Cell component which is a clickable, state aware div. 
+//Forms the basis of the grid
 const Cell = ({ rowId, colId, generateSequenceData, isChecked  }) => {
   return <div onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#0722A1' : '#FFC300' }} ></div>
 }
 
-// ? Drum Select component 
+// ? Drum Select component
+// Dropdown menu with available drum sounds  
 const DrumSelect = ({ rowId, drums, changeDrum }) => {
   return (
     <div key={rowId}>

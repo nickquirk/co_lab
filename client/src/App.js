@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 // Bootstrap Components 
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
-// Components 
-import MIDISounds from 'midi-sounds-react'
+// React-Router Components 
+import { BrowserRouter, Routes, Route  } from 'react-router-dom'
 
-// Custom Components 
-import InstrumentSequencer from './components/InstrumentSequencer'
-import DrumSequencer from './components/DrumSequencer'
+
+
+// Pages
+import Landing from './components/pages/Landing'
+import Login from './components/pages/Login'
+import FragmentIndex from './components/pages/FragmentIndex'
+import Sequencer from './components/pages/Sequencer'
+import NavBar from './components/pages/common/NavBar'
+import UserProfile from './components/pages/UserProfile'
 
 
 const App = () => {
@@ -22,11 +27,20 @@ const App = () => {
 
   // ! JSX
   return (
-    <div className="page-wrapper">
-      <h1>co_lab Prototype</h1>
-      <InstrumentSequencer/>
-      <DrumSequencer/>
-    </div>
+    <Container className="page-wrapper">
+      <BrowserRouter>
+        {/* These components are displayed on all pages */}
+        <NavBar />
+        <Routes>
+          {/* Page routing goes below */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/fragments" element={<FragmentIndex />} />
+          <Route path="/sequencer" element={<Sequencer />} />
+          <Route path="/profile" element={<UserProfile />} />
+        </Routes>
+      </BrowserRouter>
+    </Container>
   )
 }
 

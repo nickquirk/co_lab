@@ -1,5 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400&display=swap');
+
+:root {
+  $primary: rgb(125, 125, 125);
+  $secondary: #ffd724;
+}
+  
+
 * {
   box-sizing: border-box;
+  font-family: 'Roboto Slab', serif;
+  color: black;
+}
+
+.navbar{
+  //background-color: rgb(85, 85, 85);
+
+  .nav-link{
+    cursor: pointer;
+  }
 }
 
 .instrument-grid-container{

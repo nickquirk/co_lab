@@ -38,7 +38,7 @@ class LogInView(APIView):
     except User.DoesNotExist as e:  
       raise PermissionDenied('Invalid Credentials')
     print(user_to_login)
-    # Build up a data thats 7 days in the future
+    # Build up a date thats 7 days in the future
     dt = datetime.now() + timedelta(days=7)
     dt_as_seconds = int(dt.strftime('%s'))
     print(dt.strftime('%s'))

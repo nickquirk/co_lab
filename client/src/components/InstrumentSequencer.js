@@ -11,10 +11,14 @@ import MIDISounds from 'midi-sounds-react'
 
 const InstrumentSequencer = () => {
 
+  // Instead of passing values to the play functions, we 
+  //should create and then just change the state of the midi sounds object 
   const midisounds = new MIDISounds({})
 
   // ! Vars
   const MIDI_TRANSPOSE = 54
+  const ROWS = 7
+  const COLS = 16
 
   // ! State
   const [ instruments, setInstruments ] = useState([])
@@ -25,7 +29,7 @@ const InstrumentSequencer = () => {
   // ! Execution
   useEffect(() => {
     setInstruments(getInstrumentNames())
-    setGrid(createGrid(16, 7))
+    setGrid(createGrid(COLS, ROWS))
     midisounds.cacheInstrument(currentInstrument)
   }, [])
 
@@ -52,7 +56,6 @@ const InstrumentSequencer = () => {
     for (let i = 0; i < instKeysLen; i++) {
       instNames.push(midisounds.player.loader.instrumentInfo(i).title)
     }
-    console.log('instrument ->', midisounds.player.loader.instrumentInfo(100))
     return instNames
   }
   // Update current instrument across all steps 
@@ -78,7 +81,6 @@ const InstrumentSequencer = () => {
     }
     setSequence(newSequence)
     const updatedGrid = [...grid]
-    console.log('updated grid ', updatedGrid)
     updatedGrid[colId] = updatedGrid[colId].map((row, index) => {
       if (index === rowId) {
         return { ...row, isChecked: isChecked }
@@ -86,10 +88,11 @@ const InstrumentSequencer = () => {
         return { ...row, isChecked: false }
       }
     })
+    // Play note when cell is clicked but not when toggled off
+    if (isChecked) {
+      midisounds.playChordNow(currentInstrument, [note], 0.2)
+    }
     setGrid(updatedGrid)
-    console.log('updated grid ', updatedGrid)
-    midisounds.playChordNow(currentInstrument, [note], 0.2)
-    console.log('is Checked ', isChecked)
   }
 
   // Play sequence 
@@ -122,7 +125,7 @@ const InstrumentSequencer = () => {
     let clearGrid = [...grid]
     clearGrid = clearGrid.map(col => {
       return col.map(row => {
-        return false
+        return { isChecked: false }
       })
     })
     setSequence(seq)
@@ -152,8 +155,7 @@ const InstrumentSequencer = () => {
 
   // ! JSX
   return (
-    <div className="page-wrapper">
-      <h2>Instrument Sequencer</h2>
+    <Container className="component-wrapper">
       <select
         onChange={changeInstrument}
         name="instruments"
@@ -175,7 +177,7 @@ const InstrumentSequencer = () => {
       <Container className='instrument-grid-container'>
         {grid.map((col, colId) => {
           return (
-            <div key={colId}>
+            <div key={colId} className='mt-3'>
               {grid[colId].map((cell, rowId) => {
                 return (
                   <div key={rowId}>
@@ -193,7 +195,7 @@ const InstrumentSequencer = () => {
         })
         }
       </Container>
-    </div>
+    </Container>
   )
 }
 
@@ -202,5 +204,5 @@ export default InstrumentSequencer
 // ? Cell component
 // Creates Cell component which is a clickable, state aware div forms the basis of the grid
 const Cell = ({ rowId, colId, generateSequenceData, isChecked  }) => {
-  return <div onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#0722A1' : '#FF5733' }} ></div>
+  return <div onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#0722A1' : '#FFC300' }} ></div>
 }

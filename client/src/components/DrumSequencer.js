@@ -10,9 +10,7 @@ import MIDISounds from 'midi-sounds-react'
 
 const DrumSequencer = () => {
 
-  // Instead of passing values to the play functions, we 
-  //should create and then just change the state of the midi sounds object 
-  const midisounds = new MIDISounds({})
+  
   
   // ! Variables
   const ROWS = 1
@@ -24,14 +22,28 @@ const DrumSequencer = () => {
   const [ currentDrum, setCurrentDrum ] = useState(1)
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
+  const [ trackState, setTrackState ] = useState({})
+
+  // Instead of passing values to the play functions, we 
+  //should create and then just change the state of the midi sounds object 
+  const midiSounds = new MIDISounds({})
 
   
   // ! Execution
+  // This use effect executes on page load:
+  // 1. Gets and sets all of the drum names and dynamically populates the dropdown 
+  // 2. Creates the sequencer grid
+  // 3. Creates a trackState object
+  // 4. Creates an empty sequence 
   useEffect(() => {
-    console.log('midisounds state ->', midisounds.state)
+    //console.log('midisounds state ->', midiSounds.state)
     setDrums(getDrumNames())
     setGrid(createGrid(COLS, ROWS))
-    midisounds.cacheDrum(currentDrum)
+    // set trackState to a new object with empty drum track data in
+    setTrackState({ ...makeTrackObject(ROWS) })
+    // Create empty sequence
+    setSequence(makeSequence(COLS))
+    midiSounds.cacheDrum(currentDrum)
   }, [])
 
   // Takes row and column amount and returns an array in format:
@@ -45,11 +57,13 @@ const DrumSequencer = () => {
       }
       makeGrid.push(currentRow)
     }
-    setSequence(makeSequence(cols))
+    midiSounds.state.drums  = 2
+    console.log(trackState)
+    //console.log('midisounds state after ->', midiSounds.state)
     return makeGrid
   }
 
-  // Creates a blank sequence with amount of steps  = columns in grid
+  // Dynamically creates a blank sequence with amount of steps  = columns in grid
   const makeSequence = (cols) => {
     const blankSequence = []
     for (let i = 0; i < cols; i++){
@@ -58,12 +72,22 @@ const DrumSequencer = () => {
     return blankSequence
   }
 
-  // Load drum names from 
+  const makeTrackObject = (rows) => {
+    // Dynamically creates a blank drum track object to store state of each drum track
+    let trackObject = {}
+    for (let i = 0; i < rows; i++){
+      trackObject = { ...trackObject }
+      trackObject[`drum${i}`] = { drum: currentDrum, grid: grid, sequence: sequence }
+    }
+    return trackObject
+  } 
+
+  // Load drum names from MIDISounds object
   const getDrumNames = () => {
     const drumNames = []
-    const drumKeysLen = midisounds.player.loader.drumKeys().length
+    const drumKeysLen = midiSounds.player.loader.drumKeys().length
     for (let i = 0; i < drumKeysLen; i++) {
-      drumNames.push(midisounds.player.loader.drumInfo(i).title)
+      drumNames.push(midiSounds.player.loader.drumInfo(i).title)
     }
     return drumNames
   }
@@ -98,7 +122,7 @@ const DrumSequencer = () => {
     // play drum sound if cell is toggled on but not off
     if (isChecked){
       console.log('current drum ->', currentDrum)
-      midisounds.playDrumsNow([drum])
+      midiSounds.playDrumsNow([drum])
     }
     // Update the grid to be the new grid
     setGrid(updatedGrid)
@@ -107,23 +131,23 @@ const DrumSequencer = () => {
   // Play sequence 
   const playLoop = (e) => {
     // drum, BPM, Time Signature
-    midisounds.startPlayLoop(sequence, 120, 1 / 16)
-    console.log('loopStarted -> ', midisounds.loopStarted)
+    midiSounds.startPlayLoop(sequence, 120, 1 / 16)
+    console.log('loopStarted -> ', midiSounds.loopStarted)
   }
 
   // Stop sequence
   const stopLoop = (e) => {
-    midisounds.stopPlayLoop()
-    console.log('loopStarted -> ', midisounds.loopStarted)
+    midiSounds.stopPlayLoop()
+    console.log('loopStarted -> ', midiSounds.loopStarted)
   }
 
   // Change Drum
   const changeDrum = (e) => {
     // stop current loop
-    midisounds.stopPlayLoop()
+    midiSounds.stopPlayLoop()
     setCurrentDrum(parseInt(e.target.value))
-    midisounds.cacheDrum(e.target.value)
-    midisounds.state.drums = currentDrum
+    midiSounds.cacheDrum(e.target.value)
+    midiSounds.state.drums = currentDrum
   }
 
   // Clear sequence 

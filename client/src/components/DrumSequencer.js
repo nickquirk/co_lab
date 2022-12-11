@@ -8,12 +8,12 @@ import Row from 'react-bootstrap/Row'
 // Components 
 import MIDISounds from 'midi-sounds-react'
 
+// This component builds up the beat data array from user input
+// The beat data array is then saved to the database 
 const DrumSequencer = () => {
 
-  
-  
   // ! Variables
-  const ROWS = 1
+  const ROWS = 2
   const COLS = 16
 
  
@@ -39,10 +39,10 @@ const DrumSequencer = () => {
     //console.log('midisounds state ->', midiSounds.state)
     setDrums(getDrumNames())
     setGrid(createGrid(COLS, ROWS))
-    // set trackState to a new object with empty drum track data in
-    setTrackState({ ...makeTrackObject(ROWS) })
     // Create empty sequence
     setSequence(makeSequence(COLS))
+    // set trackState to a new object with empty drum track data in
+    setTrackState({ ...makeTrackObject(COLS, ROWS) })
     midiSounds.cacheDrum(currentDrum)
   }, [])
 
@@ -72,12 +72,15 @@ const DrumSequencer = () => {
     return blankSequence
   }
 
-  const makeTrackObject = (rows) => {
-    // Dynamically creates a blank drum track object to store state of each drum track
-    let trackObject = {}
+  // Based on rows and cols dynamically creates a blank drum track object to store state of each drum beat
+  const makeTrackObject = (cols, rows) => {
+    const trackObject = []
+    const tempObject = {}
     for (let i = 0; i < rows; i++){
-      trackObject = { ...trackObject }
-      trackObject[`drum${i}`] = { drum: currentDrum, grid: grid, sequence: sequence }
+      tempObject[`drum${i}`] = [currentDrum, false]
+    }
+    for (let i = 0; i < cols; i++){
+      trackObject.push(tempObject) 
     }
     return trackObject
   } 

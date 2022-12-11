@@ -19,6 +19,7 @@ const InstrumentSequencer = () => {
   const MIDI_TRANSPOSE = 54
   const ROWS = 7
   const COLS = 16
+  const NOTE_LENGTH = 2 / 16
 
   // ! State
   const [ instruments, setInstruments ] = useState([])
@@ -75,7 +76,7 @@ const InstrumentSequencer = () => {
     const note = -rowId + MIDI_TRANSPOSE
     const newSequence = [...sequence]
     if (isChecked){
-      newSequence[colId][1] = [[ instrument, [note], 2 / 16]]
+      newSequence[colId][1] = [[ instrument, [note], NOTE_LENGTH]]
     } else {
       newSequence[colId] = [[], []]
     }
@@ -90,7 +91,7 @@ const InstrumentSequencer = () => {
     })
     // Play note when cell is clicked but not when toggled off
     if (isChecked) {
-      midisounds.playChordNow(currentInstrument, [note], 0.2)
+      midisounds.playChordNow(currentInstrument, [note], NOTE_LENGTH)
     }
     setGrid(updatedGrid)
   }

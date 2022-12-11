@@ -1,4 +1,5 @@
 import axios from 'axios'
+import MIDISounds from 'midi-sounds-react'
 
 // Bootstrap Imports
 import Card from 'react-bootstrap/Card'
@@ -50,7 +51,7 @@ const Fragment = () => {
     const trackToLoad = JSON.parse(localStorage.getItem('trackData'))
     const gridToLoad = trackToLoad.gridData
     const sequenceToLoad = trackToLoad.sequenceData
-    // setGrid(gridToLoad)
+    MIDISounds.playButton
     // setSequence(sequenceToLoad)
   }
 
@@ -73,6 +74,12 @@ const Fragment = () => {
         <Col>
         </Col>
       </Row>
+      <MIDISounds 
+        //ref={(ref) => (this.midiSounds = ref)} 
+        appElementName="root" 
+        drums={[1,2,3,4]}
+        instruments={[1,3,3,4]}
+      />
     </Container>
   )
 }

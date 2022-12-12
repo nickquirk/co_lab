@@ -58,7 +58,6 @@ const DrumSequencer = () => {
       makeGrid.push(currentRow)
     }
     midiSounds.state.drums  = 2
-    console.log(trackState)
     //console.log('midisounds state after ->', midiSounds.state)
     return makeGrid
   }
@@ -105,13 +104,13 @@ const DrumSequencer = () => {
   }, [currentDrum])
 
   // Generate new sequence data each time a cell is clicked
-  const generateSequenceData = (rowId, colId, isChecked) => {
+  const updateSequenceData = (rowId, colId, isChecked) => {
     isChecked = !isChecked
     const drum = currentDrum
     const newSequence = [...sequence]
     if (isChecked){
       // this needs to push new drum data
-      newSequence[colId][0] = [drum], []
+      newSequence[colId][rowId] = [drum], []
     } else {
       newSequence[colId] = [[], []]
     }
@@ -119,7 +118,7 @@ const DrumSequencer = () => {
     // create a shallow copy of grid 
     const updatedGrid = [...grid]
     // create variable for cell thats been clicked on
-    const selectedCell = updatedGrid[0][colId]
+    const selectedCell = updatedGrid[rowId][colId]
     // update cell value in row, keeping all other values in row
     selectedCell.isChecked = isChecked  
     // play drum sound if cell is toggled on but not off
@@ -212,7 +211,7 @@ const DrumSequencer = () => {
                     <Cell
                       rowId={rowId}
                       colId={colId}
-                      generateSequenceData={generateSequenceData}
+                      updateSequenceData={updateSequenceData}
                       isChecked={cell.isChecked}
                     />
                   </div>
@@ -232,8 +231,8 @@ export default DrumSequencer
 // ? Cell component
 // Creates Cell component which is a clickable, state aware div. 
 //Forms the basis of the grid
-const Cell = ({ rowId, colId, generateSequenceData, isChecked  }) => {
-  return <div onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#0722A1' : '#FFC300' }} ></div>
+const Cell = ({ rowId, colId, updateSequenceData, isChecked  }) => {
+  return <div onClick={() => updateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#0722A1' : '#FFC300' }} ></div>
 }
 
 // ? Drum Select component

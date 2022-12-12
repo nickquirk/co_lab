@@ -11,7 +11,7 @@ import { BrowserRouter, Routes, Route  } from 'react-router-dom'
 
 // Pages
 import Landing from './components/pages/Landing'
-import Login from './components/pages/Login'
+import LoginPage from './components/pages/LoginPage'
 import FragmentIndex from './components/pages/FragmentIndex'
 import Sequencer from './components/pages/Sequencer'
 import NavBar from './components/pages/common/NavBar'
@@ -34,7 +34,7 @@ const App = () => {
         <Routes>
           {/* Page routing goes below */}
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/fragments" element={<FragmentIndex />} />
           <Route path="/sequencer" element={<Sequencer />} />
           <Route path="/profile" element={<UserProfile />} />

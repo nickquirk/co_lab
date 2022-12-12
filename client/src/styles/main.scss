@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400&display=swap');
 
-  $primary: rgb(125, 125, 125);
+  $primary: rgb(249, 249, 249);
   $secondary: #ffd724;
 
   
@@ -18,7 +18,7 @@
     cursor: pointer;
   }
 }
-// Sequencer Components 
+// ? Sequencer Components 
 .instrument-grid-container{
   display: flex;
 }
@@ -33,11 +33,32 @@
   flex-direction: row;
 }
 
-// Track Component
+// ? Track Component
 .track-wrapper{
   height: 50px;
   background-color: $secondary;
   margin: 5px;
 }
 
+// ? Login Page
+// Research border color + position
+.login-component-wrapper{
+  padding-top: 10px;
+  background-color: $primary;
+  border-left: 1px;
+  border-color: $secondary;
+
+  .btn{
+    background-color: $secondary;
+    border-radius: 0;
+  }
+
+  input{
+    border-style: none;
+    border-radius: 0;
+    color: $primary;
+    border-left: 2px;
+    
+  }
+}
 

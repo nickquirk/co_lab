@@ -4,7 +4,10 @@ import { Container } from 'react-bootstrap'
 
 import Fragment from '../Fragment'
 
+
 const FragmentIndex = () => {
+
+
 
   return (
     <Container className="page-wrapper">

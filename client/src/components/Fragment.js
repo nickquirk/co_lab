@@ -17,7 +17,7 @@ import { useEffect, useState } from 'react'
 // Up to four tracks
 // Play/Stop toggle button
 // It will have to be functional on a carousel component and standalone 
-const Fragment = () => {
+const Fragment = ({ playLoop }) => {
 
   // ! State
   const [trackData, setTrackData] = useState('')
@@ -40,9 +40,8 @@ const Fragment = () => {
   }, [])
 
 
-  const handleClick = (e) => {
-    console.log('Play')
-
+  const handleClick = () => {
+    playLoop()
   }
 
   // Load sequence from memory

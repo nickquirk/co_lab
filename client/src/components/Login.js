@@ -2,6 +2,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { setToken } from './helpers/Auth'
+
 // imports
 import axios from 'axios'
 
@@ -18,6 +20,7 @@ const Login = () => {
     email: '',
     password: '',
   })
+
   const [error, setError] = useState('')
 
   const handleChange = (e) => {
@@ -28,9 +31,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const { data } = await axios.post('/api/login', formFields)
+      const { data } = await axios.post('/api/auth/login/', formFields)
       console.log('token->', data)
-      //setToken(data.token)
+      setToken(data.token)
       // navigate to fragment index after successful login
       navigate('/fragments')
     } catch (err) {

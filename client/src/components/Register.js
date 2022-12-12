@@ -28,7 +28,7 @@ const Register = () => {
     e.preventDefault()
     try {
       // send off form data to our API
-      await axios.post('/api/register/', formFields)
+      await axios.post('/api/auth/register/', formFields)
       // navigate to login page after request has completed
       navigate('/login')
     } catch (err) {

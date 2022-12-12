@@ -9,8 +9,7 @@ import Row from 'react-bootstrap/Row'
 // Custom Imports
 import Track from './Track'
 import { playButton } from './helpers/PageComponents'
-import { Component, useEffect, useState } from 'react'
-import MidiSounds from '../components/MidiSounds'
+import { useEffect, useState } from 'react'
 
 // This will be the main component in the app. It will be a midisounds object that can play up to four tracks. It will display:
 // Trackname
@@ -19,30 +18,31 @@ import MidiSounds from '../components/MidiSounds'
 // Play/Stop toggle button
 // It will have to be functional on a carousel component and standalone 
 const Fragment = () => {
-  
-  //const midiSounds = document.createElement('MIDISounds')
 
   // ! State
   const [trackData, setTrackData] = useState('')
+
+
   // ! Executions
   // GET all track data assocated with Fragment 
   useEffect(() => {
     const getData = async () => {
       try {
-        const { data } = await axios.get('/api/fragments/')
+        const { data } = await axios.get('api/fragments/')
         setTrackData(data)
         console.log(data)
       } catch (err) {
         console.log(err.message)
       }
     }
-    //getData()
+    getData()
     loadSequence()
   }, [])
 
 
   const handleClick = (e) => {
     console.log('Play')
+
   }
 
   // Load sequence from memory
@@ -71,19 +71,12 @@ const Fragment = () => {
               <Card.Text>Tempo: 120 BPM</Card.Text>
               <Track />
               <button onClick={handleClick}>Play</button>
-              <MidiSounds />
             </Card.Body>
           </Card>
         </Col>
         <Col>
         </Col>
       </Row>
-      {/* <MIDISounds 
-        ref={(ref) => (this.midiSounds = ref)} 
-        appElementName="root" 
-        drums={[1,2,3,4]}
-        instruments={[1,3,3,4]}
-      /> */}
     </Container>
   )
 }

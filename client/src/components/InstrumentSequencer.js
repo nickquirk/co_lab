@@ -9,7 +9,7 @@ import Row from 'react-bootstrap/Row'
 // Components 
 import MIDISounds from 'midi-sounds-react'
 
-const InstrumentSequencer = () => {
+const InstrumentSequencer = ({ startLoop }) => {
 
   // Instead of passing values to the play functions, we 
   //should create and then just change the state of the midi sounds object 
@@ -26,6 +26,7 @@ const InstrumentSequencer = () => {
   const [ currentInstrument, setCurrentInstrument ] = useState([1])
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
+  const [ trackState, setTrackState ] = useState([]) 
   
   // ! Execution
   useEffect(() => {
@@ -61,11 +62,11 @@ const InstrumentSequencer = () => {
   }
   // Update current instrument across all steps 
   useEffect(() =>{
-    sequence.forEach( col => {
-      if (col[1][0]) {
-        col[1][0][0] = currentInstrument
-      }
-    })
+    // sequence.forEach( col => {
+    //   if (col[1][0]) {
+    //     col[1][0][0] = currentInstrument
+    //   }
+    // })
   }, [currentInstrument])
 
   // Generate new sequence data each time a cell is clicked
@@ -74,21 +75,37 @@ const InstrumentSequencer = () => {
     isChecked = !isChecked
     const instrument = parseInt(currentInstrument)
     const note = -rowId + MIDI_TRANSPOSE
-    const newSequence = [...sequence]
-    if (isChecked){
-      newSequence[colId][1] = [[ instrument, [note], NOTE_LENGTH]]
-    } else {
-      newSequence[colId] = [[], []]
-    }
+    let newSequence = [...trackState]
+    // Build sequence from trackState object
+    newSequence = newSequence.map(cell => {
+      if (cell[0]) {
+        return [[],[cell[0].instrument, cell[0].note, cell[0].duration]] 
+      } else {
+        return [[], []]
+      }
+    })
+    console.log('newSequence ->', newSequence)
     setSequence(newSequence)
     const updatedGrid = [...grid]
     updatedGrid[colId] = updatedGrid[colId].map((row, index) => {
       if (index === rowId) {
-        return { ...row, isChecked: isChecked }
+        return { ...row, isChecked: isChecked, instrument: currentInstrument, note: note, duration: NOTE_LENGTH }
       } else {
-        return { ...row, isChecked: false }
+        return { ...row, isChecked: false, instrument: '', note: 0, duration: '' }
       }
     })
+    // create a new variable and set it equal to updated grid
+    let tempTrackState = [...updatedGrid]
+    // return array of just the selected cells
+    tempTrackState = tempTrackState.map(col => {
+      return col.filter(cell => cell.isChecked === true)
+    })
+    // set track state equal to array of selected cells in structure:
+    // isChecked: true
+    // instrument: [currentInstrument]
+    // note: -row + MIDI_TRANSPOSE
+    // duration: 1 / 16
+    setTrackState(tempTrackState)
     // Play note when cell is clicked but not when toggled off
     if (isChecked) {
       midisounds.playChordNow(currentInstrument, [note], NOTE_LENGTH)
@@ -101,6 +118,7 @@ const InstrumentSequencer = () => {
     // instruments, BPM, Time Signature
     midisounds.startPlayLoop(sequence, 120, 1 / 16)
     console.log('loopStarted -> ', midisounds.loopStarted)
+    startLoop(sequence)
   }
 
   // Stop sequence

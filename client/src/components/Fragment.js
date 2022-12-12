@@ -35,13 +35,13 @@ const Fragment = ({ playLoop }) => {
         console.log(err.message)
       }
     }
-    getData()
+    //getData()
     loadSequence()
   }, [])
 
 
   const handleClick = () => {
-    playLoop()
+    playLoop(trackData)
   }
 
   // Load sequence from memory
@@ -54,7 +54,7 @@ const Fragment = ({ playLoop }) => {
     const gridToLoad = trackToLoad.gridData
     const sequenceToLoad = trackToLoad.sequenceData
     console.log()
-    // setSequence(sequenceToLoad)
+    setTrackData(sequenceToLoad)
   }
 
   // ! JSX

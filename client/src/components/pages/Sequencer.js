@@ -5,10 +5,11 @@ import Container from 'react-bootstrap/Container'
 // Custom Components 
 import InstrumentSequencer from '../InstrumentSequencer'
 import DrumSequencer from '../DrumSequencer'
+import MidiSoundsSequencer from '../MidiSoundsSequencer'
 
 const Sequencer = () => {
   // ! States
-  const [ sequencer, setSequencer ]   = useState('drum')
+  const [ sequencer, setSequencer ]   = useState('instrument')
   
   const handleChange = (e) => {
     setSequencer(e.target.value)
@@ -19,10 +20,13 @@ const Sequencer = () => {
       <div>
         <h1>Sequencer</h1>
       </div>
+      <MidiSoundsSequencer 
+        sequencer={sequencer}
+      />
       <select
         name="changeSequencer"
         id="sequencer-select"
-        className="dropdown"
+        className="dropdown mt-3"
         onChange={handleChange}
       >
         <option value="instrument">Instrument Sequencer</option>
@@ -30,7 +34,8 @@ const Sequencer = () => {
       </select>
       <div className='mt-5'>
         {sequencer === 'instrument' ? 
-          <InstrumentSequencer/>
+          <InstrumentSequencer
+          />
           :
           <DrumSequencer/>
         }

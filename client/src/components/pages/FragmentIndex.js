@@ -14,7 +14,6 @@ const FragmentIndex = () => {
   const [ clicked, setClicked ] = useState()
 
   const onClick = (e) => {
-    console.log('component ->', e.target)
   }
 
   return (

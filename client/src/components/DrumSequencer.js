@@ -13,13 +13,16 @@ import MIDISounds from 'midi-sounds-react'
 const DrumSequencer = () => {
 
   // ! Variables
-  const ROWS = 2
+  const ROWS = 4
   const COLS = 16
 
  
   // ! State
   const [ drums, setDrums ] = useState([])
-  const [ currentDrum, setCurrentDrum ] = useState(1)
+  const [ currentDrum0, setCurrentDrum0 ] = useState(1)
+  const [ currentDrum1, setCurrentDrum1 ] = useState(1)
+  const [ currentDrum2, setCurrentDrum2 ] = useState(1)
+  const [ currentDrum3, setCurrentDrum3 ] = useState(1)
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
   const [ trackState, setTrackState ] = useState({})
@@ -43,7 +46,7 @@ const DrumSequencer = () => {
     setSequence(makeSequence(COLS))
     // set trackState to a new object with empty drum track data in
     setTrackState({ ...makeTrackObject(COLS, ROWS) })
-    midiSounds.cacheDrum(currentDrum)
+    midiSounds.cacheDrum(currentDrum0)
   }, [])
 
   // Takes row and column amount and returns an array in format:
@@ -76,7 +79,7 @@ const DrumSequencer = () => {
     const trackObject = []
     const tempObject = {}
     for (let i = 0; i < rows; i++){
-      tempObject[`drum${i}`] = [currentDrum, false]
+      tempObject[`drum${i}`] = [currentDrum0, false]
     }
     for (let i = 0; i < cols; i++){
       trackObject.push(tempObject) 
@@ -98,22 +101,44 @@ const DrumSequencer = () => {
   useEffect(() =>{
     sequence.forEach( col => {
       if (col[0][0]) {
-        col[0][0] = currentDrum
+        col[0][0] = currentDrum0
       }
     })
-  }, [currentDrum])
+  }, [currentDrum0])
 
   // Generate new sequence data each time a cell is clicked
   const updateSequenceData = (rowId, colId, isChecked) => {
     isChecked = !isChecked
-    const drum = currentDrum
+    const sequenceObject = trackState
+    const drum = currentDrum0
     const newSequence = [...sequence]
+    console.log(sequenceObject[colId][`drum${rowId}`])
     if (isChecked){
-      // this needs to push new drum data
-      newSequence[colId][rowId] = [drum], []
+      // Update sequenceObject to reflect cell thats been selected
+      sequenceObject[colId][`drum${rowId}`] = [drum, isChecked]
+      //newSequence[colId][rowId] = [drum], []
     } else {
-      newSequence[colId] = [[], []]
+      //newSequence[colId] = [[], []]
+      sequenceObject[colId][`drum${rowId}`] = [drum, false]
     }
+    setTrackState(sequenceObject)
+    console.log(sequenceObject[0])
+    for (let i = 0; i < COLS; i++) {
+      console.log('sequenceObjtect -> ',sequenceObject[colId][`drum${rowId}`][1])
+      if (sequenceObject[colId][`drum${rowId}`][1]){
+        newSequence[colId][0][rowId] = drum
+      } else {
+        if (newSequence[colId][0][rowId]) {
+          newSequence[colId][0].splice(rowId, rowId + 1)
+        }
+        
+      }
+    }
+
+    // for (const [key, value] of Object.entries(sequenceObject)) {
+
+    //   console.log(`${key}: ${value.drum1[1]}`)
+    // }
     setSequence(newSequence)
     // create a shallow copy of grid 
     const updatedGrid = [...grid]
@@ -123,7 +148,7 @@ const DrumSequencer = () => {
     selectedCell.isChecked = isChecked  
     // play drum sound if cell is toggled on but not off
     if (isChecked){
-      console.log('current drum ->', currentDrum)
+      console.log('current drum ->', currentDrum0)
       midiSounds.playDrumsNow([drum])
     }
     // Update the grid to be the new grid
@@ -147,9 +172,9 @@ const DrumSequencer = () => {
   const changeDrum = (e) => {
     // stop current loop
     midiSounds.stopPlayLoop()
-    setCurrentDrum(parseInt(e.target.value))
+    setCurrentDrum0(parseInt(e.target.value))
     midiSounds.cacheDrum(e.target.value)
-    midiSounds.state.drums = currentDrum
+    midiSounds.state.drums = currentDrum0
   }
 
   // Clear sequence 

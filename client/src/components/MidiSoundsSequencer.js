@@ -39,6 +39,8 @@ class MidiSoundsSequencer extends Component {
         <div className='mt-5'>
           <InstrumentSequencer
             startLoop={this.startLoop.bind(this)}
+            setTrackData={this.props.setTrackData}
+            trackData={this.props.trackData}
           />
           {/* <DrumSequencer/> */}
         </div>

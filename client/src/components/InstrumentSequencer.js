@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 
 // Bootstrap Components 
 import Container from 'react-bootstrap/Container'
@@ -11,9 +12,12 @@ import MIDISounds from 'midi-sounds-react'
 
 // Custom Imports 
 import { packTrackObject, unpackTrackObject, createSequencerGrid, createEmptySequence } from './helpers/Data'
+import axios from 'axios'
+import { getToken } from './helpers/Auth'
 
-const InstrumentSequencer = ({ startLoop }) => {
+const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
 
+  const { fragmentId } = useParams()
   // ! Instead of passing values to the play functions, we 
   // ! should create and then just change the state of the midi sounds object 
   const midisounds = new MIDISounds({})
@@ -127,7 +131,7 @@ const InstrumentSequencer = ({ startLoop }) => {
   }
 
   // Save sequence to memory as an object
-  const saveSequence = (e) => {
+  const saveSequence = async (e) => {
     console.log('sequenced saved')
     const sequenceData = {
       instrumentGridSize: { rows: ROWS, cols: COLS },
@@ -136,7 +140,19 @@ const InstrumentSequencer = ({ startLoop }) => {
       midiTranspose: MIDI_TRANSPOSE,
       tempo: TEMPO,
     }
-    localStorage.setItem('trackData', JSON.stringify(packTrackObject(sequenceData)))
+    const packedObject =  JSON.stringify(packTrackObject(sequenceData))
+    localStorage.setItem('trackData', packedObject)
+    try {
+      const { data } = await axios.post('/api/fragments/', { data: packedObject, fragment: parseInt(fragmentId), instrument: currentInstrument[0] }, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+      //navigate('/fragments')
+      console.log(data)
+    } catch (err) {
+      console.log(err.message)
+    }
   }
 
   // Load sequence from memory

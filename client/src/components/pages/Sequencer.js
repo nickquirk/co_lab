@@ -25,12 +25,7 @@ const Sequencer = () => {
   // ! States
   const [ sequencer, setSequencer ]   = useState('instrument')
   const [ trackData, setTrackData ] = useState({})
-  const [ currentInstrument, setCurrentInstrument ] = useState([1])
-  const [ grid, setGrid ] = useState([])
-  const [ sequence, setSequence ] = useState([])
-  const [ tempo, setTempo ] = useState()
   
-
   // axios POST request
   // Endpoint: /api/fragments
   // Description: POST new fragment data to database
@@ -54,6 +49,7 @@ const Sequencer = () => {
   const loadSequence = (e) => {
     console.log('load')
     setTrackData(JSON.parse(localStorage.getItem('trackData')))
+    console.log(trackData)
   }
 
   return (
@@ -65,6 +61,8 @@ const Sequencer = () => {
       </div>
       <MidiSoundsSequencer 
         sequencer={sequencer}
+        trackData={trackData}
+        setTrackData={setTrackData}
       />
     </Container>
   )

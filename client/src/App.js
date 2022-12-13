@@ -36,7 +36,7 @@ const App = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/fragments" element={<FragmentIndex />} />
-          <Route path="/sequencer" element={<Sequencer />} />
+          <Route path="/sequencer/:fragmentId" element={<Sequencer />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </BrowserRouter>

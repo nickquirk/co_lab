@@ -24,6 +24,8 @@ class MidiSoundsSequencer extends Component {
       console.log('playing')
     }
   }
+
+
   
   render() {
     return (
@@ -35,13 +37,10 @@ class MidiSoundsSequencer extends Component {
           instruments={[]}
         />
         <div className='mt-5'>
-          {this.state.sequencer === 'instrument' ? 
-            <InstrumentSequencer
-              startLoop={this.startLoop.bind(this)}
-            />
-            :
-            <DrumSequencer/>
-          }
+          <InstrumentSequencer
+            startLoop={this.startLoop.bind(this)}
+          />
+          {/* <DrumSequencer/> */}
         </div>
       </div>
     )

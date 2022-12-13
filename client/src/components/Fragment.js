@@ -8,7 +8,6 @@ import Row from 'react-bootstrap/Row'
 
 // Custom Imports
 import Track from './Track'
-import { playButton } from './helpers/PageComponents'
 import { useEffect, useState } from 'react'
 
 // This will be the main component in the app. It will be a midisounds object that can play up to four tracks. It will display:

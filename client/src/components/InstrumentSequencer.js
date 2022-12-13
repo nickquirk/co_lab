@@ -14,8 +14,8 @@ import { packTrackObject, unpackTrackObject, createSequencerGrid, createEmptySeq
 
 const InstrumentSequencer = ({ startLoop }) => {
 
-  // Instead of passing values to the play functions, we 
-  //should create and then just change the state of the midi sounds object 
+  // ! Instead of passing values to the play functions, we 
+  // ! should create and then just change the state of the midi sounds object 
   const midisounds = new MIDISounds({})
 
   // ! Vars
@@ -30,7 +30,7 @@ const InstrumentSequencer = ({ startLoop }) => {
   const [ currentInstrument, setCurrentInstrument ] = useState([1])
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
-  const [ trackState, setTrackState ] = useState([]) 
+  const [ tempo, setTempo ] = useState()
   
   // ! Execution
   useEffect(() => {
@@ -52,7 +52,7 @@ const InstrumentSequencer = ({ startLoop }) => {
   useEffect(() =>{
     sequence.forEach( col => {
       if (col[1][0]) {
-        col[1][0][0] = currentInstrument
+        col[1][0][0] = parseInt(currentInstrument)
       }
     })
   }, [currentInstrument])
@@ -91,7 +91,7 @@ const InstrumentSequencer = ({ startLoop }) => {
   // Play sequence 
   const playLoop = (e) => {
     // instruments, BPM, Time Signature
-    midisounds.startPlayLoop(sequence, TEMPO, 1 / 16)
+    midisounds.startPlayLoop(sequence, TEMPO, NOTE_LENGTH)
     console.log('loopStarted -> ', midisounds.loopStarted)
     startLoop(sequence)
   }
@@ -144,11 +144,11 @@ const InstrumentSequencer = ({ startLoop }) => {
     console.log('load')
     let sequenceObject = JSON.parse(localStorage.getItem('trackData'))
     sequenceObject = unpackTrackObject(sequenceObject)
-    const gridToLoad = sequenceObject.grid
-    const sequenceToLoad = sequenceObject.sequence
-    console.log('track to load GRID ->', sequenceObject.grid)
-    setGrid(gridToLoad)
-    setSequence(sequenceToLoad)
+    const { grid, sequence, instrument, tempo } = sequenceObject
+    setGrid(grid)
+    setSequence(sequence)
+    setCurrentInstrument(instrument)
+    setTempo(tempo)
   }
 
 

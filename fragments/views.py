@@ -17,3 +17,8 @@ class FragmentListView(APIView):
     return Response("HIT FRAGMENT GET ENDPOINT")
 
 
+  def post(self, request):
+    print(request.data)
+    return Response('')
+
+

@@ -10,10 +10,9 @@ import { BrowserRouter, Routes, Route  } from 'react-router-dom'
 
 
 // Pages
-import Landing from './components/pages/Landing'
 import LoginPage from './components/pages/LoginPage'
 import FragmentIndex from './components/pages/FragmentIndex'
-import Sequencer from './components/pages/Sequencer'
+import EditFragment from './components/pages/EditFragment'
 import NavBar from './components/pages/common/NavBar'
 import UserProfile from './components/pages/UserProfile'
 
@@ -33,10 +32,9 @@ const App = () => {
         <NavBar />
         <Routes>
           {/* Page routing goes below */}
-          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/fragments" element={<FragmentIndex />} />
-          <Route path="/sequencer/:fragmentId" element={<Sequencer />} />
+          <Route path="/" element={<FragmentIndex />} />
+          <Route path="/fragments/:fragmentId" element={<EditFragment />} />
           <Route path="/profile" element={<UserProfile />} />
         </Routes>
       </BrowserRouter>

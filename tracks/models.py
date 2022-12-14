@@ -13,4 +13,3 @@ class Track(models.Model):
       related_name='tracks',
       on_delete=models.CASCADE
     )
-    instrument = models.TextField()

@@ -18,7 +18,8 @@ const LoginPage = () => {
 
   // ! State 
   // Create states for following variables 
-
+  
+  // ! JSX
   return (
     <Container className="page-wrapper">
       <Row className='mt-5'>

@@ -32,9 +32,7 @@ export const createEmptySequence = (cols) => {
 // Function that takes a trackObject and returns a sequenceData object in the form:
 // { grid: [{}], sequence: [[][instrument, [note], duration]] }
 export const unpackTrackObject = (trackObject) => {
-  console.log('track object to pack ->', trackObject)
-  const { instrumentGridSize, midiTranspose, tempo, instrument } = trackObject[0]
-  console.log('instrument ->', instrument)
+  const { instrumentGridSize, midiTranspose, tempo, instrument, trackType } = trackObject[0]
   const notes = trackObject.map(cell => {
     if (cell.note){
       return [cell.note[0], cell.note[1], cell.note[2]]
@@ -75,6 +73,7 @@ export const unpackTrackObject = (trackObject) => {
     sequence: newSequence,
     tempo: tempo,
     instrument: instrument,
+    trackType: trackType,
   }
   return sequenceObject
 }
@@ -82,8 +81,8 @@ export const unpackTrackObject = (trackObject) => {
 // Function that takes sequence and grid data and returns a track object in the form:
 // { isChecked: bool, drums: [int], note: [intrument, [note], duration],  }..... * length of grid
 export const packTrackObject = (sequenceData) => {
-  const { grid, sequence, midiTranspose, instrumentGridSize, tempo } = sequenceData
-  let instrument
+  const { grid, sequence, midiTranspose, instrumentGridSize, tempo, instrument, trackType } = sequenceData
+  //let instrument
   // return array of just the selected cells
   let trackObject  = grid.map(col => {
     return col.filter(cell => cell.isChecked === true)
@@ -93,7 +92,7 @@ export const packTrackObject = (sequenceData) => {
     let note
     let duration
     if (sequence[index][1][0] ) {
-      instrument = sequence[index][1][0][0]
+      //instrument = sequence[index][1][0][0]
       note = sequence[index][1][0][1]
       duration = sequence[index][1][0][2]
     }
@@ -107,6 +106,7 @@ export const packTrackObject = (sequenceData) => {
         instrumentGridSize: instrumentGridSize,
         tempo: tempo,
         instrument: instrument,
+        trackType: trackType,
       }
     } else {
       return { 
@@ -115,8 +115,25 @@ export const packTrackObject = (sequenceData) => {
         tempo: tempo,
         midiTranspose: midiTranspose,
         instrument: instrument,
+        trackType: trackType,
       }
     }
   })
   return (trackObject)
+}
+
+// function to pack four tracks into one Fragment track
+// map through all arrays and combine into one array * seqLength
+// will return an array in the form: [[drums],[[track1Inst, note, duration], [track2Inst, note, duration]] per step // Tempo
+export const packFragmentObject = (track1, track2, track3, track4) => {
+  //console.log('Need to pack this -> ', track1)
+  let sequenceLength 
+  // if (track1.grid.length) {
+  //   sequenceLength = track1.grid.length
+  // }
+  // const fragment = createSequencerGrid(sequenceLength)
+  // if (track1.trackType === 'instrument'){
+  //   console.log('instrument')
+  // }
+  
 }

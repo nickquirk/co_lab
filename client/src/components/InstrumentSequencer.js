@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 
-// Components 
+// Components ≤l
 import MIDISounds from 'midi-sounds-react'
 
 // Custom Imports 
@@ -15,7 +15,7 @@ import { packTrackObject, unpackTrackObject, createSequencerGrid, createEmptySeq
 import axios from 'axios'
 import { getToken } from './helpers/Auth'
 
-const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
+const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, playNote, loadInstrument }) => {
 
   const { fragmentId } = useParams()
   // ! Instead of passing values to the play functions, we 
@@ -31,7 +31,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
 
   // ! State
   const [ instruments, setInstruments ] = useState([])
-  const [ currentInstrument, setCurrentInstrument ] = useState([1])
+  const [ currentInstrument, setCurrentInstrument ] = useState(1)
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
   const [ tempo, setTempo ] = useState()
@@ -41,7 +41,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
     setInstruments(getInstrumentNames())
     setGrid(createSequencerGrid(COLS, ROWS))
     setSequence(createEmptySequence(COLS))
-    midisounds.cacheInstrument(currentInstrument)
+    //midisounds.cacheInstrument(currentInstrument)
   }, [])
 
   const getInstrumentNames = () => {
@@ -87,32 +87,21 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
       }
     })
     if (isChecked) {
-      midisounds.playChordNow(currentInstrument, [note], NOTE_LENGTH)
+      playNote({ instrument: currentInstrument, note: [note],duration: NOTE_LENGTH })
     }
     setGrid(updatedGrid)
   }
 
-  // Play sequence 
+  // Call playLoop function in MidiSounds Object
   const playLoop = (e) => {
-    // instruments, BPM, Time Signature
-    midisounds.startPlayLoop(sequence, TEMPO, NOTE_LENGTH)
-    console.log('loopStarted -> ', midisounds.loopStarted)
     startLoop(sequence)
-  }
-
-  // Stop sequence
-  const stopLoop = (e) => {
-    midisounds.stopPlayLoop()
-    console.log('loopStarted -> ', midisounds.loopStarted)
   }
 
   // Change instrument 
   const changeInstrument = (e) => {
     // stop current loop
-    midisounds.stopPlayLoop()
     setCurrentInstrument(e.target.value)
-    console.log(midisounds.player.loader.instrumentInfo(currentInstrument).title)
-    midisounds.cacheInstrument(e.target.value)
+    loadInstrument(e.target.value)
   }
 
   // Clear sequence 
@@ -134,6 +123,8 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
   const saveSequence = async (e) => {
     console.log('sequenced saved')
     const sequenceData = {
+      trackType: 'instrument',
+      instrument: currentInstrument,
       instrumentGridSize: { rows: ROWS, cols: COLS },
       grid: grid,
       sequence: sequence,
@@ -141,9 +132,9 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
       tempo: TEMPO,
     }
     const packedObject =  JSON.stringify(packTrackObject(sequenceData))
-    localStorage.setItem('trackData', packedObject)
+    localStorage.setItem('trackData2', packedObject)
     try {
-      const { data } = await axios.post('/api/tracks/', { data: packedObject, fragment: parseInt(fragmentId), instrument: currentInstrument }, {
+      const { data } = await axios.post('/api/tracks/', { data: packedObject, fragment: parseInt(fragmentId) }, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -157,8 +148,8 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
 
   // Load sequence from memory
   const loadSequence = (e) => {
-    console.log('load')
-    let sequenceObject = JSON.parse(localStorage.getItem('trackData'))
+    console.log('sequence loaded')
+    let sequenceObject = JSON.parse(localStorage.getItem('trackData2'))
     sequenceObject = unpackTrackObject(sequenceObject)
     const { grid, sequence, instrument, tempo } = sequenceObject
     setGrid(grid)
@@ -184,8 +175,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData }) => {
         })
         }
       </select>
-      <button onClick={playLoop}>Play</button>
-      <button onClick={stopLoop}>Stop</button>
+      <button onClick={playLoop}>{playing ? 'Stop' : 'Start'}</button>
       <button onClick={clearSequence}>Clear</button>
       <button onClick={saveSequence}>Save</button>
       <button onClick={loadSequence}>Load</button>

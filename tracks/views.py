@@ -22,8 +22,18 @@ class TrackListView(APIView):
     return Response(serialized_tracks.data, status.HTTP_200_OK)
     
   def post(self, request):
+    track_to_add = TrackSerializer(data=request.data)
     request.data['owner'] = request.user.id
-    print(request.data)
-    return Response('Track Created')
+    try:
+      if track_to_add.is_valid():
+        print(track_to_add.validated_data)
+        track_to_add.save()
+        return Response(track_to_add.data, status.HTTP_201_CREATED)
+      else:
+        print(track_to_add.errors)
+        return Response(track_to_add, status.HTTP_422_UNPROCESSABLE_ENTITY)
+    except Exception as e:
+      return Response(str(e), status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
   

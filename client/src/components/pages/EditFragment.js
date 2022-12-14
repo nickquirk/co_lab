@@ -17,13 +17,13 @@ import MidiSoundsSequencer from '../MidiSoundsSequencer'
 import { packTrackObject, unpackTrackObject } from '../helpers/Data'
 import { getToken } from '../helpers/Auth'
 
-const Sequencer = () => {
+const EditFragment = () => {
 
   // ! Location Variables
   const navigate = useNavigate()
 
   // ! States
-  const [ sequencer, setSequencer ]   = useState('instrument')
+  //const [ sequencer, setSequencer ]   = useState('instrument')
   const [ trackData, setTrackData ] = useState({})
   
   // axios POST request
@@ -52,15 +52,18 @@ const Sequencer = () => {
     console.log(trackData)
   }
 
+  const playLoop = (e) => {
+
+  }
+
+
   return (
     <Container className="page-wrapper">
       <div> 
-        <h1>Sequencer</h1>
-        <button onClick={handleClick}>Save</button>
-        <button onClick={loadSequence}>Load</button>
+        <h1>Edit Fragmment</h1>
+        {/* <input type='text'></input> */}
       </div>
       <MidiSoundsSequencer 
-        sequencer={sequencer}
         trackData={trackData}
         setTrackData={setTrackData}
       />
@@ -68,4 +71,4 @@ const Sequencer = () => {
   )
 }
 
-export default Sequencer
+export default EditFragment

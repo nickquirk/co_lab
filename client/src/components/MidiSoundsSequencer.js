@@ -3,28 +3,60 @@ import MIDISounds from 'midi-sounds-react'
 import InstrumentSequencer from './InstrumentSequencer'
 import DrumSequencer from './DrumSequencer'
 
+import { unpackTrackObject, packTrackObject } from './helpers/Data'
+
 class MidiSoundsSequencer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      drums: 12,
-      intruments: 15,
-      tracks: [],
-      sequencer: this.props.sequencer,
+      playing: false,
+      sequencerType: 'instrument',
+      drums: [],
+      instruments: [],
+      sequence: [],
     }
   }
 
-  startLoop(trackData) {
-    console.log(this.state.sequencer)
+  // todo
+  // control logic so that loop can't be started when no sequence is loaded
+  startLoop(loop) {
+    //this.setState( { sequence: loop })
+    // console.log('loop', loop)
+    // if (loop[0][1].length){
+    //   console.log('undefined', loop[0][1][0][1])
+    // }
     if (this.midiSounds.loopStarted) {
       this.midiSounds.stopPlayLoop()
+      this.setState( { playing: this.midiSounds.loopStarted })
       console.log('stopped')
     } else {
-      this.midiSounds.startPlayLoop(trackData, 120, 1 / 16)
+      this.midiSounds.startPlayLoop(loop, 120, 1 / 16)
+      this.setState( { playing: this.midiSounds.loopStarted })
       console.log('playing')
     }
   }
 
+  playNote(chord) {
+    const { instrument, note, duration } = chord
+    this.midiSounds.playChordNow(instrument, note, duration)
+  }
+
+  loadInstrument(instrument) {
+    this.midiSounds.cacheInstrument(instrument)
+  }
+
+  loadSequence() {
+    let sequenceObject = JSON.parse(localStorage.getItem('trackData'))
+    sequenceObject = unpackTrackObject(sequenceObject)
+    const { grid, sequence, instrument, tempo } = sequenceObject
+    this.setState({ sequence: sequence })
+    console.log('sequence state', this.state.sequence)
+  }
+
+  setSequencerType(e) {
+    this.setState({ sequencerType: e.target.value })
+    console.log(this.state.sequencerType)
+  }
 
   
   render() {
@@ -37,12 +69,20 @@ class MidiSoundsSequencer extends Component {
           instruments={[]}
         />
         <div className='mt-5'>
+          <h4>Sequencer Type</h4>
+          <select onChange={this.setSequencerType.bind(this)} className='mb-3'>
+            <option name='sequencerType' value='instrument'>Instrument</option>
+            <option name='sequencerType' value='drum'>Drum</option>
+          </select>
           <InstrumentSequencer
             startLoop={this.startLoop.bind(this)}
+            playNote={this.playNote.bind(this)}
+            loadInstrument={this.loadInstrument.bind(this)}
             setTrackData={this.props.setTrackData}
             trackData={this.props.trackData}
-          />
-          {/* <DrumSequencer/> */}
+            playing={this.state.playing}
+          /> 
+          {/* <DrumSequencer/>  */}
         </div>
       </div>
     )

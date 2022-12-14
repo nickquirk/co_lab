@@ -10,6 +10,14 @@ import Row from 'react-bootstrap/Row'
 import Track from './Track'
 import { useEffect, useState } from 'react'
 
+// Custom Functions 
+import { packTrackObject, unpackTrackObject, packFragmentObject } from './helpers/Data'
+
+//todo
+// create function to combine tracks into one fragment track
+// pass whole track to MIDISounds object
+// MIDISounds object unpacks sequence and plays
+
 // This will be the main component in the app. It will be a midisounds object that can play up to four tracks. It will display:
 // Trackname
 // Creator Username
@@ -19,28 +27,45 @@ import { useEffect, useState } from 'react'
 const Fragment = ({ playLoop }) => {
 
   // ! State
-  const [trackData, setTrackData] = useState('')
+  const [track1, setTrack1] = useState('')
+  const [track2, setTrack2] = useState('')
+  const [track3, setTrack3] = useState('')
+  const [track4, setTrack4] = useState('')
+  const [ fragmentTrack, setFragmentTrack ] = useState('')
+  const [fragments, setFragments ] = useState()
 
-
+ 
   // ! Executions
-  // GET all track data assocated with Fragment 
+  //GET fragment data
+  // This will contain information about that tracks that are stored on in
   useEffect(() => {
-    const getData = async () => {
+    const getFragmentData = async () => {
       try {
         const { data } = await axios.get('api/fragments/')
-        setTrackData(data)
+        setFragments(data)
         console.log(data)
       } catch (err) {
         console.log(err.message)
       }
     }
-    //getData()
-    loadSequence()
+    getFragmentData()
+    // GET all track data assocated with Fragment 
+    // data will be an array of four track data objects
+    const getTrackData = async () => {
+      try {
+        const { data } = await axios.get('api/tracks/')
+        console.log(data)
+      } catch (err) {
+        console.log(err.message)
+      }
+    }
+    //getTrackData()
+    //loadSequence()
   }, [])
 
 
   const handleClick = () => {
-    playLoop(trackData)
+    playLoop(fragmentTrack)
   }
 
   // Load sequence from memory
@@ -48,19 +73,21 @@ const Fragment = ({ playLoop }) => {
   // /api/fragments
   // GET track data associated with the fragment
   const loadSequence = (e) => {
-    console.log('Sequence Loaded')
-    const trackToLoad = JSON.parse(localStorage.getItem('trackData'))
-    const gridToLoad = trackToLoad.gridData
-    const sequenceToLoad = trackToLoad.sequenceData
-    console.log()
-    setTrackData(sequenceToLoad)
+    const trackToLoad1 = JSON.parse(localStorage.getItem('trackData1'))
+    const trackToLoad2 = JSON.parse(localStorage.getItem('trackData2'))
+    //console.log('track1', trackToLoad1)
+    setTrack1(unpackTrackObject(trackToLoad1))
+    setTrack2(unpackTrackObject(trackToLoad2))
+    packFragmentObject(track1, track2)
+    //setFragmentData()
   }
 
   // ! JSX
   return (
     <Container className='component-wrapper'>
-      <h4>Fragment</h4>
+      <h4>Fragments</h4>
       <Row>
+        {fragments.length}
         <Col>
           <Card>
             <Card.Body>
@@ -69,6 +96,7 @@ const Fragment = ({ playLoop }) => {
               <Card.Text>Tempo: 120 BPM</Card.Text>
               <Track />
               <button onClick={handleClick}>Play</button>
+              {/* <button onClick={loadSequence}>Load</button> */}
             </Card.Body>
           </Card>
         </Col>

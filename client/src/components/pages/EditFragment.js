@@ -1,6 +1,6 @@
 // React imports
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link, useParams } from 'react-router-dom'
 
 // import axios
 import axios from 'axios'
@@ -15,24 +15,46 @@ import MidiSoundsSequencer from '../MidiSoundsSequencer'
 
 // Custom Functions 
 import { packTrackObject, unpackTrackObject } from '../helpers/Data'
-import { getToken } from '../helpers/Auth'
+import { getToken, isOwner } from '../helpers/Auth'
 
+// todo
+// use isOwner
 const EditFragment = () => {
 
   // ! Location Variables
   const navigate = useNavigate()
+  const { fragmentId } = useParams()
 
   // ! States
   //const [ sequencer, setSequencer ]   = useState('instrument')
   const [ trackData, setTrackData ] = useState({})
+  const [ fragment, setFragment ] = useState([])
   
-  // axios POST request
+  // ! Executions
+  // Axios GET Request
   // Endpoint: /api/fragments
-  // Description: POST new fragment data to database
+  // Description: on change of fragmentId GET fragment with id that matches fragmentId
+  useEffect(() => {
+    const getFragmentData = async () => {
+      try {
+        const { data } = await axios.get(`/api/fragments/${fragmentId}`)
+        console.log(data)
+        console.log('fragmentId', fragmentId)
+        setFragment(data)
+      } catch (err) {
+        console.log(err.message)
+      }
+    }
+    getFragmentData()
+  }, [fragmentId])
+
+  // axios POST request
+  // Endpoint: /api/tracks
+  // Description: POST new track data to database
   const handleClick = async (e) => {
     console.log('saved')
     try {
-      await axios.post('/api/fragments/', trackData, {
+      await axios.post('/api/tracks/', trackData, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -56,17 +78,26 @@ const EditFragment = () => {
 
   }
 
-
   return (
     <Container className="page-wrapper">
-      <div> 
-        <h1>Edit Fragmment</h1>
-        {/* <input type='text'></input> */}
-      </div>
-      <MidiSoundsSequencer 
-        trackData={trackData}
-        setTrackData={setTrackData}
-      />
+      {fragment ?
+        <>
+          <h1>{fragment.name}</h1>
+          <h4>{`Tempo: ${fragment.tempo} BPM`}</h4>
+          <h5>{`Creator: ${fragment.owner}`}</h5>
+          <div> 
+            {/* <input type='text'></input> */}
+            <button onClick={handleClick}>Save</button>
+          </div>
+          <MidiSoundsSequencer 
+            trackData={trackData}
+            setTrackData={setTrackData}
+          />
+    
+        </>
+        :
+        <p>Spinner Huuuuur</p>
+      }
     </Container>
   )
 }

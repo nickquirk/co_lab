@@ -8,7 +8,7 @@ import axios from 'axios'
 import { getToken } from '../helpers/Auth'
 
 // Custom Components
-import Fragment from '../Fragment'
+import Fragments from '../Fragments'
 import MidiSounds from '../MidiSounds'
 
 
@@ -26,16 +26,7 @@ const FragmentIndex = () => {
 
   // ! Executions
   useEffect(() => {
-    const getFragmentData = async () => {
-      try {
-        const { data } = await axios.get('api/fragments/')
-        setFragments(data)
-        console.log(data)
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
-    getFragmentData()
+    
   }, [])
 
 

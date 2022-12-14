@@ -1,6 +1,6 @@
 import { Component, useEffect, useState } from 'react'
 import MIDISounds from 'midi-sounds-react'
-import Fragment from './Fragment'
+import Fragment from './Fragments'
 
 class MidiSounds extends Component {
   constructor(props) {

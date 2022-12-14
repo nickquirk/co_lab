@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 // Bootstrap Imports
 import Card from 'react-bootstrap/Card'
@@ -24,31 +25,33 @@ import { packTrackObject, unpackTrackObject, packFragmentObject } from './helper
 // Up to four tracks
 // Play/Stop toggle button
 // It will have to be functional on a carousel component and standalone 
-const Fragment = ({ playLoop }) => {
+const Fragments = ({ playLoop }) => {
 
   // ! State
+  const [ errors, setErrors ] = useState()
   const [track1, setTrack1] = useState('')
   const [track2, setTrack2] = useState('')
   const [track3, setTrack3] = useState('')
   const [track4, setTrack4] = useState('')
   const [ fragmentTrack, setFragmentTrack ] = useState('')
-  const [fragments, setFragments ] = useState()
+  const [fragments, setFragments ] = useState([])
 
  
   // ! Executions
   //GET fragment data
-  // This will contain information about that tracks that are stored on in
+  // Endpoint: /api/fragments
+  // on pageLoad GET all fragments
   useEffect(() => {
     const getFragmentData = async () => {
       try {
         const { data } = await axios.get('api/fragments/')
-        setFragments(data)
         console.log(data)
+        setFragments(data)
       } catch (err) {
         console.log(err.message)
       }
     }
-    getFragmentData()
+    
     // GET all track data assocated with Fragment 
     // data will be an array of four track data objects
     const getTrackData = async () => {
@@ -61,7 +64,9 @@ const Fragment = ({ playLoop }) => {
     }
     //getTrackData()
     //loadSequence()
-  }, [])
+    getFragmentData()
+    console.log(fragments)
+  },[])
 
 
   const handleClick = () => {
@@ -84,28 +89,43 @@ const Fragment = ({ playLoop }) => {
 
   // ! JSX
   return (
-    <Container className='component-wrapper'>
-      <h4>Fragments</h4>
-      <Row>
-        {fragments.length}
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Fragment Name</Card.Title>
-              <Card.Subtitle>Creator: Username</Card.Subtitle>
-              <Card.Text>Tempo: 120 BPM</Card.Text>
-              <Track />
-              <button onClick={handleClick}>Play</button>
-              {/* <button onClick={loadSequence}>Load</button> */}
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <div className='component-wrapper'>
+        <Container className='component-wrapper'>
+          <h4>Fragments</h4>
+          {fragments.length ? (
+            <Row>
+              {fragments.map(frag => {
+                const { name, tempo, id, owner } = frag
+                return (
+                  <Col key={id}>
+                    <Link
+                      className="text-decoration-none"
+                      to={`/fragments/${id}`}>
+                      <Card>
+                        <Card.Body>
+                          <Card.Title>{name}</Card.Title>
+                          <Card.Subtitle>{`Creator: ${owner}`}</Card.Subtitle>
+                          <Card.Text>{`Tempo: ${tempo}`}</Card.Text>
+                          <Track />
+                          <button onClick={handleClick}>Play</button>
+                        </Card.Body>
+                      </Card>
+                    </Link>
+                  </Col>
+                )
+              })} 
+            </Row>
+          ) : errors ?
+            <h2>Error Message Here...</h2>
+            :
+            <p>Spinner Huuuur</p>
+          }
+        </Container>
+      </div>
+    </>
   )
 }
 
-export default Fragment
+export default Fragments
 

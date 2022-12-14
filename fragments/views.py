@@ -26,7 +26,7 @@ class FragmentListView(APIView):
 
     # Post new Fragment
   def post(self, request):
-    fragment_to_add = PopulatedFragmentSerializer(data=request.data)
+    fragment_to_add = FragmentSerializer(data=request.data)
     request.data['owner'] = request.user.id
     print(request.data)
     try:

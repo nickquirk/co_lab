@@ -34,7 +34,8 @@ const Fragments = ({ playLoop }) => {
   const [track3, setTrack3] = useState('')
   const [track4, setTrack4] = useState('')
   const [ fragmentTrack, setFragmentTrack ] = useState('')
-  const [fragments, setFragments ] = useState([])
+  const [allFragments, setAllFragments ] = useState([])
+  const [ selectedFragment, setSelectedFragment ] = useState({})
 
  
   // ! Executions
@@ -45,37 +46,44 @@ const Fragments = ({ playLoop }) => {
     const getFragmentData = async () => {
       try {
         const { data } = await axios.get('api/fragments/')
-        console.log(data)
-        setFragments(data)
+        setAllFragments(data)
       } catch (err) {
         console.log(err.message)
       }
     }
-    //getTrackData()
-    //loadSequence()
     getFragmentData()
-    console.log(fragments)
   },[])
 
+  useEffect(() => {
+    // Unpack and parse fragment tracks from database
+    const trackArr = []
+    if (selectedFragment.tracks){
+      selectedFragment.tracks.forEach(track=>{
+        const currentTrack = unpackTrackObject(JSON.parse(track.data))
+        trackArr.push(currentTrack)
+      })
+    }
+    packFragmentObject(trackArr)
+  },[selectedFragment])
 
-  const handleClick = () => {
-    playLoop(fragmentTrack)
+  const getFragmentId = (e) => {
+    const fragmentId = e.target.name
+    const getFragmentData = async () => {
+      try {
+        const { data } = await axios.get(`api/fragments/${fragmentId}`)
+        setSelectedFragment(data)
+      } catch (err) {
+        console.log(err.message)
+      }
+    }
+    getFragmentData()
   }
+  const handleClick = () => {
+    //playLoop(fragmentTrack)
+    
 
-  // Load sequence from memory
-  // Axios GET request
-  // /api/fragments
-  // GET track data associated with the fragment
+  }
   const loadSequence = (e) => {
-    // const trackToLoad1 = JSON.parse(localStorage.getItem('trackData1'))
-    // const trackToLoad2 = JSON.parse(localStorage.getItem('trackData2'))
-    //console.log('track1', trackToLoad1)
-    setTrack1(unpackTrackObject(fragments.tracks[0]))
-    setTrack2(unpackTrackObject(fragments.tracks[1]))
-    setTrack3(unpackTrackObject(fragments.tracks[2]))
-    setTrack4(unpackTrackObject(fragments.tracks[3]))
-    packFragmentObject(track1, track2, track3, track4)
-    //setFragmentData()
   }
 
   // ! JSX
@@ -84,28 +92,31 @@ const Fragments = ({ playLoop }) => {
       <div className='component-wrapper'>
         <Container className='component-wrapper'>
           <h4>Fragments</h4>
-          {fragments.length ? (
+          {allFragments.length ? (
             <Row>
-              {fragments.map(frag => {
+              {allFragments.map(frag => {
                 const { name, tempo, id, owner } = frag
                 return (
                   <Col key={id}>
-                    <Link
-                      className="text-decoration-none"
-                      to={`/fragments/${id}`}>
+                    <div>
                       <Card>
                         <Card.Body>
-                          <Card.Title>{name}</Card.Title>
-                          <Card.Subtitle>{`Creator: ${owner.username}`}</Card.Subtitle>
-                          <Card.Text>{`Tempo: ${tempo}`}</Card.Text>
-                          <Track />
-                          <button onClick={handleClick}>Play</button>
+                          <Link
+                            className="text-decoration-none"
+                            to={`/fragments/${id}`}>
+                            <Card.Title>{name}</Card.Title>
+                            <Card.Subtitle>{`Creator: ${owner.username}`}</Card.Subtitle>
+                            <Card.Text>{`Tempo: ${tempo}`}</Card.Text>
+                            <Track />
+                          </Link>
+                          <button onClick={getFragmentId} name={id}>Play</button>
                         </Card.Body>
                       </Card>
-                    </Link>
+                    </div>
                   </Col>
                 )
               })} 
+              
             </Row>
           ) : errors ?
             <h2>Error Message Here...</h2>

@@ -47,15 +47,6 @@ const EditFragment = () => {
       }
     }
     getFragmentData()
-    // const getTrackData = async () => {
-    //   try {
-    //     const { data } = await axios.get(`/api/tracks/${fragmentId}`)
-    //     console.log(data)
-    //   } catch (err) {
-    //     console.log(err.message)
-    //   }
-    // }
-    // getTrackData()
   }, [])
 
   // axios POST request
@@ -64,7 +55,7 @@ const EditFragment = () => {
   const handleClick = async (e) => {
     console.log('saved')
     try {
-      await axios.post('/api/tracks/', trackData, {
+      await axios.post('/api/tracks/', JSON.dump(trackData), {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -77,8 +68,7 @@ const EditFragment = () => {
 
   const loadSequence = (e) => {
     console.log('load')
-    setTrackData(JSON.parse(localStorage.getItem('trackData')))
-    console.log(trackData)
+    //setTrackData(JSON.parse(localStorage.getItem('trackData')))
   }
 
   const playLoop = (e) => {

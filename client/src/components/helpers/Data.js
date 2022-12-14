@@ -125,9 +125,14 @@ export const packTrackObject = (sequenceData) => {
 // function to pack four tracks into one Fragment track
 // map through all arrays and combine into one array * seqLength
 // will return an array in the form: [[drums],[[track1Inst, note, duration], [track2Inst, note, duration]] per step // Tempo
-export const packFragmentObject = (track1, track2, track3, track4) => {
-  //console.log('Need to pack this -> ', track1)
-  let sequenceLength 
+export const packFragmentObject = (trackArr) => {
+  console.log('Need to pack this -> ', trackArr)
+  const sequences = trackArr.map(track => {
+    return track.sequence
+  }) 
+
+
+
   // if (track1.grid.length) {
   //   sequenceLength = track1.grid.length
   // }
@@ -135,5 +140,4 @@ export const packFragmentObject = (track1, track2, track3, track4) => {
   // if (track1.trackType === 'instrument'){
   //   console.log('instrument')
   // }
-  
 }

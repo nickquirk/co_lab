@@ -1,7 +1,7 @@
 // Bootstrap Imports
 import { useState, useEffect } from 'react'
 import { Container } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 // Custom Imports
 import axios from 'axios'
@@ -13,8 +13,11 @@ import MidiSounds from '../MidiSounds'
 
 
 const FragmentIndex = () => {
+
   // ! Location Variables
   const navigate = useNavigate()
+  const { fragmentId } = useParams()
+
   // ! State
   const [ trackData, setTrackData ] = useState([])
   const [ clicked, setClicked ] = useState()
@@ -33,17 +36,19 @@ const FragmentIndex = () => {
   // Create new Fragment in database and navigate to sequencer page
   // POST Request
   const onClick = async (e)  => {
+    let fragmentId
     try {
       const { data } = await axios.post('/api/fragments/',formFields, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      
+      console.log('newFragment data ->', data)
+      fragmentId = data.id
     } catch (err) {
       console.log(err.message)
     }
-    navigate('/fragments/:fragmentId')
+    navigate(`/fragments/${fragmentId}`)
     // 
   }
 

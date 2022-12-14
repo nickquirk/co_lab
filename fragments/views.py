@@ -2,6 +2,7 @@
 
 from .models import Fragment # Import models so we can query the database
 from .serializers.common import FragmentSerializer # Convert data recieved into python data type
+from .serializers.populated import PopulatedFragmentSerializer
 
 # Rest Framework Imports
 from rest_framework.views import APIView
@@ -20,11 +21,12 @@ class FragmentListView(APIView):
     # Query the database using the model, getting all fragments back as a queryset
     fragments = Fragment.objects.all()
     # Serialize queryset and cobvert into python datatype
-    serialized_fragments = FragmentSerializer(fragments, many=True)
+    serialized_fragments = PopulatedFragmentSerializer(fragments, many=True)
     return Response(serialized_fragments.data, status.HTTP_200_OK)
-    
+
+    # Post new Fragment
   def post(self, request):
-    fragment_to_add = FragmentSerializer(data=request.data)
+    fragment_to_add = PopulatedFragmentSerializer(data=request.data)
     request.data['owner'] = request.user.id
     print(request.data)
     try:
@@ -59,7 +61,7 @@ class FragmentDetailView(APIView):
     try:
         # Get the fragment where pk = pk passed in url
         fragment = self.get_fragment(pk)
-        serialized_fragment = FragmentSerializer(fragment)
+        serialized_fragment = PopulatedFragmentSerializer(fragment)
         return Response(serialized_fragment.data)
     except Fragment.DoesNotExist as e:
         print(e)

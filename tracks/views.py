@@ -1,5 +1,6 @@
 from .models import Track # Import models so we can query the database
 from .serializers.common import TrackSerializer # Convert data recieved into python data type
+from .serializers.populated import PopulatedTrackSerializer
 
 # Rest Framework Imports
 from rest_framework.views import APIView
@@ -18,11 +19,11 @@ class TrackListView(APIView):
     # Query the database using the model, getting all fragments back as a queryset
     tracks = Track.objects.all()
     # Serialize queryset and cobvert into python datatype
-    serialized_tracks = TrackSerializer(tracks, many=True)
+    serialized_tracks = PopulatedTrackSerializer(tracks, many=True)
     return Response(serialized_tracks.data, status.HTTP_200_OK)
     
   def post(self, request):
-    track_to_add = TrackSerializer(data=request.data)
+    track_to_add = PopulatedTrackSerializer(data=request.data)
     request.data['owner'] = request.user.id
     try:
       if track_to_add.is_valid():

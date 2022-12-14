@@ -46,6 +46,15 @@ const EditFragment = () => {
       }
     }
     getFragmentData()
+    // const getTrackData = async () => {
+    //   try {
+    //     const { data } = await axios.get(`/api/tracks/${fragmentId}`)
+    //     console.log(data)
+    //   } catch (err) {
+    //     console.log(err.message)
+    //   }
+    // }
+    // getTrackData()
   }, [fragmentId])
 
   // axios POST request
@@ -68,6 +77,10 @@ const EditFragment = () => {
   // axios GET request
   // Endpoint: /api/fragments
   // Description: GET fragment data from database
+
+
+
+
   const loadSequence = (e) => {
     console.log('load')
     setTrackData(JSON.parse(localStorage.getItem('trackData')))

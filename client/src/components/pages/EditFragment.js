@@ -28,7 +28,8 @@ const EditFragment = () => {
   // ! States
   //const [ sequencer, setSequencer ]   = useState('instrument')
   const [ trackData, setTrackData ] = useState({})
-  const [ fragment, setFragment ] = useState([])
+  const [ fragment, setFragment ] = useState()
+  const [ sequenceState, setSequenceState ] = useState()
   
   // ! Executions
   // Axios GET Request
@@ -55,7 +56,7 @@ const EditFragment = () => {
     //   }
     // }
     // getTrackData()
-  }, [fragmentId])
+  }, [])
 
   // axios POST request
   // Endpoint: /api/tracks
@@ -74,13 +75,6 @@ const EditFragment = () => {
     }
   }
 
-  // axios GET request
-  // Endpoint: /api/fragments
-  // Description: GET fragment data from database
-
-
-
-
   const loadSequence = (e) => {
     console.log('load')
     setTrackData(JSON.parse(localStorage.getItem('trackData')))
@@ -91,13 +85,17 @@ const EditFragment = () => {
 
   }
 
+  const saveData = () => {
+    console.log('data saved Boi...')
+  }
+
   return (
     <Container className="page-wrapper">
       {fragment ?
         <>
           <h1>{fragment.name}</h1>
           <h4>{`Tempo: ${fragment.tempo} BPM`}</h4>
-          <h5>{`Creator: ${fragment.owner}`}</h5>
+          <h5>{`Creator: ${fragment.owner.username}`}</h5>
           <div> 
             {/* <input type='text'></input> */}
             <button onClick={handleClick}>Save</button>
@@ -105,6 +103,7 @@ const EditFragment = () => {
           <MidiSoundsSequencer 
             trackData={trackData}
             setTrackData={setTrackData}
+            saveData={saveData}
           />
     
         </>

@@ -18,13 +18,18 @@ class TrackListView(APIView):
   def get(self, _request):
     # Query the database using the model, getting all fragments back as a queryset
     tracks = Track.objects.all()
-    # Serialize queryset and cobvert into python datatype
+    # Serialize queryset and convert into python datatype
     serialized_tracks = PopulatedTrackSerializer(tracks, many=True)
     return Response(serialized_tracks.data, status.HTTP_200_OK)
     
   def post(self, request):
-    track_to_add = PopulatedTrackSerializer(data=request.data)
+    all_fragment_tracks = Track.objects.filter(fragment = request.data['fragment'])
+    print('ALL FRAGMENT TRACKS!🥹', len(all_fragment_tracks))
+    if len(all_fragment_tracks) >= 4:
+      return Response({'message':'Cannot add more than 4 tracks to a fragment'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
+    track_to_add = TrackSerializer(data=request.data)
     request.data['owner'] = request.user.id
+    print(request.data)
     try:
       if track_to_add.is_valid():
         print(track_to_add.validated_data)
@@ -37,4 +42,3 @@ class TrackListView(APIView):
       return Response(str(e), status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-  

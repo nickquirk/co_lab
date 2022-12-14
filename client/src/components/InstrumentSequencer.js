@@ -178,7 +178,6 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       <button onClick={playLoop}>{playing ? 'Stop' : 'Start'}</button>
       <button onClick={clearSequence}>Clear</button>
       <button onClick={saveSequence}>Save</button>
-      <button onClick={loadSequence}>Load</button>
       <Container className='instrument-grid-container'>
         {grid.map((col, colId) => {
           return (

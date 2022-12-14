@@ -51,17 +51,6 @@ const Fragments = ({ playLoop }) => {
         console.log(err.message)
       }
     }
-    
-    // GET all track data assocated with Fragment 
-    // data will be an array of four track data objects
-    const getTrackData = async () => {
-      try {
-        const { data } = await axios.get('api/tracks/')
-        console.log(data)
-      } catch (err) {
-        console.log(err.message)
-      }
-    }
     //getTrackData()
     //loadSequence()
     getFragmentData()
@@ -78,12 +67,14 @@ const Fragments = ({ playLoop }) => {
   // /api/fragments
   // GET track data associated with the fragment
   const loadSequence = (e) => {
-    const trackToLoad1 = JSON.parse(localStorage.getItem('trackData1'))
-    const trackToLoad2 = JSON.parse(localStorage.getItem('trackData2'))
+    // const trackToLoad1 = JSON.parse(localStorage.getItem('trackData1'))
+    // const trackToLoad2 = JSON.parse(localStorage.getItem('trackData2'))
     //console.log('track1', trackToLoad1)
-    setTrack1(unpackTrackObject(trackToLoad1))
-    setTrack2(unpackTrackObject(trackToLoad2))
-    packFragmentObject(track1, track2)
+    setTrack1(unpackTrackObject(fragments.tracks[0]))
+    setTrack2(unpackTrackObject(fragments.tracks[1]))
+    setTrack3(unpackTrackObject(fragments.tracks[2]))
+    setTrack4(unpackTrackObject(fragments.tracks[3]))
+    packFragmentObject(track1, track2, track3, track4)
     //setFragmentData()
   }
 
@@ -105,7 +96,7 @@ const Fragments = ({ playLoop }) => {
                       <Card>
                         <Card.Body>
                           <Card.Title>{name}</Card.Title>
-                          <Card.Subtitle>{`Creator: ${owner}`}</Card.Subtitle>
+                          <Card.Subtitle>{`Creator: ${owner.username}`}</Card.Subtitle>
                           <Card.Text>{`Tempo: ${tempo}`}</Card.Text>
                           <Track />
                           <button onClick={handleClick}>Play</button>

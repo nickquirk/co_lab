@@ -1,7 +1,7 @@
 // Bootstrap Imports
 import { Container, ListGroup, ListGroupItem, Row, Col } from 'react-bootstrap'
 // React imports
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 
 //Imports
@@ -9,7 +9,7 @@ import axios from 'axios'
 
 //Custom imports 
 import { getToken, getUserId } from '../helpers/Auth'
-//import UploadImage from '../../helpers/UploadImage'
+import UploadImage from '../helpers/UploadImage'
 import { handleLogout } from '../helpers/Auth'
 
 const UserProfile = () => {
@@ -20,6 +20,7 @@ const UserProfile = () => {
     image: '',
   })
   const [ fragmentId, setFragmentId ] = useState()
+  const [ fragments, setFragments ] = useState()
 
   // ! Location
   const { userId } = useParams()
@@ -48,7 +49,23 @@ const UserProfile = () => {
     }
     getUser()
     console.log('user data', user)
-  }, [user])
+  }, [])
+
+  // GET request
+  // Endpoint: /api/fragments/
+  // Get all fragments
+  useEffect(() => {
+    const getFragments = async () => {
+      try {
+        const { data } = await axios.get('/api/fragments/')
+        setFragments(data)
+        console.log('FRAGMENTS ->', data)
+      } catch (err) {
+        console.log(err.message)
+      }
+    }
+    getFragments()
+  },[])
 
   
   // DELETE Request
@@ -89,12 +106,78 @@ const UserProfile = () => {
     }
   }
 
+  const handleSubmit = () => {
+
+  }
+
 
   // ! JSX
   return (
     <Container className="page-wrapper">
-      <h1>{user.id}</h1>
-
+      <Row className='text-center'>
+        <Col md="4" className='text-center '>
+          <div className='user-details d-flex flex-column align-items-center'>
+            <h3 className="mt-5 mb-5">{user.username}</h3>
+            <div className='profile-container'>
+              <img className='img-thumbnail profile-pic' src={`${user.image}`}></img>
+              <div className="upload-image-div d-flex  mt-2">
+                <Link onClick={updateUserProfile} className=' profile-btn btn align-self-center btn-md btn-sm mb-3' >Upload</Link>
+                <UploadImage
+                  imageFormData={formData}
+                  setFormData={setFormData}
+                  handleSubmit={updateUserProfile}
+                />
+              </div>
+              <div className='mt-4 d-flex flex-column justify-content-center'>
+                <Link className='btn' to="/locations/add" >Create Fragment</Link>
+                <Link className='btn' to="/login" onClick={() => handleLogout(navigate)}>Logout</Link>
+              </div>
+            </div>
+          </div>
+        </Col>
+        <Col md="8">
+          <h3 className="mt-5 mb-5">Your Fragments</h3>
+          <div className='user-reviews'>
+            <>
+              {user.reviews ? (
+                <ListGroup className='ms-1'>
+                  {user.fragments.map(fragment => {
+                    const { reviews, id, locationName, locationImage } = fragments
+                    return reviews.map(review => {
+                      return (
+                        <Link
+                          className="text-decoration-none"
+                          key={id}
+                          to={`/fragments/${id}`}>
+                          <ListGroupItem className='d-flex review-list list-group-item-action mt-2 review-profile-item'>
+                            <div>
+                              <img className='list-group-img img-thumbnail' src={locationImage}></img>
+                            </div>
+                            <div className='d-flex flex-column align-items-start ms-3'>
+                              <h4>{locationName}</h4>
+                              <p className='d-none d-sm-block'>{review.text}</p>
+                            </div>
+                            <div className='d-flex flex-column buttons align-self-start'>
+                              <Link onClick={() => deleteFragment(fragmentId)} className='btn mt-3 align-self-end' id="del2-btn" to="">Delete</Link>
+                            </div>
+                          </ListGroupItem>
+                        </Link>
+                      )
+                    })
+                  })}
+                </ListGroup>
+              ) : errors ? (
+                <h2>Error...</h2>
+              ) : (
+                <>
+                  <h4>No fragments here</h4>
+                  <p>Better get creating...</p>
+                </>
+              )}
+            </>
+          </div>
+        </Col>
+      </Row>
     </Container>
   )
 

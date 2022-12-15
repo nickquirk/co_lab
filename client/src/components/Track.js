@@ -2,7 +2,7 @@
 import { Container } from 'react-bootstrap'
 
 const Track = ({ track }) => {
-
+  //console.log(track)
   return (
     <Container className="component-wrapper">
       <div className='track-wrapper'>

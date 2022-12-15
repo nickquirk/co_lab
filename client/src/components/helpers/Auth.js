@@ -10,7 +10,7 @@ export const setToken = (token) => {
 export const getToken = () => {
   return localStorage.getItem(tokenName)
 }
-// return user ID
+// returns user ID from sub from token saved in localStorage
 export const getUserId = () => {
   return getPayload().sub
 }

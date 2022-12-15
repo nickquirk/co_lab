@@ -35,7 +35,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<FragmentIndex />} />
           <Route path="/fragments/:fragmentId" element={<EditFragment />} />
-          <Route path="/profile" element={<UserProfile />} />
+          <Route path="/profile/:userId" element={<UserProfile />} />
         </Routes>
       </BrowserRouter>
     </Container>

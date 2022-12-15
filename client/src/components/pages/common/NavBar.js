@@ -9,6 +9,7 @@ import Container from 'react-bootstrap/Container'
 
 // Custom exports
 import logo from '../../../images/logo.png'
+import { getUserId } from '../../helpers/Auth'
 
 
 const NavBar = () => {
@@ -33,7 +34,7 @@ const NavBar = () => {
           <Nav>
             <Nav.Link className='nav-item nav-link' as={Link} to='/'>Fragments</Nav.Link>
             <Nav.Link className='nav-item nav-link' as={Link} to='/fragments/create'>Create Fragment</Nav.Link>
-            <Nav.Link className='nav-item nav-link' as={Link} to='/profile'>Profile</Nav.Link>
+            <Nav.Link className='nav-item nav-link' as={Link} to={`/profile/${getUserId()}`}>Profile</Nav.Link>
             <Nav.Link className='nav-item nav-link' as={Link} to='/login'>Login</Nav.Link>
           </Nav>
         </Navbar.Collapse>

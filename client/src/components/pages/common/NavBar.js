@@ -32,14 +32,14 @@ const NavBar = () => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
           <Nav>
-            <Nav.Link className='nav-item nav-link' as={Link} to='/'>Fragments</Nav.Link>
+            <Nav.Link className='nav-item nav-link' as={Link} to='/'>Frag / ments</Nav.Link>
             {isAuthenticated() ?
               <>
                 <Nav.Link className='nav-item nav-link' as={Link} to={`/profile/${getUserId()}`}>Profile</Nav.Link>
-                <span className='nav-link' onClick={() => handleLogout(navigate('/'))}><span className='yellow-text'>Logout</span></span>
+                <span className='nav-link' onClick={() => handleLogout(navigate('/'))}><span className='text-yellow'>Logout</span></span>
               </>
               :
-              <Nav.Link className='nav-item nav-link' as={Link} to='/login'>Login</Nav.Link>
+              <Nav.Link className='nav-item nav-link' as={Link} to='/login'><span className='text-yellow'>Login</span></Nav.Link>
             }
             
           </Nav>

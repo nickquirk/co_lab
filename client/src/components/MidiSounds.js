@@ -33,15 +33,19 @@ class MidiSounds extends Component {
   render() {
     return (
       <div>
-        <MIDISounds 
-          ref={(ref) => (this.midiSounds = ref)} 
-          appElementName="root"
-          drums={[]}
-          instruments={[]}
-        />
         <Fragments 
           playLoop={this.playLoop.bind(this)}
         />
+        <div className='midi-sounds-div'>
+          <MIDISounds 
+            className='midi-sounds'
+            ref={(ref) => (this.midiSounds = ref)} 
+            appElementName="root"
+            drums={[]}
+            instruments={[]}
+          />
+        </div>
+        
       </div>
     )
   }

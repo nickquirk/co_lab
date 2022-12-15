@@ -55,7 +55,7 @@ const EditFragment = () => {
   const saveTrack = async (e) => {
     console.log('saved')
     try {
-      await axios.post('/api/tracks/', JSON.dump(trackData), {
+      await axios.post('/api/tracks/', JSON.stringify(trackData), {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -79,6 +79,9 @@ const EditFragment = () => {
     console.log('data saved Boi...')
   }
 
+  // axios DELETE request
+  // Endpoint: /api/fragments
+  // Description: DELETE  track data from database
   const deleteFragment = async (e) => {
     try {
       const response = await axios.delete(`/api/fragments/${fragmentId}`, {

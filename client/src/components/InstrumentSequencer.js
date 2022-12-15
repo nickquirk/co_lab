@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 // Bootstrap Components 
 import Container from 'react-bootstrap/Container'
@@ -35,6 +35,9 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
   const [ tempo, setTempo ] = useState()
+
+  // ! Location
+  const navigate = useNavigate()
   
   // ! Execution
   useEffect(() => {
@@ -140,7 +143,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      //navigate('/fragments')
+      navigate('/fragments')
     } catch (err) {
       console.log(err.message)
     }

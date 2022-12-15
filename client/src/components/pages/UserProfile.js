@@ -80,7 +80,7 @@ const UserProfile = () => {
   // DELETE Request
   // Endpoint: /api/fragments/:fragmentId
   // Delete a fragment that the user owns
-  const deleteFragment = async (locationId, reviewId) => {
+  const deleteFragment = async (fragmentId) => {
     try {
       const response = await axios.delete(`/api/fragments/${fragmentId}`, {
         headers: {

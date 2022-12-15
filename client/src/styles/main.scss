@@ -1,14 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora&display=swap');
 
-  $primary: rgb(249, 249, 249);
+  $primary: rgb(240, 240, 240);
   $secondary: #ffd724;
+  $tertiary: #7d7d7d;
 
-  
 
 * {
   box-sizing: border-box;
-  font-family: 'Roboto Slab', serif;
-  color: black;
+  font-family: 'Rubik', sans-serif;
+  color: #575757;
+}
+
+.btn{
+  background-color: $secondary;
+  border-radius: 0;
+}
+
+.text-yellow{
+  color: $secondary;
 }
 
 .navbar{
@@ -18,6 +27,11 @@
     cursor: pointer;
   }
 }
+
+.component-wrapper{
+  background-color: $primary;
+}
+
 // ? Sequencer Components 
 .instrument-grid-container{
   display: flex;
@@ -36,8 +50,9 @@
 // ? Track Component
 .track-wrapper{
   height: 50px;
-  background-color: $secondary;
+  background-color: lighten($secondary, 0%);
   margin: 5px;
+  //border: 10px solid darken($secondary, 8%);
 }
 
 // ? Login Page
@@ -47,17 +62,108 @@
   background-color: $primary;
   border-left: 1px;
   border-color: $secondary;
-
-  .btn{
-    background-color: $secondary;
-    border-radius: 0;
-  }
+}
 
   input{
     border-style: none;
     border-radius: 0;
     border-left: 2px;
-    
+    ::placeholder {
+      color: lighten($tertiary, 40%);
+      opacity: 1;
+    }
+    [contenteditable] {
+      outline: 1px solid $secondary;
+  }
+  input[type=text] {
+    border: 2px solid $secondary;
+    border-radius: 0;
   }
 }
+
+// ? Fragment Index Page
+.midi-sounds-div{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  visibility: hidden;
+}
+
+.fragment-title{
+  background-color: $tertiary;
+  display: flex;
+  justify-content: center;
+  h4{
+    margin: 5px;
+    color: white;
+  }
+}
+
+.fragments-wrapper {
+  margin-top: 20px;
+  margin: 0;
+  .fragment-card{
+    background-color: $tertiary;
+    color: $tertiary;
+    display: flex;
+    text-align: center;
+    border-style: none;
+    border-radius: 18;
+    margin: 5px;
+    height: 400px;
+  }
+  .card-text{
+    color: $tertiary;
+    background-color: #ffffff;
+  }
+  .card-text-tempo{
+    color: #d9b517;
+  }
+  .card-body{
+    background-image: url(../images/card-background-2.jpg);
+    background-repeat: none;
+    background-size:cover;
+    border-radius: 12px;
+  }
+}
+
+
+
+// ? Create Fragment 
+.create-fragment-wrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 20px;
+
+  .fragment-form{
+    align-items: center;
+    margin-top: 20px;
+
+    label {
+      margin-right: 10px;
+      margin-left: 5px;
+    }
+
+    input {
+      border-radius: 0;
+      border-style: none;
+      height: 40px;
+      outline: #fff3bd;
+    }
+
+    input:focus{
+      border: 2px solid #fff3bd;
+    }
+
+  }
+
+  .btn {
+    margin-left: 10px;
+    color: darken($tertiary, 10%);
+  }
+}
+
+
+
+
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 // Bootstrap Imports
 import Card from 'react-bootstrap/Card'
@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 
 // Custom Functions 
 import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers/Data'
+import { getUserId, isAuthenticated } from '../components/helpers/Auth'
 
 //todo
 // create function to combine tracks into one fragment track
@@ -28,16 +29,18 @@ import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers
 const Fragments = ({ playLoop }) => {
 
   // ! State
-  const [ errors, setErrors ] = useState()
+  const [errors, setErrors] = useState()
   const [track1, setTrack1] = useState('')
   const [track2, setTrack2] = useState('')
   const [track3, setTrack3] = useState('')
   const [track4, setTrack4] = useState('')
-  const [ fragmentTrack, setFragmentTrack ] = useState([])
-  const [allFragments, setAllFragments ] = useState([])
-  const [ selectedFragment, setSelectedFragment ] = useState({})
+  const [fragmentTrack, setFragmentTrack] = useState([])
+  const [allFragments, setAllFragments] = useState([])
+  const [selectedFragment, setSelectedFragment] = useState({})
 
- 
+  // ! Location
+  const navigate = useNavigate()
+
   // ! Executions
   //GET fragment data
   // Endpoint: /api/fragments
@@ -52,26 +55,26 @@ const Fragments = ({ playLoop }) => {
       }
     }
     getFragmentData()
-  },[])
+  }, [])
 
   useEffect(() => {
     // Unpack and parse fragment tracks from database
     const trackArr = []
-    if (selectedFragment.tracks){
-      selectedFragment.tracks.forEach(track=>{
+    if (selectedFragment.tracks) {
+      selectedFragment.tracks.forEach(track => {
         const currentTrack = unpackTrackObject(JSON.parse(track.data))
         trackArr.push(currentTrack)
       })
     }
     setFragmentTrack(packFragmentTrack(trackArr))
-  },[selectedFragment])
+  }, [selectedFragment])
 
   useEffect(() => {
     console.log('FRAGMENT TRACK', fragmentTrack)
     if (fragmentTrack && fragmentTrack.length) {
       playLoop(fragmentTrack, selectedFragment)
     }
-    
+
   }, [fragmentTrack])
 
   const getFragmentId = (e) => {
@@ -88,7 +91,7 @@ const Fragments = ({ playLoop }) => {
     getFragmentData()
   }
   const handleClick = () => {
-    
+
   }
   const loadSequence = (e) => {
   }
@@ -98,45 +101,49 @@ const Fragments = ({ playLoop }) => {
     <>
       <div className='component-wrapper'>
         <Container className='component-wrapper'>
-          <h4>Fragments</h4>
-          {allFragments.length ? (
-            <Row>
-              {allFragments.map(frag => {
-                const { name, tempo, id, owner, tracks } = frag
-                return (
-                  <Col key={id}>
-                    <div>
-                      <Card>
-                        <Card.Body>
-                          <Link
-                            className="text-decoration-none"
-                            to={`/fragments/${id}`}>
-                            <Card.Title>{name}</Card.Title>
-                            <Card.Subtitle>{`Creator: ${owner.username}`}</Card.Subtitle>
-                            <Card.Text>{`Tempo: ${tempo}`}</Card.Text>
-                            {tracks.map(track => {
-                              return (
-                                <Track 
-                                  key={track.id}
-                                  track={track}
-                                />
-                              )
-                            })}
-                          </Link>
-                          <button onClick={getFragmentId} name={id}>Play</button>
-                        </Card.Body>
-                      </Card>
-                    </div>
-                  </Col>
-                )
-              })} 
-              
-            </Row>
-          ) : errors ?
-            <h2>Error Message Here...</h2>
-            :
-            <p>Spinner Huuuur</p>
-          }
+          <div className='fragment-title'>
+            <h4><strong><span className='text-yellow'> Frag</span></strong> / ments</h4>
+          </div>
+          <div className='fragments-wrapper'>
+            {allFragments.length ?
+              <Row>
+                {allFragments.map(frag => {
+                  const { name, tempo, id, owner, tracks } = frag
+                  return (
+                    <Col key={id} className='col-lg-4 col-sm-6 col-12'>
+                      <div>
+                        <Card className='fragment-card'>
+                          <Card.Body className='card-body'>
+                            <Link
+                              className="text-decoration-none"
+                              to={`/fragments/${id}`}>
+                              <Card.Title className='card-text'>{name}</Card.Title>
+                              <Card.Subtitle className='card-text'>{`Creator: ${owner.username}`}</Card.Subtitle>
+                              <Card.Text className='card-text-tempo'>{`Tempo: ${tempo}`}</Card.Text>
+                              {tracks.map(track => {
+                                return (
+                                  <Track
+                                    key={track.id}
+                                    track={track}
+                                  />
+                                )
+                              })}
+                            </Link>
+                            <button className='btn mt-3 mb-3' onClick={getFragmentId} name={id}>Play</button>
+                          </Card.Body>
+                        </Card>
+                      </div>
+                    </Col>
+                  )
+                })}
+              </Row>
+              : errors ?
+                <h2>Error Message Here...</h2>
+                :
+                <p>Spinner Huuuur</p>
+            }
+          </div>
+
         </Container>
       </div>
     </>
@@ -145,3 +152,15 @@ const Fragments = ({ playLoop }) => {
 
 export default Fragments
 
+const isLoggedIn = ({ id }) => {
+  if (isAuthenticated()) {
+    console.log('id ->', id)
+    return (
+      `/fragments/${id}`
+    )
+  } else {
+    return (
+      '/'
+    )
+  }
+}

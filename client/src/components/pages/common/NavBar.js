@@ -9,7 +9,7 @@ import Container from 'react-bootstrap/Container'
 
 // Custom exports
 import logo from '../../../images/logo.png'
-import { getUserId } from '../../helpers/Auth'
+import { getUserId, isAuthenticated, handleLogout } from '../../helpers/Auth'
 
 
 const NavBar = () => {
@@ -33,8 +33,15 @@ const NavBar = () => {
         <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>
           <Nav>
             <Nav.Link className='nav-item nav-link' as={Link} to='/'>Fragments</Nav.Link>
-            <Nav.Link className='nav-item nav-link' as={Link} to={`/profile/${getUserId()}`}>Profile</Nav.Link>
-            <Nav.Link className='nav-item nav-link' as={Link} to='/login'>Login</Nav.Link>
+            {isAuthenticated() ?
+              <>
+                <Nav.Link className='nav-item nav-link' as={Link} to={`/profile/${getUserId()}`}>Profile</Nav.Link>
+                <span className='nav-link' onClick={() => handleLogout(navigate('/'))}><span className='yellow-text'>Logout</span></span>
+              </>
+              :
+              <Nav.Link className='nav-item nav-link' as={Link} to='/login'>Login</Nav.Link>
+            }
+            
           </Nav>
         </Navbar.Collapse>
       </Container>

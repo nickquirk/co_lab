@@ -35,7 +35,7 @@ const Login = () => {
       console.log('token->', data)
       setToken(data.token)
       // navigate to fragment index after successful login
-      navigate('/fragments')
+      navigate('/')
     } catch (err) {
       setError(err.response.data.message)
       console.log(err.response.data.message)

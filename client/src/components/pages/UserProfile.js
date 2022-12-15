@@ -21,6 +21,7 @@ const UserProfile = () => {
   })
   const [ fragmentId, setFragmentId ] = useState()
   const [ fragments, setFragments ] = useState()
+  const [ ownedFragments, setOwnedFragments ] = useState()
 
   // ! Location
   const { userId } = useParams()
@@ -48,7 +49,6 @@ const UserProfile = () => {
       }
     }
     getUser()
-    console.log('user data', user)
   }, [])
 
   // GET request
@@ -59,13 +59,22 @@ const UserProfile = () => {
       try {
         const { data } = await axios.get('/api/fragments/')
         setFragments(data)
-        console.log('FRAGMENTS ->', data)
       } catch (err) {
         console.log(err.message)
       }
     }
     getFragments()
+    
   },[])
+
+  useEffect(() => {
+    if (fragments){
+      const filteredFragments = fragments.filter(frag => frag.owner.id === user.id)
+      console.log(filteredFragments)
+      setOwnedFragments(filteredFragments)
+    }
+    
+  }, [fragments])
 
   
   // DELETE Request
@@ -129,7 +138,6 @@ const UserProfile = () => {
                 />
               </div>
               <div className='mt-4 d-flex flex-column justify-content-center'>
-                <Link className='btn' to="/locations/add" >Create Fragment</Link>
                 <Link className='btn' to="/login" onClick={() => handleLogout(navigate)}>Logout</Link>
               </div>
             </div>
@@ -139,31 +147,25 @@ const UserProfile = () => {
           <h3 className="mt-5 mb-5">Your Fragments</h3>
           <div className='user-reviews'>
             <>
-              {user.reviews ? (
+              {ownedFragments ? (
                 <ListGroup className='ms-1'>
-                  {user.fragments.map(fragment => {
-                    const { reviews, id, locationName, locationImage } = fragments
-                    return reviews.map(review => {
-                      return (
-                        <Link
-                          className="text-decoration-none"
-                          key={id}
-                          to={`/fragments/${id}`}>
-                          <ListGroupItem className='d-flex review-list list-group-item-action mt-2 review-profile-item'>
-                            <div>
-                              <img className='list-group-img img-thumbnail' src={locationImage}></img>
-                            </div>
-                            <div className='d-flex flex-column align-items-start ms-3'>
-                              <h4>{locationName}</h4>
-                              <p className='d-none d-sm-block'>{review.text}</p>
-                            </div>
-                            <div className='d-flex flex-column buttons align-self-start'>
-                              <Link onClick={() => deleteFragment(fragmentId)} className='btn mt-3 align-self-end' id="del2-btn" to="">Delete</Link>
-                            </div>
-                          </ListGroupItem>
-                        </Link>
-                      )
-                    })
+                  {ownedFragments.map(fragment => {
+                    const { id, name } = fragment
+                    return (
+                      <Link
+                        className="text-decoration-none"
+                        key={id}
+                        to={`/fragments/${id}`}>
+                        <ListGroupItem className='d-flex review-list list-group-item-action mt-2 review-profile-item'>
+                          <div className='d-flex flex-column align-items-start ms-3'>
+                            <h4>{name}</h4>
+                          </div>
+                          <div className='d-flex flex-column buttons align-self-start'>
+                            <Link onClick={() => deleteFragment(id)} className='btn mt-3 align-self-end' id="del2-btn" to="">Delete</Link>
+                          </div>
+                        </ListGroupItem>
+                      </Link>
+                    )
                   })}
                 </ListGroup>
               ) : errors ? (

@@ -25,7 +25,7 @@ import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers
 // Up to four tracks
 // Play/Stop toggle button
 // It will have to be functional on a carousel component and standalone 
-const Fragments = ({ startLoop }) => {
+const Fragments = ({ playLoop }) => {
 
   // ! State
   const [ errors, setErrors ] = useState()
@@ -78,7 +78,7 @@ const Fragments = ({ startLoop }) => {
     }
     console.log(fragmentTrack)
     getFragmentData()
-    startLoop(fragmentTrack)
+    playLoop(fragmentTrack)
   }
   const handleClick = () => {
     

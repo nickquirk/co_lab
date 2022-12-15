@@ -94,6 +94,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
 
   // Call playLoop function in MidiSounds Object
   const playLoop = (e) => {
+    console.log(sequence)
     startLoop(sequence)
   }
 

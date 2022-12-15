@@ -25,7 +25,6 @@ class MidiSoundsSequencer extends Component {
     // if (loop[0][1].length){
     //   console.log('undefined', loop[0][1][0][1])
     // }
-    this.midiSounds.startPlayLoop(loop, 120, 1 / 16)
     if (this.midiSounds.loopStarted) {
       this.midiSounds.stopPlayLoop()
       this.setState( { playing: this.midiSounds.loopStarted })
@@ -64,6 +63,10 @@ class MidiSoundsSequencer extends Component {
     console.log('save in mdisounds')
   }
 
+  testFunction(e) {
+    console.log('test')
+  }
+
   
   render() {
     return (
@@ -88,6 +91,7 @@ class MidiSoundsSequencer extends Component {
             setTrackData={this.props.setTrackData}
             trackData={this.props.trackData}
             playing={this.state.playing}
+            testFunction={this.testFunction.bind(this)}
           /> 
           {/* <DrumSequencer/>  */}
         </div>

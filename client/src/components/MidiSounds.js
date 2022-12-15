@@ -12,14 +12,18 @@ class MidiSounds extends Component {
     }
   }
 
-  playLoop(trackData) {
-    if (this.midiSounds.loopStarted) {
-      this.midiSounds.stopPlayLoop()
-      console.log('stopped')
-    } else {
-      this.midiSounds.startPlayLoop(trackData, 120, 1 / 16)
-      console.log('playing')
+  playLoop(fragmentTrack) {
+    if (fragmentTrack){
+      console.log('play loop fragment track', fragmentTrack)
+      this.midiSounds.startPlayLoop([[], [1, [50], 1 / 16], [1, [50], 1 / 16]],[[], [1, [50], 1 / 16], [1, [50], 1 / 16]], 120, 1 / 16)
+      // if (this.midiSounds.loopStarted) {
+      //   this.midiSounds.stopPlayLoop()
+      //   console.log('stopped')
+      // } else {
+      //   console.log('playing')
+      // }
     }
+    
     
   }
   

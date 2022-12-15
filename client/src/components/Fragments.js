@@ -63,8 +63,16 @@ const Fragments = ({ playLoop }) => {
         trackArr.push(currentTrack)
       })
     }
-    setFragmentTrack(packFragmentTrack(trackArr)) 
+    setFragmentTrack(packFragmentTrack(trackArr))
   },[selectedFragment])
+
+  useEffect(() => {
+    console.log('FRAGMENT TRACK', fragmentTrack)
+    if (fragmentTrack && fragmentTrack.length) {
+      playLoop(fragmentTrack, selectedFragment)
+    }
+    
+  }, [fragmentTrack])
 
   const getFragmentId = (e) => {
     const fragmentId = e.target.name
@@ -78,7 +86,6 @@ const Fragments = ({ playLoop }) => {
     }
     //console.log(fragmentTrack)
     getFragmentData()
-    playLoop(fragmentTrack)
   }
   const handleClick = () => {
     
@@ -95,7 +102,7 @@ const Fragments = ({ playLoop }) => {
           {allFragments.length ? (
             <Row>
               {allFragments.map(frag => {
-                const { name, tempo, id, owner } = frag
+                const { name, tempo, id, owner, tracks } = frag
                 return (
                   <Col key={id}>
                     <div>
@@ -107,7 +114,14 @@ const Fragments = ({ playLoop }) => {
                             <Card.Title>{name}</Card.Title>
                             <Card.Subtitle>{`Creator: ${owner.username}`}</Card.Subtitle>
                             <Card.Text>{`Tempo: ${tempo}`}</Card.Text>
-                            <Track />
+                            {tracks.map(track => {
+                              return (
+                                <Track 
+                                  key={track.id}
+                                  track={track}
+                                />
+                              )
+                            })}
                           </Link>
                           <button onClick={getFragmentId} name={id}>Play</button>
                         </Card.Body>

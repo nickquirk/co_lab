@@ -1,14 +1,12 @@
 // Bootstrap Imports
 import { Container } from 'react-bootstrap'
 
-const Track = () => {
-
-  
+const Track = ({ track }) => {
 
   return (
     <Container className="component-wrapper">
       <div className='track-wrapper'>
-        <h6>Track</h6>
+        <h6>{`${track.owner}`}</h6>
       </div>
     </Container>
   )

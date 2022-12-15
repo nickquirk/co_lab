@@ -1,6 +1,6 @@
 import { Component, useEffect, useState } from 'react'
 import MIDISounds from 'midi-sounds-react'
-import Fragment from './Fragments'
+import Fragments from './Fragments'
 
 class MidiSounds extends Component {
   constructor(props) {
@@ -11,16 +11,19 @@ class MidiSounds extends Component {
     }
   }
 
-  playLoop(fragmentTrack) {
+  playLoop(fragmentTrack, selectedFragment) {
     if (fragmentTrack){
-      this.setState({ sequence: fragmentTrack }) 
+      console.log('fragment data ->', selectedFragment)
+      const { tempo } = selectedFragment
+      this.setState({ sequence: fragmentTrack })
       console.log('play loop fragment track', fragmentTrack)
       if (this.midiSounds.loopStarted) {
         this.midiSounds.stopPlayLoop()
         console.log('stopped')
       } else {
         console.log('playing')
-        this.midiSounds.startPlayLoop( fragmentTrack , 120, 1 / 16)
+        console.log(fragmentTrack)
+        this.midiSounds.startPlayLoop( fragmentTrack , tempo, 1 / 16)
       }
     }
   }
@@ -34,7 +37,7 @@ class MidiSounds extends Component {
           drums={[]}
           instruments={[]}
         />
-        <Fragment 
+        <Fragments 
           playLoop={this.playLoop.bind(this)}
         />
       </div>

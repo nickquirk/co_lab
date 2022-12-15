@@ -52,7 +52,7 @@ const EditFragment = () => {
   // axios POST request
   // Endpoint: /api/tracks
   // Description: POST new track data to database
-  const handleClick = async (e) => {
+  const saveTrack = async (e) => {
     console.log('saved')
     try {
       await axios.post('/api/tracks/', JSON.dump(trackData), {
@@ -79,6 +79,19 @@ const EditFragment = () => {
     console.log('data saved Boi...')
   }
 
+  const deleteFragment = async (e) => {
+    try {
+      const response = await axios.delete(`/api/fragments/${fragmentId}`, {
+        headers: {
+          Authorization: `Bearer ${getToken()}`,
+        },
+      })
+      navigate('/')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <Container className="page-wrapper">
       {fragment ?
@@ -88,7 +101,8 @@ const EditFragment = () => {
           <h5>{`Creator: ${fragment.owner.username}`}</h5>
           <div> 
             {/* <input type='text'></input> */}
-            <button onClick={handleClick}>Save</button>
+            <button onClick={saveTrack}>Save</button>
+            <button onClick={deleteFragment}>Delete Fragment</button>
           </div>
           <MidiSoundsSequencer 
             trackData={trackData}

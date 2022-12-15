@@ -71,3 +71,7 @@ class FragmentDetailView(APIView):
       print(e)
       return Response(str(e), status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+  def delete(self, _request, pk):
+    fragment_to_delete = self.get_fragment(pk)
+    fragment_to_delete.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

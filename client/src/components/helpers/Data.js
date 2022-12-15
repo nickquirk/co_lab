@@ -148,10 +148,8 @@ export const packFragmentTrack = (trackArr) => {
     //remove all blank steps and return to fragment track
     fragmentTrack = newSequence.map(step => {
       return step.map(beat => {
-        //console.log('BEAT -> ', beat)
         const filteredBeat = beat.filter(arr => arr.length)
         if (filteredBeat[0]) {
-          //console.log('FILTERED BEAT', filteredBeat[0])
           return filteredBeat
         } else {
           return []

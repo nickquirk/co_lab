@@ -21,10 +21,11 @@ class MidiSoundsSequencer extends Component {
   // control logic so that loop can't be started when no sequence is loaded
   startLoop(loop) {
     this.setState( { sequence: loop })
-    // console.log('loop', loop)
+    console.log('loop', loop)
     // if (loop[0][1].length){
     //   console.log('undefined', loop[0][1][0][1])
     // }
+    this.midiSounds.startPlayLoop(loop, 120, 1 / 16)
     if (this.midiSounds.loopStarted) {
       this.midiSounds.stopPlayLoop()
       this.setState( { playing: this.midiSounds.loopStarted })

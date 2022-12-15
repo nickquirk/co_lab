@@ -45,7 +45,6 @@ export const unpackTrackObject = (trackObject) => {
   const sequence = createEmptySequence(instrumentGridSize.cols)
   // create an empty grid using the number of rows/cols on trackObject
   const grid = createSequencerGrid(instrumentGridSize.cols, instrumentGridSize.rows)
-
   // create sequence data from trackObject
   const newSequence = grid.map((row, col) => {
     if (trackObject[col].isChecked){
@@ -122,22 +121,30 @@ export const packTrackObject = (sequenceData) => {
   return (trackObject)
 }
 
-// function to pack four tracks into one Fragment track
+// function to pack four tracks sequences into one Fragment track
 // map through all arrays and combine into one array * seqLength
 // will return an array in the form: [[drums],[[track1Inst, note, duration], [track2Inst, note, duration]] per step // Tempo
-export const packFragmentObject = (trackArr) => {
-  console.log('Need to pack this -> ', trackArr)
+export const packFragmentTrack = (trackArr) => {
+  let fragmentTrack
   const sequences = trackArr.map(track => {
     return track.sequence
   }) 
-
-
-
-  // if (track1.grid.length) {
-  //   sequenceLength = track1.grid.length
-  // }
-  // const fragment = createSequencerGrid(sequenceLength)
-  // if (track1.trackType === 'instrument'){
-  //   console.log('instrument')
-  // }
+  // if track array has content 
+  if (trackArr.length) {
+    // create new sequence by combining all track sequences
+    const newSequence = createEmptySequence(sequences[0].length)
+    sequences.forEach(seq => {
+      seq.forEach((step, index) => {
+        newSequence[index][0].push(step[0])
+        newSequence[index][1].push(step[1])
+      })
+    })
+    // remove all blank steps and return to fragment track
+    fragmentTrack = newSequence.map(step => {
+      return step.map(beat => {
+        return beat.filter(arr => arr.length)
+      })
+    })
+  }
+  return fragmentTrack
 }

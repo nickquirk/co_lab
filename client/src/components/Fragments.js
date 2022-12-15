@@ -12,7 +12,7 @@ import Track from './Track'
 import { useEffect, useState } from 'react'
 
 // Custom Functions 
-import { packTrackObject, unpackTrackObject, packFragmentObject } from './helpers/Data'
+import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers/Data'
 
 //todo
 // create function to combine tracks into one fragment track
@@ -25,7 +25,7 @@ import { packTrackObject, unpackTrackObject, packFragmentObject } from './helper
 // Up to four tracks
 // Play/Stop toggle button
 // It will have to be functional on a carousel component and standalone 
-const Fragments = ({ playLoop }) => {
+const Fragments = ({ startLoop }) => {
 
   // ! State
   const [ errors, setErrors ] = useState()
@@ -33,7 +33,7 @@ const Fragments = ({ playLoop }) => {
   const [track2, setTrack2] = useState('')
   const [track3, setTrack3] = useState('')
   const [track4, setTrack4] = useState('')
-  const [ fragmentTrack, setFragmentTrack ] = useState('')
+  const [ fragmentTrack, setFragmentTrack ] = useState([])
   const [allFragments, setAllFragments ] = useState([])
   const [ selectedFragment, setSelectedFragment ] = useState({})
 
@@ -63,7 +63,7 @@ const Fragments = ({ playLoop }) => {
         trackArr.push(currentTrack)
       })
     }
-    packFragmentObject(trackArr)
+    setFragmentTrack(packFragmentTrack(trackArr)) 
   },[selectedFragment])
 
   const getFragmentId = (e) => {
@@ -76,12 +76,12 @@ const Fragments = ({ playLoop }) => {
         console.log(err.message)
       }
     }
+    console.log(fragmentTrack)
     getFragmentData()
+    startLoop(fragmentTrack)
   }
   const handleClick = () => {
-    //playLoop(fragmentTrack)
     
-
   }
   const loadSequence = (e) => {
   }

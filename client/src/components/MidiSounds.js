@@ -8,23 +8,21 @@ class MidiSounds extends Component {
     this.state = {
       drums: 12,
       intruments: 15,
-      tracks: [],
     }
   }
 
   playLoop(fragmentTrack) {
     if (fragmentTrack){
+      this.setState({ sequence: fragmentTrack }) 
       console.log('play loop fragment track', fragmentTrack)
-      this.midiSounds.startPlayLoop([[], [1, [50], 1 / 16], [1, [50], 1 / 16]],[[], [1, [50], 1 / 16], [1, [50], 1 / 16]], 120, 1 / 16)
-      // if (this.midiSounds.loopStarted) {
-      //   this.midiSounds.stopPlayLoop()
-      //   console.log('stopped')
-      // } else {
-      //   console.log('playing')
-      // }
+      if (this.midiSounds.loopStarted) {
+        this.midiSounds.stopPlayLoop()
+        console.log('stopped')
+      } else {
+        console.log('playing')
+        this.midiSounds.startPlayLoop( fragmentTrack , 120, 1 / 16)
+      }
     }
-    
-    
   }
   
   render() {

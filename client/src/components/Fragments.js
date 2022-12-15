@@ -76,7 +76,7 @@ const Fragments = ({ playLoop }) => {
         console.log(err.message)
       }
     }
-    console.log(fragmentTrack)
+    //console.log(fragmentTrack)
     getFragmentData()
     playLoop(fragmentTrack)
   }

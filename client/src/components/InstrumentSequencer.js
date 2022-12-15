@@ -134,7 +134,6 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
     }
     const packedObject =  JSON.stringify(packTrackObject(sequenceData))
     localStorage.setItem('trackData2', packedObject)
-    console.log('packed Object --> ',packedObject)
     try {
       const { data } = await axios.post('/api/tracks/', { data: packedObject, fragment: parseInt(fragmentId) }, {
         headers: {

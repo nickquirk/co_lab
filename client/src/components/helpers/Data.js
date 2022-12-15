@@ -135,14 +135,27 @@ export const packFragmentTrack = (trackArr) => {
     const newSequence = createEmptySequence(sequences[0].length)
     sequences.forEach(seq => {
       seq.forEach((step, index) => {
-        newSequence[index][0].push(step[0])
-        newSequence[index][1].push(step[1])
+        //console.log('step drum ->', step[0][0])
+        //console.log('step inst ->', step[1][0])
+        if (step[0].length){
+          newSequence[index][0].push(step[0][0])
+        } else if (step[1].length) {
+          //console.log('STEP! ->', step[1][0])
+          newSequence[index][1].push(step[1][0])
+        }
       })
     })
-    // remove all blank steps and return to fragment track
+    //remove all blank steps and return to fragment track
     fragmentTrack = newSequence.map(step => {
       return step.map(beat => {
-        return [beat.filter(arr => arr.length)]
+        //console.log('BEAT -> ', beat)
+        const filteredBeat = beat.filter(arr => arr.length)
+        if (filteredBeat[0]) {
+          //console.log('FILTERED BEAT', filteredBeat[0])
+          return filteredBeat
+        } else {
+          return []
+        }
       })
     })
   }

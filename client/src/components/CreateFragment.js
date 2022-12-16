@@ -56,7 +56,7 @@ const CreateFragment = () => {
   return (
     <Container className="component-wrapper create-fragment-wrapper mt-3">
       <form className='fragment-form' onChange={handleChange}>
-        <label className='ml-3' htmlFor='name'>Name</label>
+        <label htmlFor='name'>Name</label>
         <input type='text' name='name' placeholder='Fragment Name'></input>
         <label htmlFor='tempo'>Tempo</label>
         <input type='number' name='tempo' placeholder='120BPM'></input>

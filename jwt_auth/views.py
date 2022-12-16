@@ -46,7 +46,7 @@ class LogInView(APIView):
     print(dt.strftime('%s'))
     token = jwt.encode(
       { 'sub': user_to_login.id, 'exp': dt_as_seconds },
-      settings.SECRET,
+      settings.SECRET_KEY,
       'HS256'
     )
     print(token)

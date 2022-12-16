@@ -54,7 +54,7 @@ const Register = () => {
       <h4 className='text-center'>Register</h4>
       <div className='hero-page text-center form-main'>
         <div className='form-container'>
-          <form onSubmit={handleSubmit}>
+          <form>
             <input
               required
               className='form-control mt-3 mb-3'
@@ -91,7 +91,7 @@ const Register = () => {
               placeholder="Confirm password *"
               value={formFields.password_confirmation}
             />
-            <button to={'/login'} className="btn btn-lg mb-3">Register</button>
+            <button onClick={handleSubmit} className="btn btn-lg mb-3">Register</button>
           </form>
         </div>
       </div>

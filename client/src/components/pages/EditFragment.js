@@ -84,7 +84,7 @@ const EditFragment = () => {
   }
 
   return (
-    <Container className="component-wrapper">
+    <Container className="component-wrapper mt-3">
       {fragment ?
         <>
           <h1>{fragment.name}</h1>
@@ -93,7 +93,7 @@ const EditFragment = () => {
           <div> 
             {/* <input type='text'></input> */}
             {/* <button onClick={saveTrack}>Save</button> */}
-            <button onClick={deleteFragment}>Delete Fragment</button>
+            <button className='btn' onClick={deleteFragment}>Delete Fragment</button>
           </div>
           <MidiSoundsSequencer 
             trackData={trackData}

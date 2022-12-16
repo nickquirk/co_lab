@@ -23,10 +23,10 @@ const LoginPage = () => {
   return (
     <Container className="page-wrapper">
       <Row className='mt-5 flex-row login-container d-flex justify-content-center'>
-        <Col className='col-lg-4 col-md-5 col-12'>
+        <Col className='col-lg-4 col-md-6 col-12'>
           <Register />
         </Col>
-        <Col className='col-lg-4 col-md-5 col-12 mt-4'>
+        <Col className='col-lg-4 col-md-6 col-12 mt-4'>
           <Login />
         </Col>
       </Row>

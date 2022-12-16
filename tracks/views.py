@@ -27,7 +27,7 @@ class TrackListView(APIView):
     print('ALL FRAGMENT TRACKS!🥹', len(all_fragment_tracks))
     if len(all_fragment_tracks) >= 4:
       return Response({'message':'Cannot add more than 4 tracks to a fragment'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
-    track_to_add = PopulatedTrackSerializer(data=request.data)
+    track_to_add = TrackSerializer(data=request.data)
     request.data['owner'] = request.user.id
     print(request.data)
     try:
@@ -37,7 +37,7 @@ class TrackListView(APIView):
         return Response(track_to_add.data, status.HTTP_201_CREATED)
       else:
         print(track_to_add.errors)
-        return Response(track_to_add, status.HTTP_422_UNPROCESSABLE_ENTITY)
+        return Response(track_to_add.data, status.HTTP_422_UNPROCESSABLE_ENTITY)
     except Exception as e:
       return Response(str(e), status.HTTP_500_INTERNAL_SERVER_ERROR)
 

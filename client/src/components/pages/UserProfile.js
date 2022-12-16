@@ -122,7 +122,7 @@ const UserProfile = () => {
 
   // ! JSX
   return (
-    <Container className="page-wrapper">
+    <Container className="component-wrapper mt-3">
       <Row className='text-center'>
         <Col md="4" className='text-center '>
           <div className='user-details d-flex flex-column align-items-center'>
@@ -145,7 +145,7 @@ const UserProfile = () => {
         </Col>
         <Col md="8">
           <h3 className="mt-5 mb-5">Your Fragments</h3>
-          <div className='user-reviews'>
+          <div className='user-fragments'>
             <>
               {ownedFragments ? (
                 <ListGroup className='ms-1'>
@@ -156,7 +156,7 @@ const UserProfile = () => {
                         className="text-decoration-none"
                         key={id}
                         to={`/fragments/${id}`}>
-                        <ListGroupItem className='d-flex review-list list-group-item-action mt-2 review-profile-item'>
+                        <ListGroupItem className='d-flex review-list list-group-item-action mt-2'>
                           <div className='d-flex flex-column align-items-start ms-3'>
                             <h4>{name}</h4>
                           </div>

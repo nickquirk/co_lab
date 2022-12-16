@@ -13,7 +13,7 @@ import MIDISounds from 'midi-sounds-react'
 // Custom Imports 
 import { packTrackObject, unpackTrackObject, createSequencerGrid, createEmptySequence } from './helpers/Data'
 import axios from 'axios'
-import { getToken } from './helpers/Auth'
+import { getToken, getUserId } from './helpers/Auth'
 
 const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, playNote, loadInstrument }) => {
 
@@ -144,16 +144,16 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       tempo: TEMPO,
     }
     const packedObject =  JSON.stringify(packTrackObject(sequenceData))
-    localStorage.setItem('trackData2', packedObject)
+    //localStorage.setItem('trackData2', packedObject)
     try {
       const { data } = await axios.post('/api/tracks/', { data: packedObject, fragment: parseInt(fragmentId) }, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      navigate('/fragments')
+      navigate('/')
     } catch (err) {
-      console.log(err.message)
+      console.log(err)
     }
   }
 
@@ -191,9 +191,9 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
         })
         }
       </select>
-      <button onClick={playLoop}>{playing ? 'Stop' : 'Start'}</button>
-      <button onClick={clearSequence}>Clear</button>
-      <button onClick={saveSequence}>Save</button>
+      <button className='btn' onClick={playLoop}>{playing ? 'Stop' : 'Start'}</button>
+      <button className='btn'  onClick={clearSequence}>Clear</button>
+      <button className='btn'  onClick={saveSequence}>Save</button>
       <form className='d-flex flex-row' onChange={changeSquenceLength}>
         <label>Sequence Length: </label>
         <label htmlFor='16'>16</label>

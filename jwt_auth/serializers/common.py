@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
   password_confirmation = serializers.CharField(write_only=True)
   class Meta:
       model = User
-      fields = ('id', 'email', 'username', 'first_name', 'last_name', 'profile_image', 'password', 'password_confirmation')
+      fields = ('id', 'email', 'username', 'profile_image', 'password', 'password_confirmation')
 
   def validate(self, data):
       print('data ->', data)

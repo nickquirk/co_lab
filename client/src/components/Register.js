@@ -20,7 +20,6 @@ const Register = () => {
     email: '',
     password: '',
     passwordConfirmation: '',
-    image: IMAGE,
   })
 
   // ! Executions

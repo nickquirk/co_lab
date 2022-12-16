@@ -156,7 +156,7 @@ const UserProfile = () => {
                         className="text-decoration-none"
                         key={id}
                         to={`/fragments/${id}`}>
-                        <ListGroupItem className='d-flex review-list list-group-item-action mt-2'>
+                        <ListGroupItem className='d-flex review-list list-group-item-action mt-2 fragment-track'>
                           <div className='d-flex flex-column align-items-start ms-3'>
                             <h4>{name}</h4>
                           </div>

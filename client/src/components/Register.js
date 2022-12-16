@@ -19,7 +19,7 @@ const Register = () => {
     username: '',
     email: '',
     password: '',
-    passwordConfirmation: '',
+    password_confirmation: '',
   })
 
   // ! Executions
@@ -86,10 +86,10 @@ const Register = () => {
               required
               className='form-control mb-3'
               type="password"
-              name="passwordConfirmation"
+              name="password_confirmation"
               onChange={handleChange}
               placeholder="Confirm password *"
-              value={formFields.passwordConfirmation}
+              value={formFields.password_confirmation}
             />
             <button to={'/login'} className="btn btn-lg mb-3">Register</button>
           </form>

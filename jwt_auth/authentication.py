@@ -22,8 +22,8 @@ class JWTAuthentication(BaseAuthentication):
     print('TOKEN ->', token)
     try: 
       # Using JWT method to verify token is valid and extracting the payload
-      print(settings.SECRET_KEY)
-      payload = jwt.decode(token, settings.SECRET_KEY,algorithms=['HS256'])
+      print(settings.SECRET)
+      payload = jwt.decode(token, settings.SECRET,algorithms=['HS256'])
       print('PAYLOAD ->', payload)
       # Using sub query the user table to find a match
       user = User.objects.get(pk=payload['sub'])

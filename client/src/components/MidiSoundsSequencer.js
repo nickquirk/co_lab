@@ -71,12 +71,7 @@ class MidiSoundsSequencer extends Component {
   render() {
     return (
       <div>
-        <MIDISounds
-          ref={(ref) => (this.midiSounds = ref)} 
-          appElementName="root"
-          drums={[]}
-          instruments={[]}
-        />
+        
         <div className='mt-5'>
           <h4>Sequencer Type</h4>
           {/* <button onClick={this.saveData.bind(this)}>Save</button> */}
@@ -84,16 +79,26 @@ class MidiSoundsSequencer extends Component {
             <option name='sequencerType' value='instrument'>Instrument</option>
             <option name='sequencerType' value='drum'>Drum</option>
           </select>
-          <InstrumentSequencer
-            startLoop={this.startLoop.bind(this)}
-            playNote={this.playNote.bind(this)}
-            loadInstrument={this.loadInstrument.bind(this)}
-            setTrackData={this.props.setTrackData}
-            trackData={this.props.trackData}
-            playing={this.state.playing}
-            testFunction={this.testFunction.bind(this)}
-          /> 
-          {/* <DrumSequencer/>  */}
+          <div className='sequencer-div'>
+            <InstrumentSequencer
+              startLoop={this.startLoop.bind(this)}
+              playNote={this.playNote.bind(this)}
+              loadInstrument={this.loadInstrument.bind(this)}
+              setTrackData={this.props.setTrackData}
+              trackData={this.props.trackData}
+              playing={this.state.playing}
+              testFunction={this.testFunction.bind(this)}
+            /> 
+            {/* <DrumSequencer/>  */}
+            
+          </div>
+          <div className='midi-sounds-div'>
+            <MIDISounds
+              ref={(ref) => (this.midiSounds = ref)} 
+              appElementName="root"
+              drums={[]}
+              instruments={[]}/>
+          </div>
         </div>
       </div>
     )

@@ -66,18 +66,6 @@ const EditFragment = () => {
     }
   }
 
-  const loadSequence = (e) => {
-    console.log('load')
-    //setTrackData(JSON.parse(localStorage.getItem('trackData')))
-  }
-
-  const playLoop = (e) => {
-
-  }
-
-  const saveData = () => {
-    console.log('data saved Boi...')
-  }
 
   // axios DELETE request
   // Endpoint: /api/fragments
@@ -96,7 +84,7 @@ const EditFragment = () => {
   }
 
   return (
-    <Container className="page-wrapper">
+    <Container className="component-wrapper">
       {fragment ?
         <>
           <h1>{fragment.name}</h1>
@@ -104,15 +92,13 @@ const EditFragment = () => {
           <h5>{`Creator: ${fragment.owner.username}`}</h5>
           <div> 
             {/* <input type='text'></input> */}
-            <button onClick={saveTrack}>Save</button>
+            {/* <button onClick={saveTrack}>Save</button> */}
             <button onClick={deleteFragment}>Delete Fragment</button>
           </div>
           <MidiSoundsSequencer 
             trackData={trackData}
             setTrackData={setTrackData}
-            saveData={saveData}
           />
-    
         </>
         :
         <p>Spinner Huuuuur</p>

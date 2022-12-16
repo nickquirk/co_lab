@@ -23,11 +23,7 @@ const NavBar = () => {
     <Navbar expand='md' className='navbar-sticky-top navbar-light bg-light'>
       <Container>
         <Navbar.Brand as={Link} to='/'>
-          <img
-            src={logo}
-            height='30px'
-            alt='logo'
-          />
+          <span className='text-yellow navbar-span' style={{ fontSize: '25px' }}>CO</span>_LAB
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className='justify-content-end'>

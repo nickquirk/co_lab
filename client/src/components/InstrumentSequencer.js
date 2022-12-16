@@ -22,12 +22,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
   // ! should create and then just change the state of the midi sounds object 
   const midisounds = new MIDISounds({})
 
-  // ! Vars
-  const MIDI_TRANSPOSE = 54
-  const ROWS = 7
-  const COLS = 16
-  const NOTE_LENGTH = 2 / 16
-  const TEMPO = 120
+
 
   // ! State
   const [ instruments, setInstruments ] = useState([])
@@ -35,6 +30,15 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
   const [ grid, setGrid ] = useState([])
   const [ sequence, setSequence ] = useState([])
   const [ tempo, setTempo ] = useState()
+  const [ sequenceLength, setSequenceLength ] = useState(16)
+
+  // ! Vars
+  const MIDI_TRANSPOSE = 54
+  const ROWS = 14
+  const COLS = sequenceLength
+  const NOTE_LENGTH = 2 / 16
+  const TEMPO = 120
+
 
   // ! Location
   const navigate = useNavigate()
@@ -46,6 +50,10 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
     setSequence(createEmptySequence(COLS))
     //midisounds.cacheInstrument(currentInstrument)
   }, [])
+
+  useEffect(() => {
+    setGrid(createSequencerGrid(COLS, ROWS))
+  }, [sequenceLength])
 
   const getInstrumentNames = () => {
     const instNames = []
@@ -161,10 +169,15 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
     setTempo(tempo)
   }
 
+  const changeSquenceLength = (e) => {
+    console.log(e.target.value)
+    setSequenceLength(parseInt(e.target.value))
+  }
+
 
   // ! JSX
   return (
-    <Container className="component-wrapper">
+    <Container className="component-wrapper sequencer-container">
       <select
         onChange={changeInstrument}
         name="instruments"
@@ -181,7 +194,14 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       <button onClick={playLoop}>{playing ? 'Stop' : 'Start'}</button>
       <button onClick={clearSequence}>Clear</button>
       <button onClick={saveSequence}>Save</button>
-      <Container className='instrument-grid-container'>
+      <form className='d-flex flex-row' onChange={changeSquenceLength}>
+        <label>Sequence Length: </label>
+        <label htmlFor='16'>16</label>
+        <input type='radio' name='sequence-length' value='16' id='16'></input>
+        <label htmlFor='32'>32</label>
+        <input type='radio' name='sequence-length' value='32' id='32'></input>
+      </form>
+      <div className='instrument-grid-container'>
         {grid.map((col, colId) => {
           return (
             <div key={colId} className='mt-3'>
@@ -201,7 +221,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
           )
         })
         }
-      </Container>
+      </div>
     </Container>
   )
 }
@@ -211,5 +231,5 @@ export default InstrumentSequencer
 // ? Cell component
 // Creates Cell component which is a clickable, state aware div forms the basis of the grid
 const Cell = ({ rowId, colId, generateSequenceData, isChecked  }) => {
-  return <div onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#0722A1' : '#FFC300' }} ></div>
+  return <div className='grid-cell' onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#575757' : '#FFC300' }} ></div>
 }

@@ -30,7 +30,7 @@ const Register = () => {
       // send off form data to our API
       await axios.post('/api/auth/register/', formFields)
       // navigate to login page after request has completed
-      navigate('/login')
+      //navigate('/login')
     } catch (err) {
       console.log(err)
     }

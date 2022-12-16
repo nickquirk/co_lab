@@ -28,8 +28,8 @@ const EditFragment = () => {
   // ! States
   //const [ sequencer, setSequencer ]   = useState('instrument')
   const [ trackData, setTrackData ] = useState({})
-  const [ fragment, setFragment ] = useState()
-  const [ sequenceState, setSequenceState ] = useState()
+  const [ fragment, setFragment ] = useState(null)
+  const [ sequenceState, setSequenceState ] = useState(null)
   
   // ! Executions
   // Axios GET Request
@@ -38,7 +38,7 @@ const EditFragment = () => {
   useEffect(() => {
     const getFragmentData = async () => {
       try {
-        const { data } = await axios.get(`/api/fragments/${fragmentId}`)
+        const { data } = await axios.get(`/api/fragments/${fragmentId}/`)
         console.log(data)
         console.log('fragmentId', fragmentId)
         setFragment(data)
@@ -72,7 +72,7 @@ const EditFragment = () => {
   // Description: DELETE  track data from database
   const deleteFragment = async (e) => {
     try {
-      const response = await axios.delete(`/api/fragments/${fragmentId}`, {
+      const response = await axios.delete(`/api/fragments/${fragmentId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -89,7 +89,7 @@ const EditFragment = () => {
         <>
           <h1>{fragment.name}</h1>
           <h4>{`Tempo: ${fragment.tempo} BPM`}</h4>
-          <h5>{`Creator: ${fragment.owner.username}`}</h5>
+          <h5>{`Creator: ${fragment?.owner?.username}`}</h5>
           <div> 
             {/* <input type='text'></input> */}
             {/* <button onClick={saveTrack}>Save</button> */}

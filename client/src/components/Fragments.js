@@ -81,7 +81,7 @@ const Fragments = ({ playLoop }) => {
     const fragmentId = e.target.name
     const getFragmentData = async () => {
       try {
-        const { data } = await axios.get(`api/fragments/${fragmentId}`)
+        const { data } = await axios.get(`api/fragments/${fragmentId}/`)
         setSelectedFragment(data)
       } catch (err) {
         console.log(err.message)
@@ -102,7 +102,7 @@ const Fragments = ({ playLoop }) => {
       <div className='component-wrapper'>
         <Container className='component-wrapper'>
           <div className='fragment-title'>
-            <h4><strong><span className='text-yellow' style={{ fontSize: '28px' }}> Frag</span></strong> / ments</h4>
+            <h4><strong><span className='text-yellow' style={{ fontSize: '30px' }}> Frag</span></strong> / ments</h4>
           </div>
           <div className='fragments-wrapper'>
             {allFragments.length ?

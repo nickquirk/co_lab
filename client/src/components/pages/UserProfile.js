@@ -36,7 +36,7 @@ const UserProfile = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const { data } = await axios.get(`/api/users/${userId}`, {
+        const { data } = await axios.get(`/api/users/${userId}/`, {
           headers: {
             Authorization: `Bearer ${getToken()}`,
           },
@@ -82,7 +82,7 @@ const UserProfile = () => {
   // Delete a fragment that the user owns
   const deleteFragment = async (fragmentId) => {
     try {
-      const response = await axios.delete(`/api/fragments/${fragmentId}`, {
+      const response = await axios.delete(`/api/fragments/${fragmentId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -103,7 +103,7 @@ const UserProfile = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      const { data } = await axios.get(`/api/users/${userId}`, {
+      const { data } = await axios.get(`/api/users/${userId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

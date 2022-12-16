@@ -98,7 +98,7 @@ const UserProfile = () => {
   const updateUserProfile = async (event) => {
     event.preventDefault()
     try {
-      await axios.put(`/api/users/${userId}`, formData, {
+      await axios.put(`/api/users/${userId}/`, formData, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

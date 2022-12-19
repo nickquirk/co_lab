@@ -148,7 +148,7 @@ const UserProfile = () => {
           <div className='user-fragments'>
             <>
               {ownedFragments ? (
-                <ListGroup className='ms-1'>
+                <ListGroup className='ms-1 mb-3'>
                   {ownedFragments.map(fragment => {
                     const { id, name } = fragment
                     return (

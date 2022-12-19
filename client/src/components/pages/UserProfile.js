@@ -148,7 +148,11 @@ const UserProfile = () => {
           <div className='user-fragments'>
             <>
               {ownedFragments ? (
+<<<<<<< HEAD
                 <ListGroup className='ms-1 mb-3'>
+=======
+                <ListGroup className='ms-1 mb-5'>
+>>>>>>> development
                   {ownedFragments.map(fragment => {
                     const { id, name } = fragment
                     return (

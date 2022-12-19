@@ -194,13 +194,13 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       <button className='btn' onClick={playLoop}>{playing ? 'Stop' : 'Start'}</button>
       <button className='btn'  onClick={clearSequence}>Clear</button>
       <button className='btn'  onClick={saveSequence}>Save</button>
-      <form className='d-flex flex-row' onChange={changeSquenceLength}>
+      {/* <form className='d-flex flex-row' onChange={changeSquenceLength}>
         <label>Sequence Length: </label>
         <label htmlFor='16'>16</label>
         <input type='radio' name='sequence-length' value='16' id='16'></input>
         <label htmlFor='32'>32</label>
         <input type='radio' name='sequence-length' value='32' id='32'></input>
-      </form>
+      </form> */}
       <div className='instrument-grid-container'>
         {grid.map((col, colId) => {
           return (

@@ -6,7 +6,7 @@
   $secondary: #ffd724;
   $tertiary: #7d7d7d;
 
-
+// ? Generic styles
 * {
   box-sizing: border-box;
   font-family: 'Bebas Neue', cursive;
@@ -27,6 +27,7 @@
   color: $secondary;
 }
 
+// ? Navbar
 .navbar{
 
   .nav-link{
@@ -45,6 +46,7 @@
 // ? Sequencer Components 
 .instrument-grid-container{
   display: flex;
+
 }
 
 .drum-grid-container{
@@ -55,6 +57,11 @@
 .drum-row-container{
   display: flex;
   flex-direction: row;
+}
+
+.sequencer-container {
+  margin: 0;
+  padding: 0;
 }
 
 

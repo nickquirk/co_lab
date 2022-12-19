@@ -20,18 +20,18 @@ class MidiSoundsSequencer extends Component {
   // todo
   // control logic so that loop can't be started when no sequence is loaded
   startLoop(loop) {
-    this.setState( { sequence: loop })
+    this.setState({ sequence: loop })
     console.log('loop', loop)
     // if (loop[0][1].length){
     //   console.log('undefined', loop[0][1][0][1])
     // }
     if (this.midiSounds.loopStarted) {
       this.midiSounds.stopPlayLoop()
-      this.setState( { playing: this.midiSounds.loopStarted })
+      this.setState({ playing: this.midiSounds.loopStarted })
       console.log('stopped')
     } else {
       this.midiSounds.startPlayLoop(loop, 120, 1 / 16)
-      this.setState( { playing: this.midiSounds.loopStarted })
+      this.setState({ playing: this.midiSounds.loopStarted })
       console.log('playing')
     }
   }
@@ -67,38 +67,33 @@ class MidiSoundsSequencer extends Component {
     console.log('test')
   }
 
-  
+
   render() {
     return (
-      <div>
-        
-        <div className='mt-5'>
-          <h4>Sequencer Type</h4>
-          {/* <button onClick={this.saveData.bind(this)}>Save</button> */}
-          <select onChange={this.setSequencerType.bind(this)} className='mb-3'>
+      <div className='mt-3'>
+        {/* <h4>Sequencer Type</h4> */}
+        {/* <button onClick={this.saveData.bind(this)}>Save</button> */}
+        {/* <select onChange={this.setSequencerType.bind(this)} className='mb-3'>
             <option name='sequencerType' value='instrument'>Instrument</option>
             <option name='sequencerType' value='drum'>Drum</option>
-          </select>
-          <div className='sequencer-div'>
-            <InstrumentSequencer
-              startLoop={this.startLoop.bind(this)}
-              playNote={this.playNote.bind(this)}
-              loadInstrument={this.loadInstrument.bind(this)}
-              setTrackData={this.props.setTrackData}
-              trackData={this.props.trackData}
-              playing={this.state.playing}
-              testFunction={this.testFunction.bind(this)}
-            /> 
-            {/* <DrumSequencer/>  */}
-            
-          </div>
-          <div className='midi-sounds-div'>
-            <MIDISounds
-              ref={(ref) => (this.midiSounds = ref)} 
-              appElementName="root"
-              drums={[]}
-              instruments={[]}/>
-          </div>
+          </select> */}
+        <InstrumentSequencer
+          startLoop={this.startLoop.bind(this)}
+          playNote={this.playNote.bind(this)}
+          loadInstrument={this.loadInstrument.bind(this)}
+          setTrackData={this.props.setTrackData}
+          trackData={this.props.trackData}
+          playing={this.state.playing}
+          testFunction={this.testFunction.bind(this)}
+        />
+        {/* <DrumSequencer/>  */}
+
+        <div className='midi-sounds-div'>
+          <MIDISounds
+            ref={(ref) => (this.midiSounds = ref)}
+            appElementName="root"
+            drums={[]}
+            instruments={[]} />
         </div>
       </div>
     )

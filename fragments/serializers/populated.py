@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from .common import FragmentSerializer
-from tracks.serializers.common import TrackSerializer
+from tracks.serializers.populated import PopulatedTrackSerializer
 from jwt_auth.serializers.common import UserSerializer
 
 
 # Custom Model Serializer
 class PopulatedFragmentSerializer(FragmentSerializer):
-  tracks = TrackSerializer(many=True)
+  tracks = PopulatedTrackSerializer(many=True)
   owner = UserSerializer()

@@ -20,7 +20,7 @@ class FragmentListView(APIView):
   def get(self, _request):
     # Query the database using the model, getting all fragments back as a queryset
     fragments = Fragment.objects.all()
-    # Serialize queryset and cobvert into python datatype
+    # Serialize queryset and convert into python datatype
     serialized_fragments = PopulatedFragmentSerializer(fragments, many=True)
     return Response(serialized_fragments.data, status.HTTP_200_OK)
 

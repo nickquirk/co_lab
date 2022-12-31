@@ -103,7 +103,7 @@ const UserProfile = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
-      const { data } = await axios.get(`/api/users/${userId}`, {
+      const { data } = await axios.get(`/api/users/${userId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

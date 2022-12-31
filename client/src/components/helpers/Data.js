@@ -121,7 +121,7 @@ export const packTrackObject = (sequenceData) => {
   return (trackObject)
 }
 
-// function to pack four tracks sequences into one Fragment track
+// function to pack four track sequences into one Fragment track
 // map through all arrays and combine into one array * seqLength
 // will return an array in the form: [[drums],[[track1Inst, note, duration], [track2Inst, note, duration]] per step // Tempo
 export const packFragmentTrack = (trackArr) => {
@@ -145,7 +145,7 @@ export const packFragmentTrack = (trackArr) => {
         }
       })
     })
-    //remove all blank steps and return to fragment track
+    //remove all blank steps and return fragment track
     fragmentTrack = newSequence.map(step => {
       return step.map(beat => {
         const filteredBeat = beat.filter(arr => arr.length)

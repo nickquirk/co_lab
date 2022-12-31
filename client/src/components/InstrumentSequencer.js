@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 
-// Components ≤l
+// Components 
 import MIDISounds from 'midi-sounds-react'
 
 // Custom Imports 
@@ -74,7 +74,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
 
   // Generate new sequence data each time a cell is clicked
   const generateSequenceData = (rowId, colId, isChecked) => {
-    // set isChecked to opposite of what it was
+    // toggle isChecked state
     isChecked = !isChecked
     // create local variables 
     const instrument = parseInt(currentInstrument)
@@ -83,7 +83,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
     const updatedGrid = [...grid]
     // Build sequence from trackState object
     if (isChecked){
-      newSequence[colId][1] = [[ instrument, [note], NOTE_LENGTH]]
+      newSequence[colId][1] = [[instrument, [note], NOTE_LENGTH]]
     } else {
       newSequence[colId] = [[], []]
     }
@@ -98,7 +98,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       }
     })
     if (isChecked) {
-      playNote({ instrument: currentInstrument, note: [note],duration: NOTE_LENGTH })
+      playNote({ instrument: currentInstrument, note: [note], duration: NOTE_LENGTH })
     }
     setGrid(updatedGrid)
   }
@@ -131,7 +131,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
     setGrid(clearGrid)
   }
 
-  // Save sequence to memory as an object
+  // Save sequence to database as an object
   const saveSequence = async (e) => {
     console.log('sequenced saved')
     const sequenceData = {
@@ -144,7 +144,6 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       tempo: TEMPO,
     }
     const packedObject =  JSON.stringify(packTrackObject(sequenceData))
-    //localStorage.setItem('trackData2', packedObject)
     try {
       const { data } = await axios.post('/api/tracks/', { data: packedObject, fragment: parseInt(fragmentId) }, {
         headers: {
@@ -229,7 +228,8 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
 export default InstrumentSequencer
 
 // ? Cell component
-// Creates Cell component which is a clickable, state aware div forms the basis of the grid
+// Creates Cell component which is a clickable, state aware div 
+// Forms the basis of the grid
 const Cell = ({ rowId, colId, generateSequenceData, isChecked  }) => {
   return <div className='grid-cell' onClick={() => generateSequenceData(rowId, colId, isChecked)} style={{ width: '20px', height: '20px', padding: '5px', backgroundColor: isChecked ? '#575757' : '#FFC300' }} ></div>
 }

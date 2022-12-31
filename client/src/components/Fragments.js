@@ -15,11 +15,6 @@ import { useEffect, useState } from 'react'
 import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers/Data'
 import { getUserId, isAuthenticated } from '../components/helpers/Auth'
 
-//todo
-// create function to combine tracks into one fragment track
-// pass whole track to MIDISounds object
-// MIDISounds object unpacks sequence and plays
-
 // This will be the main component in the app. It will be a midisounds object that can play up to four tracks. It will display:
 // Trackname
 // Creator Username
@@ -81,7 +76,7 @@ const Fragments = ({ playLoop }) => {
     const fragmentId = e.target.name
     const getFragmentData = async () => {
       try {
-        const { data } = await axios.get(`api/fragments/${fragmentId}`)
+        const { data } = await axios.get(`api/fragments/${fragmentId}/`)
         setSelectedFragment(data)
       } catch (err) {
         console.log(err.message)
@@ -140,7 +135,7 @@ const Fragments = ({ playLoop }) => {
               : errors ?
                 <h2>Error Message Here...</h2>
                 :
-                <p>Spinner Huuuur</p>
+                <p>Spinner</p>
             }
           </div>
 
@@ -156,7 +151,7 @@ const isLoggedIn = ({ id }) => {
   if (isAuthenticated()) {
     console.log('id ->', id)
     return (
-      `/fragments/${id}`
+      `/fragments/${id}/`
     )
   } else {
     return (

@@ -101,7 +101,7 @@ const EditFragment = () => {
           />
         </>
         :
-        <p>Spinner Huuuuur</p>
+        <p>Spinner</p>
       }
     </Container>
   )

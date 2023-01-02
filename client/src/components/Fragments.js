@@ -15,25 +15,15 @@ import { useEffect, useState } from 'react'
 import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers/Data'
 import { getUserId, isAuthenticated } from '../components/helpers/Auth'
 
-//todo
-// create function to combine tracks into one fragment track
-// pass whole track to MIDISounds object
-// MIDISounds object unpacks sequence and plays
-
 // This will be the main component in the app. It will be a midisounds object that can play up to four tracks. It will display:
 // Trackname
 // Creator Username
 // Up to four tracks
 // Play/Stop toggle button
-// It will have to be functional on a carousel component and standalone 
 const Fragments = ({ playLoop }) => {
 
   // ! State
   const [errors, setErrors] = useState()
-  const [track1, setTrack1] = useState('')
-  const [track2, setTrack2] = useState('')
-  const [track3, setTrack3] = useState('')
-  const [track4, setTrack4] = useState('')
   const [fragmentTrack, setFragmentTrack] = useState([])
   const [allFragments, setAllFragments] = useState([])
   const [selectedFragment, setSelectedFragment] = useState({})
@@ -87,14 +77,9 @@ const Fragments = ({ playLoop }) => {
         console.log(err.message)
       }
     }
-    //console.log(fragmentTrack)
     getFragmentData()
   }
-  const handleClick = () => {
 
-  }
-  const loadSequence = (e) => {
-  }
 
   // ! JSX
   return (
@@ -102,7 +87,7 @@ const Fragments = ({ playLoop }) => {
       <div className='component-wrapper'>
         <Container className='component-wrapper'>
           <div className='fragment-title'>
-            <h4><strong><span className='text-yellow' style={{ fontSize: '30px' }}> Frag</span></strong> / ments</h4>
+            <h4><span className='text-yellow' style={{ fontSize: '28px' }}> Frag</span>/ ments</h4>
           </div>
           <div className='fragments-wrapper'>
             {allFragments.length ?
@@ -140,7 +125,7 @@ const Fragments = ({ playLoop }) => {
               : errors ?
                 <h2>Error Message Here...</h2>
                 :
-                <p>Spinner Huuuur</p>
+                <p>Spinner</p>
             }
           </div>
 
@@ -156,7 +141,7 @@ const isLoggedIn = ({ id }) => {
   if (isAuthenticated()) {
     console.log('id ->', id)
     return (
-      `/fragments/${id}`
+      `/fragments/${id}/`
     )
   } else {
     return (

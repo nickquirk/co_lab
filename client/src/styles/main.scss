@@ -25,6 +25,9 @@
 
 .text-yellow{
   color: $secondary;
+  h4{
+    font-size: 28px;
+  }
 }
 
 // ? Navbar
@@ -67,10 +70,13 @@
 
 // ? Track Component
 .track-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
   height: 50px;
   background-color: lighten($secondary, 0%);
   margin: 5px;
-  //border: 10px solid darken($secondary, 8%);
+  //border: 5px solid darken($secondary, 8%);
 }
 
 // ? Login Page
@@ -83,9 +89,11 @@
   border-color: $secondary;
 
 input{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 15px;
     border-style: none;
     border-radius: 0;
-    max-width: 250px;
+    max-width: 95%;
 
     ::placeholder {
       color: lighten($tertiary, 40%);
@@ -110,6 +118,7 @@ input{
   background-color: $tertiary;
   display: flex;
   justify-content: center;
+
   h4{
     margin: 5px;
     color: white;
@@ -118,7 +127,6 @@ input{
 
 .fragments-wrapper {
   margin-top: 20px;
-  margin: 0;
   .fragment-card{
     background-color: $tertiary;
     color: $tertiary;

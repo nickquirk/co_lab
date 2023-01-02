@@ -20,15 +20,10 @@ import { getUserId, isAuthenticated } from '../components/helpers/Auth'
 // Creator Username
 // Up to four tracks
 // Play/Stop toggle button
-// It will have to be functional on a carousel component and standalone 
 const Fragments = ({ playLoop }) => {
 
   // ! State
   const [errors, setErrors] = useState()
-  const [track1, setTrack1] = useState('')
-  const [track2, setTrack2] = useState('')
-  const [track3, setTrack3] = useState('')
-  const [track4, setTrack4] = useState('')
   const [fragmentTrack, setFragmentTrack] = useState([])
   const [allFragments, setAllFragments] = useState([])
   const [selectedFragment, setSelectedFragment] = useState({})
@@ -82,14 +77,9 @@ const Fragments = ({ playLoop }) => {
         console.log(err.message)
       }
     }
-    //console.log(fragmentTrack)
     getFragmentData()
   }
-  const handleClick = () => {
 
-  }
-  const loadSequence = (e) => {
-  }
 
   // ! JSX
   return (
@@ -97,7 +87,7 @@ const Fragments = ({ playLoop }) => {
       <div className='component-wrapper'>
         <Container className='component-wrapper'>
           <div className='fragment-title'>
-            <h4><strong><span className='text-yellow' style={{ fontSize: '28px' }}> Frag</span></strong> / ments</h4>
+            <h4><span className='text-yellow' style={{ fontSize: '28px' }}> Frag</span>/ ments</h4>
           </div>
           <div className='fragments-wrapper'>
             {allFragments.length ?

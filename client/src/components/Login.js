@@ -45,7 +45,7 @@ const Login = () => {
 
   return (
     <Container className='login-component-wrapper'>
-      <div className="hero-page text-center form-main">
+      <div className="text-center form-main">
         <h4 className='text-center'>Log in</h4>
         <div className="form-container">
           <form onSubmit={handleSubmit}>

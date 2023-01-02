@@ -66,6 +66,7 @@ export const unpackTrackObject = (trackObject) => {
       return [ ...rowId ]
     }
   })
+  
   //create sequenceObject and return
   const sequenceObject = {
     grid: newGrid,

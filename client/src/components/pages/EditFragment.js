@@ -38,7 +38,7 @@ const EditFragment = () => {
   useEffect(() => {
     const getFragmentData = async () => {
       try {
-        const { data } = await axios.get(`/api/fragments/${fragmentId}`)
+        const { data } = await axios.get(`/api/fragments/${fragmentId}/`)
         console.log(data)
         console.log('fragmentId', fragmentId)
         setFragment(data)
@@ -72,7 +72,7 @@ const EditFragment = () => {
   // Description: DELETE  track data from database
   const deleteFragment = async (e) => {
     try {
-      const response = await axios.delete(`/api/fragments/${fragmentId}`, {
+      const response = await axios.delete(`/api/fragments/${fragmentId}/`, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
@@ -101,7 +101,7 @@ const EditFragment = () => {
           />
         </>
         :
-        <p>Spinner Huuuuur</p>
+        <p>Spinner</p>
       }
     </Container>
   )

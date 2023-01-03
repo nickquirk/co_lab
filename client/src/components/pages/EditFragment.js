@@ -28,17 +28,10 @@ const EditFragment = () => {
 
   // ! States
   //const [ sequencer, setSequencer ]   = useState('instrument')
-<<<<<<< HEAD
-  const [ trackData, setTrackData ] = useState({})
-  const [ fragment, setFragment ] = useState(null)
-  const [ sequenceState, setSequenceState ] = useState(null)
-  
-=======
   const [trackData, setTrackData] = useState({})
   const [fragment, setFragment] = useState()
   const [sequenceState, setSequenceState] = useState()
 
->>>>>>> development
   // ! Executions
   // Axios GET Request
   // Endpoint: /api/fragments

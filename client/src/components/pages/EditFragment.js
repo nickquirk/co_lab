@@ -16,6 +16,7 @@ import MidiSoundsSequencer from '../MidiSoundsSequencer'
 // Custom Functions 
 import { packTrackObject, unpackTrackObject } from '../helpers/Data'
 import { getToken, isOwner } from '../helpers/Auth'
+import ShowOnceModal from '../ShowOnceModal'
 
 // todo
 // use isOwner
@@ -27,10 +28,17 @@ const EditFragment = () => {
 
   // ! States
   //const [ sequencer, setSequencer ]   = useState('instrument')
+<<<<<<< HEAD
   const [ trackData, setTrackData ] = useState({})
   const [ fragment, setFragment ] = useState(null)
   const [ sequenceState, setSequenceState ] = useState(null)
   
+=======
+  const [trackData, setTrackData] = useState({})
+  const [fragment, setFragment] = useState()
+  const [sequenceState, setSequenceState] = useState()
+
+>>>>>>> development
   // ! Executions
   // Axios GET Request
   // Endpoint: /api/fragments
@@ -85,17 +93,39 @@ const EditFragment = () => {
 
   return (
     <Container className="component-wrapper mt-3">
+      <ShowOnceModal
+        pageId={'EditFragment'}
+        modalTitle={'Sequencer'}
+        modalBody={<>
+          <p>Add Tracks to a Fragment using the Sequencer. This allows simple melodies to be created using
+            a 16 step grid that spans an octave (14 notes). Click the cells to toggle notes on and off or
+            clear the whole sequence by clicking &apos;Clear&apos;. Click &apos;Play/Stop&apos; to play or stop
+            playback of the current melody. If you are the owner of the Fragment you can delete it here.
+          <br /><br />
+            Choose from over 1000 different instruments from Orchestral to Synthesizers.
+          <br /><br />
+            When you&apos;re happy with your melody, click &apos;Save&apos; to add the track to the Fragment.
+          </p>
+        </>}
+      />
       {fragment ?
         <>
           <h1>{fragment.name}</h1>
           <h4>{`Tempo: ${fragment.tempo} BPM`}</h4>
+<<<<<<< HEAD
           <h5>{`Creator: ${fragment?.owner?.username}`}</h5>
           <div> 
             {/* <input type='text'></input> */}
             {/* <button onClick={saveTrack}>Save</button> */}
+=======
+          <h5>{`Creator: ${fragment.owner.username}`}</h5>
+          {isOwner(fragment.owner.id) ?
+>>>>>>> development
             <button className='btn' onClick={deleteFragment}>Delete Fragment</button>
-          </div>
-          <MidiSoundsSequencer 
+            :
+            null
+          }
+          <MidiSoundsSequencer
             trackData={trackData}
             setTrackData={setTrackData}
           />

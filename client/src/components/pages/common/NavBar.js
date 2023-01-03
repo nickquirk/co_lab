@@ -32,7 +32,7 @@ const NavBar = () => {
             {isAuthenticated() ?
               <>
                 <Nav.Link className='nav-item nav-link' as={Link} to={`/profile/${getUserId()}`}>Profile</Nav.Link>
-                <span className='nav-link' onClick={() => handleLogout(navigate('/'))}><span className='text-yellow'>Logout</span></span>
+                <span className='nav-link' onClick={() => handleLogout(navigate('/login'))}><span className='text-yellow'>Logout</span></span>
               </>
               :
               <Nav.Link className='nav-item nav-link' as={Link} to='/login'><span className='text-yellow'>Login</span></Nav.Link>

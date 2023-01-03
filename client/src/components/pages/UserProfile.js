@@ -11,6 +11,7 @@ import axios from 'axios'
 import { getToken, getUserId } from '../helpers/Auth'
 import UploadImage from '../helpers/UploadImage'
 import { handleLogout } from '../helpers/Auth'
+import CreateFragment from '../CreateFragment'
 
 const UserProfile = () => {
   // ! State
@@ -142,6 +143,7 @@ const UserProfile = () => {
               </div>
             </div>
           </div>
+          <CreateFragment />
         </Col>
         <Col md="8">
           <h3 className="mt-5 mb-5">Your Fragments</h3>

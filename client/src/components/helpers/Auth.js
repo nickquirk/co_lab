@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer'
+import { useNavigate } from 'react-router-dom'
 
 const tokenName = 'token'
 
@@ -34,9 +35,11 @@ export const isAuthenticated = () => {
 export const handleLogout = (navigate) => {
   console.log(tokenName)
   localStorage.removeItem(tokenName)
-  navigate('/login')
+  //navigate('/login')
 }
 
+// Takes owner as an argment and returns false if no payload
+// and true if the own matches the current payload.sub (userId)
 export const isOwner = (token1) => {
   const payload = getPayload()
   if (!payload) return false

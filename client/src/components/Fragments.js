@@ -87,7 +87,7 @@ const Fragments = ({ playLoop }) => {
       <div className='component-wrapper'>
         <Container className='component-wrapper'>
           <div className='fragment-title'>
-            <h4><span className='text-yellow' style={{ fontSize: '28px' }}> Frag</span>/ ments</h4>
+            <h4><span className='text-yellow' style={{ fontSize: '28px' }}> Frag </span>/ ments</h4>
           </div>
           <div className='fragments-wrapper'>
             {allFragments.length ?

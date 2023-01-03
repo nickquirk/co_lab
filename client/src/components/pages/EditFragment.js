@@ -112,15 +112,8 @@ const EditFragment = () => {
         <>
           <h1>{fragment.name}</h1>
           <h4>{`Tempo: ${fragment.tempo} BPM`}</h4>
-<<<<<<< HEAD
-          <h5>{`Creator: ${fragment?.owner?.username}`}</h5>
-          <div> 
-            {/* <input type='text'></input> */}
-            {/* <button onClick={saveTrack}>Save</button> */}
-=======
           <h5>{`Creator: ${fragment.owner.username}`}</h5>
           {isOwner(fragment.owner.id) ?
->>>>>>> development
             <button className='btn' onClick={deleteFragment}>Delete Fragment</button>
             :
             null

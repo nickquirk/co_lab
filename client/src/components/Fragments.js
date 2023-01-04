@@ -6,6 +6,7 @@ import Card from 'react-bootstrap/Card'
 import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
+import Toast from 'react-bootstrap/Toast'
 
 // Custom Imports
 import Track from './Track'
@@ -14,6 +15,7 @@ import { useEffect, useState } from 'react'
 // Custom Functions 
 import { packTrackObject, unpackTrackObject, packFragmentTrack } from './helpers/Data'
 import { getUserId, isAuthenticated } from '../components/helpers/Auth'
+import { ToastContainer } from 'react-bootstrap'
 
 // This will be the main component in the app. It will be a midisounds object that can play up to four tracks. It will display:
 // Trackname
@@ -27,6 +29,7 @@ const Fragments = ({ playLoop }) => {
   const [fragmentTrack, setFragmentTrack] = useState([])
   const [allFragments, setAllFragments] = useState([])
   const [selectedFragment, setSelectedFragment] = useState({})
+  const [showLoginToast, setShowLoginToast] = useState(false)
 
   // ! Location
   const navigate = useNavigate()
@@ -81,56 +84,68 @@ const Fragments = ({ playLoop }) => {
   }
 
 
+  const toggleToast = () => setShowLoginToast(!showLoginToast)
+
+
   // ! JSX
   return (
     <>
-      <div className='component-wrapper'>
-        <Container className='component-wrapper'>
-          <div className='fragment-title'>
-            <h4><span className='text-yellow' style={{ fontSize: '28px' }}> Frag </span>/ ments</h4>
-          </div>
-          <div className='fragments-wrapper'>
-            {allFragments.length ?
-              <Row>
-                {allFragments.map(frag => {
-                  const { name, tempo, id, owner, tracks } = frag
-                  return (
-                    <Col key={id} className='col-lg-4 col-sm-6 col-12'>
-                      <div>
-                        <Card className='fragment-card'>
-                          <Card.Body className='card-body'>
-                            <Link
-                              className="text-decoration-none"
-                              to={`/fragments/${id}`}>
-                              <Card.Title className='card-text'>{name}</Card.Title>
-                              <Card.Subtitle className='card-text'>{`Creator: ${owner.username}`}</Card.Subtitle>
-                              <Card.Text className='card-text-tempo'>{`Tempo: ${tempo}`}</Card.Text>
-                              {tracks.map(track => {
-                                return (
-                                  <Track
-                                    key={track.id}
-                                    track={track}
-                                  />
-                                )
-                              })}
-                            </Link>
-                            <button className='btn mt-3 mb-3' onClick={getFragmentId} name={id}>Play</button>
-                          </Card.Body>
-                        </Card>
-                      </div>
-                    </Col>
-                  )
-                })}
-              </Row>
-              : errors ?
-                <h2>Error Message Here...</h2>
-                :
-                <p>Spinner</p>
-            }
-          </div>
-
-        </Container>
-      </div>
+      <Container className='component-wrapper'>
+        <div className='fragment-title'>
+          <h4><span className='text-yellow' style={{ fontSize: '28px' }}> Frag </span>/ ments</h4>
+        </div>
+        <ToastContainer className='login-toast-container p-3 position-fixed' position={'top-center'}>
+          <Toast className='login-toast' show={showLoginToast} onClose={toggleToast}>
+            <Toast.Header>
+              <strong className='me-auto'>Info</strong>
+            </Toast.Header>
+            <Toast.Body>
+              <p>Create an account or Login to create or add Tracks to a Fragment</p>
+            </Toast.Body>
+          </Toast>
+        </ToastContainer>
+        <div className='fragments-wrapper'>
+          {allFragments.length ?
+            <Row>
+              {allFragments.map(frag => {
+                const { name, tempo, id, owner, tracks } = frag
+                return (
+                  <Col key={id} className='col-lg-4 col-sm-6 col-12'>
+                    <div>
+                      <Card className='fragment-card'>
+                        <Card.Body className='card-body'>
+                          <Link
+                            className="text-decoration-none"
+                            to={isAuthenticated() ? `/fragments/${id}` : '/'}
+                            onClick={isAuthenticated() ? null : toggleToast}
+                          >
+                            <Card.Title className='card-text'>{name}</Card.Title>
+                            <Card.Subtitle className='card-text'>{`Creator: ${owner.username}`}</Card.Subtitle>
+                            <Card.Text className='card-text-tempo'>{`Tempo: ${tempo}`}</Card.Text>
+                            {tracks.map(track => {
+                              return (
+                                <Track
+                                  key={track.id}
+                                  track={track}
+                                />
+                              )
+                            })}
+                          </Link>
+                          <button className='btn mt-3 mb-3' onClick={getFragmentId} name={id}>Play</button>
+                        </Card.Body>
+                      </Card>
+                    </div>
+                  </Col>
+                )
+              })}
+            </Row>
+            : errors ?
+              <h2>Error Message Here...</h2>
+              :
+              <p>Spinner</p>
+          }
+        </div>
+      </Container>
     </>
   )
 }

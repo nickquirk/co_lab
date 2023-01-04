@@ -121,6 +121,20 @@ input{
   }
 }
 
+.login-toast-container {
+  .login-toast {
+    .toast-header {
+     background-color: $secondary;
+     strong{
+      color: $tertiary;
+     }
+     button{
+      color: white;
+     }
+    }
+  }
+}
+
 .fragments-wrapper {
   margin-top: 20px;
   .fragment-card{

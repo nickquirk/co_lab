@@ -87,6 +87,7 @@ const EditFragment = () => {
   return (
     <Container className="component-wrapper mt-3">
       <ShowOnceModal
+        className='modal'
         pageId={'EditFragment'}
         modalTitle={'Sequencer'}
         modalBody={<>

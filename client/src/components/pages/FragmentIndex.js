@@ -38,6 +38,7 @@ const FragmentIndex = () => {
         }
       </>
       <ShowOnceModal
+        className='modal'
         pageId={'FragmentIndex'}
         modalTitle={<>Welcome to <span className='text-yellow'>CO</span>_LAB</>}
         modalBody={<>

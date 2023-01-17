@@ -226,7 +226,7 @@ For the prototype I used toggle buttons to form the basis for the grid but this 
 
 The default grid is sixteen steps long and spans 14 notes (one octave) from middle C (C3, MIDI note 60) at the bottom left corner. The MIDISounds object can play multiple notes at once but in order to keep the user experience simple and streamlined I decided to limit the amount of notes per step to one.
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628444/Readme_Pics/Project4/image33_kapuzu.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/b_rgb:ffffff/v1673628444/Readme_Pics/Project4/image33_kapuzu.png)
 
 #### Creating the Grid
 To create the grid I first built an array in the form that I wanted the grid to follow. I used an object with the value as a boolean to represent if a cell was checked or not. I created a function that is called on page load and creates an array based on a given number of rows and columns. 
@@ -235,7 +235,7 @@ To create the grid I first built an array in the form that I wanted the grid to 
 
 The array that is returned is in the form: 
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628441/Readme_Pics/Project4/image1_zvkcy7.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/b_rgb:ffffff/v1673628441/Readme_Pics/Project4/image1_zvkcy7.png)
 
 Each step in the sequence in an object with a key value pair that denotes if the cell has been checked or not. On page load a blank grid is created and this is then used as a basis to build the grid interface.
 
@@ -257,16 +257,16 @@ Using a ternary operator I added some conditional logic to each cell to change t
 
 ![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628443/Readme_Pics/Project4/image19_etvgeh.png)
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628441/Readme_Pics/Project4/image6_ygqavn.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/b_rgb:ffffff/v1673628441/Readme_Pics/Project4/image6_ygqavn.png)
 
 #### Track object
 Once a sequence has been created it can be saved to the parent Fragment. The saving and recalling of sequence data was probably one of the most challenging parts of this project. I decided to save each track as discrete objects with the following form. 
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628442/Readme_Pics/Project4/image12_qhnrn9.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/b_rgb:ffffff/v1673628442/Readme_Pics/Project4/image12_qhnrn9.png)
 
 The data key contains an array of objects that hold all the data required to reproduce each step of a sequence. This takes the following form.
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628444/Readme_Pics/Project4/image30_fsdcdq.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/b_rgb:ffffff/v1673628444/Readme_Pics/Project4/image30_fsdcdq.png)
 
 #### Helper functions
 In order to create reusable code I created two helper functions to ‘pack’ and ‘unpack’ the track objects which could be used whenever I needed to use or save the track data. One would take sequence data and return a trackObject and the other would take a trackObject and return sequence data. 

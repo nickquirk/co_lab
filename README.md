@@ -216,7 +216,7 @@ I had built a basic standalone prototype but incorporating it into my applicatio
 
 I couldn’t find a straightforward way to interact with the object from a parent component so I found a solution with nesting the components which would trigger audio inside a parent MIDISounds component which was then a child of the page component. The hierarchy is shown below 
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628445/Readme_Pics/Project4/image39_lrdjj9.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/b_rgb:ffffff/v1673628445/Readme_Pics/Project4/image39_lrdjj9.png)
 
 ### Sequencer
 This was probably the largest part of the project and would allow users to create the musical tracks which populate a fragment. Initially I wanted to create both a drum and instrument sequencer but with the time restraints imposed I decided to focus on just the instrument component. 

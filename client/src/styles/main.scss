@@ -39,6 +39,11 @@ p {
   font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
+.error {
+  font-size: medium;
+  color: red;
+}
+
 .modal {
   .modal-header {
     background-image: url(../images/card-background-5.png);
@@ -221,6 +226,11 @@ input{
     color: darken($tertiary, 10%);
   }
 }
+
+.create-fragment{
+  margin-left: 5px;
+}
+
 
 // ? Edit Fragment Page
 .sequencer-container {

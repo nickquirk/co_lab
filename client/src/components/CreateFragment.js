@@ -7,16 +7,18 @@ import { useState, useEffect } from 'react'
 import { getToken } from './helpers/Auth'
 
 // Bootstrap Imports
-import { Container } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 
 
 const CreateFragment = () => {
 
   // ! State
-  const [ formFields, setFormFields ] = useState({
+  const [formFields, setFormFields] = useState({
     name: '',
-    tempo: '',
+    tempo: '120',
   })
+
+  const [errors, setErrors] = useState(false)
 
   // ! Locations
   const navigate = useNavigate()
@@ -24,22 +26,23 @@ const CreateFragment = () => {
   // ! Executions
   // Create new Fragment in database and navigate to sequencer page
   // POST Request
-  const onClick = async (e)  => {
+  const onClick = async (e) => {
     let fragmentId
     try {
-      const { data } = await axios.post('/api/fragments/',formFields, {
+      const { data } = await axios.post('/api/fragments/', formFields, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },
       })
       console.log('newFragment data ->', data)
       fragmentId = data.id
+      navigate(`/fragments/${fragmentId}`)
     } catch (err) {
-      console.log(err.message)
+      console.log(err)
+      setErrors(true)
     }
-    navigate(`/fragments/${fragmentId}`)
   }
-    
+
   const handleChange = (e) => {
     e.preventDefault()
     // This happens on any change to the form
@@ -51,20 +54,26 @@ const CreateFragment = () => {
     setFormFields(updatedFormFields)
     // ! if there's an error, set to an empty string
   }
-  
+
   // ! JSX
   return (
     <Container className="component-wrapper create-fragment-wrapper mt-3">
-      <form className='fragment-form' onChange={handleChange}>
-        <label htmlFor='name'>Name</label>
-        <input type='text' name='name' placeholder='Fragment Name'></input>
-        <label htmlFor='tempo'>Tempo</label>
-        <input type='number' name='tempo' placeholder='120BPM'></input>
-      </form>
-      <button className='btn mt-3 mb-3' onClick={onClick}>New Fragment</button>
+      <Row>
+        <Col xs={6} sm={12}>
+          <form className='fragment-form' onChange={handleChange}>
+            <label htmlFor='name'>Name</label>
+            <input type='text' name='name' placeholder='Fragment Name'></input>
+            <label htmlFor='tempo'>Tempo</label>
+            <input type='number' name='tempo' placeholder='120BPM'></input>
+          </form>
+        </Col>
+        <Col xs={6}>
+          {errors ? <p className='error create-fragment'>Please enter a name to continue...</p> : null}
+          <button className='btn mt-3 mb-3' onClick={onClick}>New Fragment</button>
+        </Col>
+      </Row>
     </Container>
   )
-
 }
 
 export default CreateFragment

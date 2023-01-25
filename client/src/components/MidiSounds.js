@@ -11,7 +11,7 @@ class MidiSounds extends Component {
     }
   }
 
-  // Need to cache the instrument sounds here
+  // !  Need to cache the instrument sounds here
   // attach to fragment track 
   playLoop(fragmentTrack, selectedFragment) {
     if (fragmentTrack){

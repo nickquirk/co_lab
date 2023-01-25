@@ -88,6 +88,15 @@ const UserProfile = () => {
           Authorization: `Bearer ${getToken()}`,
         },
       })
+      const getFragments = async () => {
+        try {
+          const { data } = await axios.get('/api/fragments/')
+          setFragments(data)
+        } catch (err) {
+          console.log(err.message)
+        }
+      }
+      getFragments()
     } catch (err) {
       console.log(err)
     }

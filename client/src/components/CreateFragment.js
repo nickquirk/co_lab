@@ -52,7 +52,8 @@ const CreateFragment = () => {
     updatedFormFields[e.target.name] = e.target.value
     // set formFields = updatedFormFields
     setFormFields(updatedFormFields)
-    // ! if there's an error, set to an empty string
+    //  reset errors 
+    setErrors('')
   }
 
   // ! JSX

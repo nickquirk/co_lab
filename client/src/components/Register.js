@@ -22,19 +22,21 @@ const Register = () => {
     password_confirmation: '',
   })
 
+  const [errors, setErrors] = useState('')
+  const [response, setResponse] = useState('')
+
   // ! Executions
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       // send off form data to our API
       const { data } = await axios.post('/api/auth/register/', formFields)
-      // navigate to login page after request has completed
-      //navigate('/login')
       console.log(data)
+      setResponse(data)
+      console.log('form submitted')
     } catch (err) {
-      console.log(err)
+      setErrors(err.response.data)
     }
-    console.log('form submitted')
   }
 
   const handleChange = (e) => {
@@ -45,57 +47,70 @@ const Register = () => {
     updatedFormFields[e.target.name] = e.target.value
     // set formFields = updatedFormFields
     setFormFields(updatedFormFields)
-    // ! if there's an error, set to an empty string
+    // if there's an error, set errors to an empty string
+    setErrors('')
+    setResponse('')
   }
 
   return (
     // Display Register Form
-    <Container className="login-component-wrapper">
-      <h4 className='text-center'>Register</h4>
-      <div className='hero-page text-center form-main'>
-        <div className='form-container'>
-          <form>
-            <input
-              required
-              className='form-control mt-3 mb-3'
-              type="text"
-              name="username"
-              onChange={handleChange}
-              placeholder="Username *"
-              value={formFields.username}
-            />
-            <input
-              required
-              className='form-control'
-              type="email"
-              name="email"
-              onChange={handleChange}
-              placeholder="Email *"
-              value={formFields.email}
-            />
-            <input
-              required
-              className='form-control mt-3 mb-3'
-              type="password"
-              name="password"
-              onChange={handleChange}
-              placeholder="Password *"
-              value={formFields.password}
-            />
-            <input
-              required
-              className='form-control mb-3'
-              type="password"
-              name="password_confirmation"
-              onChange={handleChange}
-              placeholder="Confirm password *"
-              value={formFields.password_confirmation}
-            />
-            <button onClick={handleSubmit} className="btn btn-lg mb-3">Register</button>
-          </form>
+    <>
+      <Container className="login-component-wrapper">
+        <h4 className='text-center'>Register</h4>
+        <div className='hero-page text-center form-main'>
+          <div className='form-container'>
+            <form>
+              <input
+                required
+                className='form-control mt-3 mb-3'
+                type="text"
+                name="username"
+                onChange={handleChange}
+                placeholder="Username *"
+                value={formFields.username}
+              />
+              {errors ? <p className='error'>{errors.username}</p> : null}
+              <input
+                required
+                className='form-control'
+                type="email"
+                name="email"
+                onChange={handleChange}
+                placeholder="Email *"
+                value={formFields.email}
+              />
+              {errors ? <p className='error'>{errors.email}</p> : null}
+              <input
+                required
+                className='form-control mt-3 mb-3'
+                type="password"
+                name="password"
+                onChange={handleChange}
+                placeholder="Password *"
+                value={formFields.password}
+              />
+              {errors ? <p className='error'>{errors.password}</p> : null}
+              {errors.non_field_errors ? <p className='error'>{errors.non_field_errors}</p> : null}
+              <input
+                required
+                className='form-control mb-3'
+                type="password"
+                name="password_confirmation"
+                onChange={handleChange}
+                placeholder="Confirm password *"
+                value={formFields.password_confirmation}
+              />
+              {errors ? <p className='error'>{errors.password_confirmation}</p> : null}
+              <button onClick={handleSubmit} className="btn btn-lg mb-3">Register</button>
+            </form>
+
+          </div>
         </div>
-      </div>
-    </Container>
+
+      </Container>
+
+      {response ? <p className='success'>{response}</p> : null}
+    </>
   )
 
 }

@@ -26,10 +26,10 @@ class RegisterView(APIView):
         user_to_register.save()
         return Response('Registration successful', status=status.HTTP_201_CREATED)
       print(user_to_register.errors)
-      return Response(user_to_register.errors)
+      return Response(user_to_register.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
       print(e)
-      return Response(str(e), status.HTTP_500_INTERNAL_SERVER_ERROR)
+      return Response(str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class LogInView(APIView):

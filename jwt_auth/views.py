@@ -25,6 +25,7 @@ class RegisterView(APIView):
       if user_to_register.is_valid():
         user_to_register.save()
         return Response('Registration successful', status=status.HTTP_201_CREATED)
+      print(user_to_register.errors)
       return Response(user_to_register.errors)
     except Exception as e:
       print(e)
@@ -38,6 +39,7 @@ class LogInView(APIView):
     try:
       user_to_login = User.objects.get(email=email)
     except User.DoesNotExist as e:  
+      print(e)
       raise PermissionDenied('Invalid Credentials')
     print(user_to_login)
     # Build up a date thats 7 days in the future

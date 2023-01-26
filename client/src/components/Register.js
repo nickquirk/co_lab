@@ -19,8 +19,7 @@ const Register = () => {
     username: '',
     email: '',
     password: '',
-    passwordConfirmation: '',
-    image: IMAGE,
+    password_confirmation: '',
   })
 
   // ! Executions
@@ -28,9 +27,10 @@ const Register = () => {
     e.preventDefault()
     try {
       // send off form data to our API
-      await axios.post('/api/auth/register/', formFields)
+      const { data } = await axios.post('/api/auth/register/', formFields)
       // navigate to login page after request has completed
-      navigate('/login')
+      //navigate('/login')
+      console.log(data)
     } catch (err) {
       console.log(err)
     }
@@ -54,7 +54,7 @@ const Register = () => {
       <h4 className='text-center'>Register</h4>
       <div className='hero-page text-center form-main'>
         <div className='form-container'>
-          <form onSubmit={handleSubmit}>
+          <form>
             <input
               required
               className='form-control mt-3 mb-3'
@@ -86,12 +86,12 @@ const Register = () => {
               required
               className='form-control mb-3'
               type="password"
-              name="passwordConfirmation"
+              name="password_confirmation"
               onChange={handleChange}
               placeholder="Confirm password *"
-              value={formFields.passwordConfirmation}
+              value={formFields.password_confirmation}
             />
-            <button to={'/login'} className="btn btn-lg mb-3">Register</button>
+            <button onClick={handleSubmit} className="btn btn-lg mb-3">Register</button>
           </form>
         </div>
       </div>

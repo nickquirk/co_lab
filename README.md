@@ -5,7 +5,7 @@ For the final project of the General Assembly Software Engineering Immersive cou
 
 Each Fragment is a sixteen bar loop which can hold up to four tracks of audio. The audio is created in a sequencer where the user can program simple melodies using a wide array of instruments. Once the fragment is created it can be played as a whole on the main index page, shown below.  
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628443/Readme_Pics/Project4/image20_mbtdxa.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1674723252/Readme_Pics/Project4/Screenshot_2023-01-26_at_08.52.42_rs5ndk.png)
 
 
 

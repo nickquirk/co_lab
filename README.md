@@ -5,7 +5,7 @@ For the final project of the General Assembly Software Engineering Immersive cou
 
 Each Fragment is a sixteen bar loop which can hold up to four tracks of audio. The audio is created in a sequencer where the user can program simple melodies using a wide array of instruments. Once the fragment is created it can be played as a whole on the main index page, shown below.  
 
-![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1673628443/Readme_Pics/Project4/image20_mbtdxa.png)
+![](https://res.cloudinary.com/dhjguxvm1/image/upload/v1674723252/Readme_Pics/Project4/Screenshot_2023-01-26_at_08.52.42_rs5ndk.png)
 
 
 
@@ -160,7 +160,7 @@ This being the final project on the General Assembly Software Engineering Immers
 Something that I found worked well in previous projects was writing a todo list at the end of the day for the following day. I would make a note of everything that I could think of that needed to be completed by the end of the next day. I would then try to break these down where I could and also highlight the one task that would give the biggest return or was the most difficult and would aim to tackle that first thing in the morning. It wasn’t important that I finish all the things on my list, any that didn’t get done were added to the next day's list or reevaluated but the act of clearing my head at the end of the day and starting the following day already with a focus made a huge difference to my focus and efficiency.  
 
 ### Regular Rescoping
-I’ve mentioned previously that this was an ambitious project to attempt in the time we were given. Because of this I made sure I regularly revisited my MVP to ensure that I had time to implement all of the features I’d set out to develop. Several times during the project I had to cut features that I felt couldn't be built in time or would end up being rushed and sub-par. It always hurts a bit to cut a feature from a project but the thought of having an incomplete or unworkable project hurts more! 
+I’ve mentioned previously that this was an ambitious project to attempt in the time we were given. Because of this I made sure I regularly revisited my MVP to ensure that I had time to implement all of the features I’d set out to develop. Several times during the project I had to cut features that I felt couldn't be built in time or would end up being rushed and sub-par. 
 
 ### Prototype
 Owing to the time restraints imposed and the scope of this project being outside what we had covered in the course I took some decisions early on about how I was going to develop the project and manage my time so that I had a decent product at the end. 
@@ -353,7 +353,7 @@ As mentioned previously I kept the backend structure simple with just three mode
 * Tracks
 * Jwt_auth (users) 
 
-This design decision paid off when the main functionality of my application took slightly longer than expected to develop. Fortunately the simple design only took me about a day to implement which meant I kept on-track with where I had planned to be day-to-day.  
+This design decision paid off when the main functionality of my application took slightly longer than expected to develop.
 
 #### Populated Serializers 
 In several places I made use of populated serializers to populate keys on models with more data. An example of this was on the Track model. I spoke in the User Authentication section about how I wanted to display the username of users on each Fragment and Track that they created. Using Populated Serializers is how I achieved this. 

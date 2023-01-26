@@ -69,11 +69,11 @@ const Login = () => {
               placeholder="Password *"
               value={formFields.password}
             />
-            
+            {errors.detail ? <p className='error'>{errors.detail}</p> : null}
             {/* {error && error.message && <small className='text-danger'>{error.message}</small>} */}
             <button className="btn btn-lg mt-3 mb-3">Login</button>
           </form>
-          {errors.detail ? <p className='error'>{errors.detail}</p> : null}
+          
         </div>
       </div>
     </Container>

@@ -37,7 +37,6 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
   const ROWS = 14
   const COLS = sequenceLength
   const NOTE_LENGTH = 2 / 16
-  const TEMPO = 120
 
 
   // ! Location
@@ -141,7 +140,7 @@ const InstrumentSequencer = ({ startLoop, trackData, setTrackData, playing, play
       grid: grid,
       sequence: sequence,
       midiTranspose: MIDI_TRANSPOSE,
-      tempo: TEMPO,
+      tempo: tempo,
     }
     const packedObject =  JSON.stringify(packTrackObject(sequenceData))
     try {

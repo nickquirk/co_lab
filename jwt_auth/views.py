@@ -40,7 +40,9 @@ class LogInView(APIView):
       user_to_login = User.objects.get(email=email)
     except User.DoesNotExist as e:  
       print(e)
-      raise PermissionDenied('Invalid Credentials')
+      raise PermissionDenied('User does not exist')
+    if not user_to_login.check_password(password):
+      raise PermissionDenied('Invalid username or password')
     print(user_to_login)
     # Build up a date thats 7 days in the future
     dt = datetime.now() + timedelta(days=7)

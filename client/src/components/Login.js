@@ -21,7 +21,7 @@ const Login = () => {
     password: '',
   })
 
-  const [error, setError] = useState('')
+  const [errors, setErrors] = useState('')
 
   const handleChange = (e) => {
     // on change of form update setFormFields
@@ -37,8 +37,8 @@ const Login = () => {
       // navigate to fragment index after successful login
       navigate('/')
     } catch (err) {
-      setError(err.response.data.message)
-      console.log(err.response.data.message)
+      setErrors(err.response.data)
+      console.log(err.response.data)
     }
   }
 
@@ -69,11 +69,11 @@ const Login = () => {
               placeholder="Password *"
               value={formFields.password}
             />
-            {/* Error Message */}
-            {error && <small className='text-danger'>{error}</small>}
+            
             {/* {error && error.message && <small className='text-danger'>{error.message}</small>} */}
-            <button to={'/'} className="btn btn-lg mt-3 mb-3">Login</button>
+            <button className="btn btn-lg mt-3 mb-3">Login</button>
           </form>
+          {errors.detail ? <p className='error'>{errors.detail}</p> : null}
         </div>
       </div>
     </Container>

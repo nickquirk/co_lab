@@ -59,7 +59,7 @@ const Register = () => {
         <h4 className='text-center'>Register</h4>
         <div className='hero-page text-center form-main'>
           <div className='form-container'>
-            <form>
+            <form onSubmit={handleSubmit}>
               <input
                 required
                 className='form-control mt-3 mb-3'
@@ -101,14 +101,11 @@ const Register = () => {
                 value={formFields.password_confirmation}
               />
               {errors ? <p className='error'>{errors.password_confirmation}</p> : null}
-              <button onClick={handleSubmit} className="btn btn-lg mb-3">Register</button>
+              <button className="btn btn-lg mb-3">Register</button>
             </form>
-
           </div>
         </div>
-
       </Container>
-
       {response ? <p className='success'>{response}</p> : null}
     </>
   )

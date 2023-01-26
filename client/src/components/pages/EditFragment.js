@@ -115,6 +115,7 @@ const EditFragment = () => {
           <MidiSoundsSequencer
             trackData={trackData}
             setTrackData={setTrackData}
+            tempo={fragment.tempo}
           />
         </>
         :

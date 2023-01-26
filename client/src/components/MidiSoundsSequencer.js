@@ -14,6 +14,7 @@ class MidiSoundsSequencer extends Component {
       drums: [],
       instruments: [],
       sequence: [],
+      tempo: props.tempo,
     }
   }
 
@@ -29,8 +30,9 @@ class MidiSoundsSequencer extends Component {
       this.midiSounds.stopPlayLoop()
       this.setState({ playing: this.midiSounds.loopStarted })
       console.log('stopped')
+
     } else {
-      this.midiSounds.startPlayLoop(loop, 120, 1 / 16)
+      this.midiSounds.startPlayLoop(loop, this.state.tempo, 1 / 16)
       this.setState({ playing: this.midiSounds.loopStarted })
       console.log('playing')
     }

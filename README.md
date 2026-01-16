@@ -20,22 +20,7 @@ Open the project in a code editor and run the follwoing in the terminal
 npm i
 
 ```
-Then install the following:
-```
-  "dependencies": {
-    "axios": "^0.25.0",
-    "bootstrap": "^5.2.3",
-    "buffer": "^6.0.3",
-    "eslint-plugin-react": "^7.31.11",
-    "midi-sounds-react": "^1.2.54",
-    "react": "^18.2.0",
-    "react-bootstrap": "^2.6.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.4",
-    "react-scripts": "^5.0.1",
-    "sass": "^1.56.1"
-  },
-```
+
 ##  Timeframe & Working Team
 This was a solo project. I had a week to meet the criteria of the project and build a full-stack web application.
 ##  Technologies Used

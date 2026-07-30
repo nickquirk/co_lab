@@ -1,7 +1,7 @@
 
 # co_lab
 
-Co_lab is an idea I developed that allows people to collaborate together to create short loops of music which I called Fragments. 
+Co_lab allows people to collaborate together to create short loops of music which I called Fragments. 
 
 Each Fragment is a sixteen bar loop which can hold up to four tracks of audio. The audio is created in a sequencer where the user can program simple melodies using a wide array of instruments. Once the fragment is created it can be played as a whole on the main index page, shown below.  
 
